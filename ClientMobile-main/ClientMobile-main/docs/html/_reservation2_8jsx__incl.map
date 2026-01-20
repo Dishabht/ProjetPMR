@@ -1,0 +1,19 @@
+<map id="components/Reservation2.jsx" name="components/Reservation2.jsx">
+<area shape="rect" id="Node000001" title=" " alt="" coords="339,5,533,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,88,62,115"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="339,31,211,49,142,64,74,83,70,84,69,79,73,77,141,59,210,44,338,26"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,88,136,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="340,35,245,54,148,83,145,83,143,78,146,77,244,49,338,30"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="160,88,249,115"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="400,35,262,83,255,85,253,80,261,77,398,30"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="273,88,439,115"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="426,34,381,79,377,75,422,31"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="464,88,571,115"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="451,31,496,75,492,79,447,34"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="595,80,733,123"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="473,30,592,72,590,77,471,35"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="757,88,878,115"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="510,30,622,51,746,77,760,81,759,86,745,83,621,56,509,35"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="902,88,1018,115"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="534,26,702,46,891,77,906,81,905,86,890,83,701,51,534,31"/>
+</map>

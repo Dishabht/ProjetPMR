@@ -1,0 +1,44 @@
+\doxysection{C\+:/\+Users/\+HP/\+One\+Drive/\+Bureau/\+BUT INFO 3/semestre 5/\+SAE5.\+01/\+Client\+Mobile-\/1/client\+Mobile/components/\+Reservation2.\+jsx}
+\hypertarget{_c_1_2_users_2_h_p_2_one_drive_2_bureau_2_b_u_t_01_i_n_f_o_013_2semestre_015_2_s_a_e5_801_2_clie3c53c6a925a0569894cb56fc44ccd2c8}{}\label{_c_1_2_users_2_h_p_2_one_drive_2_bureau_2_b_u_t_01_i_n_f_o_013_2semestre_015_2_s_a_e5_801_2_clie3c53c6a925a0569894cb56fc44ccd2c8}Composant principal Reservation2.
+
+Composant principal Reservation2.\+Permet à l\textquotesingle{}utilisateur de fournir des informations supplémentaires pour personnaliser son assistance lors de son voyage, telles que \+:
+\begin{DoxyItemize}
+\item Les détails d\textquotesingle{}un accompagnateur (nom, prénom, téléphone, email).
+\item Le nombre de bagages.
+\item Les options liées à l\textquotesingle{}utilisation de fauteuils roulants.
+\item Une description additionnelle pour des besoins spécifiques. Les informations collectées sont ajoutées au billet existant et transmises à l\textquotesingle{}étape suivante.
+\end{DoxyItemize}
+
+@component
+
+$<$\+Reservation2 route=\{route\} $>$
+
+
+\begin{DoxyParams}{Paramètres}
+{\em \{\+Object\}} & props -\/ Les propriétés du composant. \\
+\hline
+{\em \{\+Object\}} & props.\+route -\/ Contient les données de navigation, y compris le billet en cours de modification.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+\{JSX.\+Element\} Le composant Reservation2.
+\end{DoxyReturn}
+@description Fonctionnalités principales \+:
+\begin{DoxyItemize}
+\item Collecte des informations sur un éventuel accompagnateur.
+\item Spécification du nombre de bagages transportés.
+\item Sélection d\textquotesingle{}une option liée à l\textquotesingle{}utilisation de fauteuils roulants.
+\item Fourniture d\textquotesingle{}informations complémentaires dans un champ texte.
+\item Transition avec un écran de chargement initial simulant un temps de traitement.
+\item Validation des entrées utilisateur (exemple \+: vérifier que le nombre de bagages est spécifié).
+\item Navigation vers la prochaine étape avec les données mises à jour.
+\end{DoxyItemize}
+
+@requires react-\/native @requires react-\/native-\/gesture-\/handler @requires react-\/navigation/native @requires Lottie\+View -\/ Pour les animations visuelles (fauteuil roulant).
+
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{}
+
+\end{DoxyCodeInclude}
+ INFO 3/semestre 5/\+SAE5.\+01/\+Client\+Mobile-\/1/client\+Mobile/components/\+Reservation2.jsx 

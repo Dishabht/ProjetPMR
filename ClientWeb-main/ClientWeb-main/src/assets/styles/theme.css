@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@tailwind utilities;
+
+@layer utilities {
+  .color-blues {
+    background-color: #5489ce;
+  }
+  .color-blues-3 {
+    background-color: #0050aa;
+  }
+
+  .color-blues-2 {
+    color: #0050aa;
+  }
+  .text-blue {
+    color: #5489ce;
+  }
+  .font-raleway {
+    font-family: "Raleway", sans-serif;
+  }
+}

@@ -1,0 +1,67 @@
+\doxysection{Référence du fichier components/\+Reservation2.jsx}
+\hypertarget{_reservation2_8jsx}{}\label{_reservation2_8jsx}\index{components/Reservation2.jsx@{components/Reservation2.jsx}}
+{\ttfamily import React;}\newline
+{\ttfamily import "{}react"{};}\newline
+{\ttfamily import "{}react-\/native"{};}\newline
+{\ttfamily import "{}@react-\/navigation/native"{};}\newline
+{\ttfamily import "{}../\+User\+Context"{};}\newline
+{\ttfamily import "{}@expo-\/google-\/fonts/raleway"{};}\newline
+{\ttfamily import "{}lottie-\/react-\/native"{};}\newline
+{\ttfamily import "{}./\+Transition\+Page"{};}\newline
+Graphe des dépendances par inclusion de Reservation2.\+jsx\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_reservation2_8jsx__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+default function \mbox{\hyperlink{_reservation2_8jsx_a22e73025fb62a9c7a20f0366343eb2fd}{Reservation2}} (\{ route \})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{_reservation2_8jsx_a66a53e42c69ca6e92f8c7dc78b679fbd}{styles}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Documentation des fonctions}
+\Hypertarget{_reservation2_8jsx_a22e73025fb62a9c7a20f0366343eb2fd}\index{Reservation2.jsx@{Reservation2.jsx}!Reservation2@{Reservation2}}
+\index{Reservation2@{Reservation2}!Reservation2.jsx@{Reservation2.jsx}}
+\doxysubsubsection{\texorpdfstring{Reservation2()}{Reservation2()}}
+{\footnotesize\ttfamily \label{_reservation2_8jsx_a22e73025fb62a9c7a20f0366343eb2fd} 
+default function Reservation2 (\begin{DoxyParamCaption}\item[{\{ route \}}]{}{}\end{DoxyParamCaption})}
+
+Effet use\+Effect. Simule un écran de transition pendant 5 secondes avant d\textquotesingle{}afficher les formulaires.
+
+@function \begin{DoxyReturn}{Renvoie}
+\{void\}
+\end{DoxyReturn}
+Fonction handle\+Submit. Gère la validation des données et la navigation vers l\textquotesingle{}étape suivante. Si l\textquotesingle{}utilisateur n\textquotesingle{}a pas de bagages, il est redirigé immédiatement. Sinon, les données collectées sont fusionnées avec les informations du billet existant.
+
+@function \begin{DoxyReturn}{Renvoie}
+\{void\}
+\end{DoxyReturn}
+Champ "{}\+Avez-\/vous un accompagnateur ?"{}. Permet de choisir entre "{}\+Oui"{} ou "{}\+Non"{}. Si "{}\+Oui"{}, affiche des champs pour renseigner les informations de l\textquotesingle{}accompagnateur (nom, prénom, téléphone, email).
+
+Champ "{}\+Nombre de bagages"{}. Permet à l\textquotesingle{}utilisateur de spécifier le nombre de bagages transportés. Une validation est effectuée pour garantir que cette information est fournie.
+
+Champ "{}\+Utilisation d\textquotesingle{}un fauteuil roulant"{}. Propose trois options \+:
+\begin{DoxyItemize}
+\item RM \+: Fauteuil roulant manuel.
+\item RE \+: Fauteuil roulant électrique.
+\item Emprunt \+: Utilisation d\textquotesingle{}un fauteuil roulant emprunté.
+\end{DoxyItemize}
+
+Champ "{}\+Informations complémentaires"{}. Permet à l\textquotesingle{}utilisateur de décrire toute situation spécifique nécessitant une assistance personnalisée.
+
+\doxysubsection{Documentation des variables}
+\Hypertarget{_reservation2_8jsx_a66a53e42c69ca6e92f8c7dc78b679fbd}\index{Reservation2.jsx@{Reservation2.jsx}!styles@{styles}}
+\index{styles@{styles}!Reservation2.jsx@{Reservation2.jsx}}
+\doxysubsubsection{\texorpdfstring{styles}{styles}}
+{\footnotesize\ttfamily \label{_reservation2_8jsx_a66a53e42c69ca6e92f8c7dc78b679fbd} 
+const styles}
+

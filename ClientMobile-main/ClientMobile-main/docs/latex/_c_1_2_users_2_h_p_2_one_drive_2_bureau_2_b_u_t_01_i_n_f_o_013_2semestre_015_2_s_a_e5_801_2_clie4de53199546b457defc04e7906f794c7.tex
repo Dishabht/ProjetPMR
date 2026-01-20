@@ -1,0 +1,27 @@
+\doxysection{C\+:/\+Users/\+HP/\+One\+Drive/\+Bureau/\+BUT INFO 3/semestre 5/\+SAE5.\+01/\+Client\+Mobile-\/1/client\+Mobile/components/\+Billet\+Details.\+jsx}
+\hypertarget{_c_1_2_users_2_h_p_2_one_drive_2_bureau_2_b_u_t_01_i_n_f_o_013_2semestre_015_2_s_a_e5_801_2_clie4de53199546b457defc04e7906f794c7}{}\label{_c_1_2_users_2_h_p_2_one_drive_2_bureau_2_b_u_t_01_i_n_f_o_013_2semestre_015_2_s_a_e5_801_2_clie4de53199546b457defc04e7906f794c7}Composant Billet\+Details.
+
+Composant Billet\+Details.\+Ce composant affiche les détails d\textquotesingle{}un billet de réservation, y compris les informations sur le voyage, les bagages et l\textquotesingle{}accompagnateur. Il permet également de supprimer la réservation via un appel API.
+
+@component
+
+const billet = \{ num\+\_\+reservation\+: "{}101"{}, lieu\+\_\+depart\+: "{}\+Paris"{}, lieu\+\_\+arrivee\+: "{}\+Lyon"{}, heure\+\_\+depart\+: "{}2025-\/01-\/26\+T08\+:00\+:00\+Z"{}, heure\+\_\+arrivee\+: "{}2025-\/01-\/26\+T12\+:00\+:00\+Z"{}, wheelchair\+: "{}\+RM"{}, additional\+Info\+: "{}\+Besoin d\textquotesingle{}assistance spéciale."{}, num\+Bags\+: 2, has\+Companion\+: true, companion\+: \{ name\+: "{}\+John"{}, surname\+: "{}\+Doe"{}, phone\+: "{}1234567890"{}, email\+: "{}john.\+doe@example.\+com"{} \}, bagages\+: \mbox{[} \{ weight\+: "{}12"{}, description\+: "{}\+Valise rouge"{} \}, \{ weight\+: "{}8"{}, description\+: "{}\+Sac à dos noir"{} \}, \mbox{]}, \}; return $<$\+Billet\+Details billet=\{billet\} $>$;
+
+
+\begin{DoxyParams}{Paramètres}
+{\em \{\+Object\}} & props -\/ Propriétés du composant. \\
+\hline
+{\em \{\+Object\}} & props.\+route -\/ L\textquotesingle{}objet de navigation contenant les paramètres de la route. \\
+\hline
+{\em \{\+Billet\}} & props.\+route.\+params.\+billet -\/ Les détails du billet.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Renvoie}
+\{JSX.\+Element\} Le composant Billet\+Details.
+\end{DoxyReturn}
+
+\begin{DoxyCodeInclude}{0}
+\DoxyCodeLine{}
+
+\end{DoxyCodeInclude}
+ INFO 3/semestre 5/\+SAE5.\+01/\+Client\+Mobile-\/1/client\+Mobile/components/\+Billet\+Details.jsx 

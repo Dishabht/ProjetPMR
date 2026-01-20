@@ -1,0 +1,74 @@
+\doxysection{Référence du fichier components/\+Billet\+Details.jsx}
+\hypertarget{_billet_details_8jsx}{}\label{_billet_details_8jsx}\index{components/BilletDetails.jsx@{components/BilletDetails.jsx}}
+{\ttfamily import React;}\newline
+{\ttfamily import "{}react"{};}\newline
+{\ttfamily import "{}react-\/native"{};}\newline
+{\ttfamily import "{}react-\/native-\/qrcode-\/svg"{};}\newline
+{\ttfamily import "{}../services/api"{};}\newline
+{\ttfamily import "{}@react-\/navigation/native"{};}\newline
+{\ttfamily import "{}../components/\+Billet"{};}\newline
+{\ttfamily import "{}@expo-\/google-\/fonts/raleway"{};}\newline
+Graphe des dépendances par inclusion de Billet\+Details.\+jsx\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_billet_details_8jsx__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Fonctions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_billet_details_8jsx_af288f689c3d15802970e6516d09ec2b0}{return}} ($<$ Scroll\+View content\+Container\+Style=\{styles.\+container\}$>$$<$ Text style=\{styles.\+title\}$>$Détails du \mbox{\hyperlink{_billet_8jsx_a5c43371b45c3e65cf235f6bf76a927e8}{Billet}}$<$/Text $>$$<$ \mbox{\hyperlink{_billet_8jsx_a5c43371b45c3e65cf235f6bf76a927e8}{Billet}} ticket=\{billet\}/$>$ \{\}$<$ View style=\{styles.\+detail\+Container\}$>$ \{\}$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Numéro de \mbox{\hyperlink{_billet_details_8jsx_a329ce2ef123dfff6323ee8017fe6ce15}{Réservation}} \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+num\+\_\+reservation\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Lieu de Départ \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+lieu\+\_\+depart\}$<$/Text $>$$<$/View $>$$<$/View $>$$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Lieu d \textquotesingle{}Arrivée \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+lieu\+\_\+arrivee\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Heure de Départ \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ \{new Date(billet.\+heure\+\_\+depart).to\+Locale\+String()\}$<$/Text $>$$<$/View $>$$<$/View $>$$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Heure d \textquotesingle{}Arrivée \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ \{new Date(billet.\+heure\+\_\+arrivee).to\+Locale\+String()\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Type de Fauteuil Roulant \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+wheelchair\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}"{}Aucun"{}\}$<$/Text $>$$<$/View $>$$<$/View $>$$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Informations Supplémentaires \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ \{billet.\+additional\+Info\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}"{}Non spécifié"{}\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Nombre de Bagages \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+num\+Bags\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}"{}0"{}\}$<$/Text $>$$<$/View $>$$<$/View $>$ \{\}$<$ Text style=\{styles.\+label\}$>$Accompagnateur \+:$<$/Text $>$ \{billet.\+has\+Companion ?($<$ View style=\{styles.\+companion\+Container\}$>$$<$ Text style=\{styles.\+value\}$>$Nom \+:\{billet.\+companion.\+name\}$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ Prénom \+:\{billet.\+companion.\+surname\}$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ Téléphone \+:\{billet.\+companion.\+phone\}$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$Email \+:\{billet.\+companion.\+email\}$<$/Text $>$$<$/View $>$) \+:($<$ Text style=\{styles.\+value\}$>$Pas d \textquotesingle{}accompagnateur$<$/Text $>$)\} \{\}$<$ Text style=\{styles.\+label\}$>$Bagages \+:$<$/Text $>$ \{billet.\+bagages \&\&billet.\+bagages.\+length $>$ 0 ?(billet.\+bagages.\+map((bagage, index)=$>$($<$ View key=\{index\} style=\{styles.\+bagage\+Container\}$>$$<$ Text style=\{styles.\+bagage\+Title\}$>$Bagage \{index+1\}$<$/Text $>$$<$ View style=\{styles.\+bagage\+Details\}$>$$<$ View style=\{styles.\+bagage\+Info\}$>$$<$ Text style=\{styles.\+bagage\+Label\}$>$Poids \+:$<$/Text $>$$<$ Text style=\{styles.\+bagage\+Value\}$>$\{bagage.\+weight\} kg$<$/Text $>$$<$ Text style=\{styles.\+bagage\+Label\}$>$Description \+:$<$/Text $>$$<$ Text style=\{styles.\+bagage\+Value\}$>$\{bagage.\+description\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+qr\+Code\+Container\}$>$$<$ QRCode value=\{\`{}https\+:bagage.\+weight)\}\&description=\$\{encode\+URIComponent(bagage.\+description)\}\`{}\} \mbox{\hyperlink{_profile_8jsx_aa3d6656320f1a7278c0c2c7fdf07617c}{size}}=\{100\}/$>$$<$/View $>$$<$/View $>$$<$/View $>$)))
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{_billet_details_8jsx_a0f6e35ac1d80990f0e8688d7902edf19}{Billet\+Details}}
+\item 
+const \mbox{\hyperlink{_billet_details_8jsx_a0e26dbfe6a6cd5f29c085212b37d717e}{handle\+Delete\+Reservation}}
+\begin{DoxyCompactList}\small\item\em Gère la suppression d\textquotesingle{}une réservation en appelant une API. \end{DoxyCompactList}\item 
+$<$ Text style=\{styles.\+qr\+Label\}$>$ QR Code de la \mbox{\hyperlink{_billet_details_8jsx_a329ce2ef123dfff6323ee8017fe6ce15}{Réservation}}
+\item 
+const \mbox{\hyperlink{_billet_details_8jsx_a66a53e42c69ca6e92f8c7dc78b679fbd}{styles}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Documentation des fonctions}
+\Hypertarget{_billet_details_8jsx_af288f689c3d15802970e6516d09ec2b0}\index{BilletDetails.jsx@{BilletDetails.jsx}!return@{return}}
+\index{return@{return}!BilletDetails.jsx@{BilletDetails.jsx}}
+\doxysubsubsection{\texorpdfstring{return()}{return()}}
+{\footnotesize\ttfamily \label{_billet_details_8jsx_af288f689c3d15802970e6516d09ec2b0} 
+return (\begin{DoxyParamCaption}\item[{$<$ Scroll\+View content\+Container\+Style=\{styles.\+container\}$>$$<$ Text style=\{styles.\+title\}$>$Détails du \mbox{\hyperlink{_billet_8jsx_a5c43371b45c3e65cf235f6bf76a927e8}{Billet}}$<$/Text $>$$<$ \mbox{\hyperlink{_billet_8jsx_a5c43371b45c3e65cf235f6bf76a927e8}{Billet}} ticket=\{billet\}/$>$ \{\}$<$ View style=\{styles.\+detail\+Container\}$>$ \{\}$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Numéro de \mbox{\hyperlink{_billet_details_8jsx_a329ce2ef123dfff6323ee8017fe6ce15}{Réservation}} \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+num\+\_\+reservation\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Lieu de Départ \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+lieu\+\_\+depart\}$<$/Text $>$$<$/View $>$$<$/View $>$$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Lieu d \textquotesingle{}Arrivée \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+lieu\+\_\+arrivee\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Heure de Départ \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ \{new Date(billet.\+heure\+\_\+depart).to\+Locale\+String()\}$<$/Text $>$$<$/View $>$$<$/View $>$$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Heure d \textquotesingle{}Arrivée \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ \{new Date(billet.\+heure\+\_\+arrivee).to\+Locale\+String()\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Type de Fauteuil Roulant \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+wheelchair\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}"{}Aucun"{}\}$<$/Text $>$$<$/View $>$$<$/View $>$$<$ View style=\{styles.\+row\}$>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Informations Supplémentaires \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ \{billet.\+additional\+Info\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}"{}Non spécifié"{}\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+column\}$>$$<$ Text style=\{styles.\+label\}$>$Nombre de Bagages \+:$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$\{billet.\+num\+Bags\texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|}"{}0"{}\}$<$/Text $>$$<$/View $>$$<$/View $>$ \{\}$<$ Text style=\{styles.\+label\}$>$Accompagnateur \+:$<$/Text $>$ \{billet.\+has\+Companion ?($<$ View style=\{styles.\+companion\+Container\}$>$$<$ Text style=\{styles.\+value\}$>$Nom \+:\{billet.\+companion.\+name\}$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ Prénom \+:\{billet.\+companion.\+surname\}$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$ Téléphone \+:\{billet.\+companion.\+phone\}$<$/Text $>$$<$ Text style=\{styles.\+value\}$>$Email \+:\{billet.\+companion.\+email\}$<$/Text $>$$<$/View $>$) \+:($<$ Text style=\{styles.\+value\}$>$Pas d \textquotesingle{}accompagnateur$<$/Text $>$)\} \{\}$<$ Text style=\{styles.\+label\}$>$Bagages \+:$<$/Text $>$ \{billet.\+bagages \&\&billet.\+bagages.\+length $>$ 0 ?(billet.\+bagages.\+map((bagage, index)=$>$($<$ View key=\{index\} style=\{styles.\+bagage\+Container\}$>$$<$ Text style=\{styles.\+bagage\+Title\}$>$Bagage \{index+1\}$<$/Text $>$$<$ View style=\{styles.\+bagage\+Details\}$>$$<$ View style=\{styles.\+bagage\+Info\}$>$$<$ Text style=\{styles.\+bagage\+Label\}$>$Poids \+:$<$/Text $>$$<$ Text style=\{styles.\+bagage\+Value\}$>$\{bagage.\+weight\} kg$<$/Text $>$$<$ Text style=\{styles.\+bagage\+Label\}$>$Description \+:$<$/Text $>$$<$ Text style=\{styles.\+bagage\+Value\}$>$\{bagage.\+description\}$<$/Text $>$$<$/View $>$$<$ View style=\{styles.\+qr\+Code\+Container\}$>$$<$ QRCode value=\{\`{}https\+:bagage.\+weight)\}\&description=\$\{encode\+URIComponent(bagage.\+description)\}\`{}\}}]{size}{ = {\ttfamily \{100\}~~~~~~~~~~~~~~~~~~/}, }\item[{$<$/View $>$$<$/View $>$$<$/View $>$}]{}{}\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Documentation des variables}
+\Hypertarget{_billet_details_8jsx_a0f6e35ac1d80990f0e8688d7902edf19}\index{BilletDetails.jsx@{BilletDetails.jsx}!BilletDetails@{BilletDetails}}
+\index{BilletDetails@{BilletDetails}!BilletDetails.jsx@{BilletDetails.jsx}}
+\doxysubsubsection{\texorpdfstring{BilletDetails}{BilletDetails}}
+{\footnotesize\ttfamily \label{_billet_details_8jsx_a0f6e35ac1d80990f0e8688d7902edf19} 
+default Billet\+Details}
+
+\Hypertarget{_billet_details_8jsx_a0e26dbfe6a6cd5f29c085212b37d717e}\index{BilletDetails.jsx@{BilletDetails.jsx}!handleDeleteReservation@{handleDeleteReservation}}
+\index{handleDeleteReservation@{handleDeleteReservation}!BilletDetails.jsx@{BilletDetails.jsx}}
+\doxysubsubsection{\texorpdfstring{handleDeleteReservation}{handleDeleteReservation}}
+{\footnotesize\ttfamily \label{_billet_details_8jsx_a0e26dbfe6a6cd5f29c085212b37d717e} 
+const handle\+Delete\+Reservation}
+
+
+
+Gère la suppression d\textquotesingle{}une réservation en appelant une API. 
+
+\Hypertarget{_billet_details_8jsx_a329ce2ef123dfff6323ee8017fe6ce15}\index{BilletDetails.jsx@{BilletDetails.jsx}!Réservation@{Réservation}}
+\index{Réservation@{Réservation}!BilletDetails.jsx@{BilletDetails.jsx}}
+\doxysubsubsection{\texorpdfstring{Réservation}{Réservation}}
+{\footnotesize\ttfamily \label{_billet_details_8jsx_a329ce2ef123dfff6323ee8017fe6ce15} 
+$<$Text style=\{styles.\+qr\+Label\}$>$ QR Code de la Réservation}
+
+\Hypertarget{_billet_details_8jsx_a66a53e42c69ca6e92f8c7dc78b679fbd}\index{BilletDetails.jsx@{BilletDetails.jsx}!styles@{styles}}
+\index{styles@{styles}!BilletDetails.jsx@{BilletDetails.jsx}}
+\doxysubsubsection{\texorpdfstring{styles}{styles}}
+{\footnotesize\ttfamily \label{_billet_details_8jsx_a66a53e42c69ca6e92f8c7dc78b679fbd} 
+const styles}
+
