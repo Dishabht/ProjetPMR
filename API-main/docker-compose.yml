@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   api:
     build: .
@@ -49,6 +50,20 @@ services:
     ports:
       - "6379:6379"
     command: ["redis-server", "--requirepass", "kaka"]
+    networks:
+      - pmove-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    depends_on:
+      - mysql
     networks:
       - pmove-network
 
