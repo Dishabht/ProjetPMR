@@ -45,7 +45,7 @@ const AddClient = (connexion, data, callback) => {
     password,
     contact_mail,
     contact_num,
-    note,
+    null,
   ];
 
   connexion.query(query, values, callback);

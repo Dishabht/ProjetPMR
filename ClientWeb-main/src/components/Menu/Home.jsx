@@ -1,42 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
-import Background from "../../images/backgroundhome.jpg";
-import Background2 from "../../images/Backgroundhome2.jpg";
-import Background3 from "../../images/Backroundhome3.jpg";
 import { Link } from "react-router-dom";
 import Bus from "../../images/Bus.svg";
 import Avion from "../../images/Avion.svg";
 import Taxi from "../../images/Taxi.svg";
-import BackHome2 from "../../images/BackHome2.png";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiYnNkOTQiLCJhIjoiY201eHhjdTQ3MDdnZzJscjMyOXo2ZzhleCJ9.7zhgCDOGDcLyat5VdJaLPQ';
 
 const Home = () => {
-  const images = [Background, Background2, Background3];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const mapContainerRef = useRef(null);
-  const [lng, setLng] = useState(2.3522); // Paris (par défaut)
-  const [lat, setLat] = useState(48.8566); // Paris (par défaut)
-  const [zoom, setZoom] = useState(10);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDirection(1);
-      setCurrentImageIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [images.length]);
 
   useEffect(() => {
     // Initialisation de la carte Mapbox
-      const map = new mapboxgl.Map({
+    if (!mapContainerRef.current) return;
+    
+    const lng = 2.3522; // Paris (par défaut)
+    const lat = 48.8566; // Paris (par défaut)
+    const zoom = 10;
+
+    const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/streets-v11", // Style de la carte
+      style: "mapbox://styles/mapbox/dark-v11", // Style sombre moderne
       center: [lng, lat],
       zoom: zoom,
     });
@@ -49,215 +34,264 @@ const Home = () => {
 
     // Cleanup lors de la destruction du composant
     return () => map.remove();
-  }, [lng, lat, zoom]);
+  }, []);
 
   return (
     <div className="relative overflow-hidden">
-      <AnimatePresence custom={direction} initial={false}>
-        <motion.img
-          key={currentImageIndex}
-          src={images[currentImageIndex]}
-          custom={direction}
-          variants={transitionImage}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          alt="Background"
-          className="absolute mt-8 w-full object-cover object-[center_70%] h-[600px]"
+      {/* Section Hero Moderne */}
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-bg via-bg-secondary to-bg-tertiary">
+        {/* Gradient de fond animé */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" />
+        
+        {/* Cercles de décoration flottants */}
+        <motion.div 
+          className="absolute w-96 h-96 bg-primary/20 rounded-full blur-3xl"
+          animate={{ y: [0, 30, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+          style={{ top: "-10%", right: "10%" }}
         />
-      </AnimatePresence>
-      <div className="absolute flex flex-col items-center text-left text-white top-60 lg:top-56 3xl:top-44 lg:right-8 right-10 3xl:right-28 lg:items-start">
-        <h1 className="font-raleway lg:text-[100px] text-[70px] font-bold mb-4 ">
-          Need us ?
-        </h1>
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          onHoverStart={(e) => {}}
-          onHoverEnd={(e) => {}}
+        <motion.div 
+          className="absolute w-96 h-96 bg-accent/20 rounded-full blur-3xl"
+          animate={{ y: [0, -30, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+          style={{ bottom: "-10%", left: "10%" }}
+        />
+
+        <motion.div 
+          className="relative z-10 text-center px-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          <Link
-            to="/reservation"
-            className="px-4 py-2 font-bold text-white rounded font-raleway color-blues-3"
+          <h1 className="font-raleway lg:text-7xl text-5xl font-bold mb-6 gradient-text">
+            Need us ?
+          </h1>
+          <p className="text-text-secondary text-xl mb-8 max-w-2xl mx-auto">
+            PMove supports you in all your travels across France and beyond!
+          </p>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Reservation
-          </Link>
+            <Link
+              to="/reservation"
+              className="btn-primary inline-block"
+            >
+              Start Your Journey
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
 
-      <motion.div
-        className="mt-160 " // Position initiale de votre section
-        whileInView={{
-          x: window.innerWidth >= 1024 ? 100 : 5, // Déplace l'élément de 100 pixels vers la droite lorsqu'il entre dans la vue
-          y: 0, // Pas de déplacement vertical
-          scale: 1, // Taille normale de l'élément
-          rotate: 0, // Pas de rotation
-        }}
-        initial={{ opacity: 0 }} // Démarre l'animation avec une opacité de 0 (invisible)
-        animate={{ opacity: 1 }} // Devient visible lorsque l'animation démarre
-        transition={{ duration: 1.5 }} // Durée de l'animation (1.5 secondes)
-        viewport={{ once: true, amount: 0.5 }} // Active l'animation lorsque 50% de l'élément est visible
-      >
-        <h1 className="font-raleway ml-2 text-blue lg:text-[75px] text-[43px] ">
-          Welcome Back!
-        </h1>
-        <p className="ml-2 font-semibold font-raleway lg:text-lg text-md">
-          PMove supports you in all your travels across France and beyond!
-        </p>
-      </motion.div>
-
-      <motion.div
-        className="flex flex-col mt-20 lg:flex-row lg:justify-around"
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        {/* Section Taxi */}
-        <motion.div className="text-center" variants={item}>
-          <motion.img
-            src={Taxi}
-            alt="Taxi Icon"
-            className="w-32 h-32 mx-auto"
-            whileHover={{
-              scale: 1.2,
-              rotate: 360,
-              transition: { duration: 1 },
-            }}
-            whileTap={{
-              scale: 1.2,
-              rotate: 360,
-              transition: { duration: 3 },
-            }}
-          />
-          <h3 className="mt-4 text-xl font-bold font-extrabold font-raleway text-blue">
-            Taxi
-          </h3>
-          <p className="w-64 mx-auto mt-8 font-bold text-gray-600 font-raleway">
-            Our taxi service is available 24/7 to meet all your transportation
-            needs, whether for a short ride or a long journey. Our professional
-            drivers ensure a comfortable and safe trip.
+      {/* Section Services */}
+      <div className="relative py-20 lg:py-32 space-content">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="font-raleway text-4xl lg:text-6xl font-bold text-center gradient-text mb-4">
+            Our Services
+          </h2>
+          <p className="text-center text-text-secondary text-lg max-w-2xl mx-auto mb-16">
+            Choose your preferred transportation mode and book your assistance easily
           </p>
         </motion.div>
-
-        {/* Section Public Transport */}
-        <motion.div className="mt-12 text-center lg:mt-1" variants={item}>
-          <motion.img
-            src={Bus}
-            alt="Bus Icon"
-            className="w-32 h-32 mx-auto"
-            whileHover={{
-              scale: 1.2,
-              rotate: 360,
-              transition: { duration: 1 },
-            }}
-            whileTap={{
-              scale: 0.8,
-              rotate: 360,
-              transition: { duration: 3 },
-            }}
-          />
-          <h3 className="mt-4 text-xl font-bold font-extrabold font-raleway text-blue">
-            Public Transport
-          </h3>
-          <p className="w-64 mx-auto mt-8 font-bold text-gray-600 font-raleway">
-            With our public transport service, you can travel all around the
-            city effortlessly. Our buses and trains are modern, comfortable, and
-            punctual, ensuring you reach your destination on time.
-          </p>
-        </motion.div>
-
-        {/* Section Airplane */}
-        <motion.div className="mt-12 text-center lg:mt-1" variants={item}>
-          <motion.img
-            src={Avion}
-            alt="Avion Icon"
-            className="w-32 h-32 mx-auto"
-            whileHover={{
-              scale: 1.2,
-              rotate: 360,
-              transition: { duration: 1 },
-            }}
-            whileTap={{
-              scale: 1.2,
-              rotate: 360,
-              transition: { duration: 3 },
-            }}
-          />
-          <h3 className="mt-4 text-xl font-bold font-extrabold font-raleway text-blue">
-            Airplane
-          </h3>
-          <p className="w-64 mx-auto mt-8 font-bold text-gray-600 font-raleway">
-            Our airplane travel services offer hassle-free journeys with regular
-            flights and competitive rates. Enjoy a pleasant flying experience
-            with spacious seating and quality services.
-          </p>
-        </motion.div>
-      </motion.div>
-
-    {/* Carte interactive */}
-    <div className="relative z-10">
-        <h1 className="font-raleway text-blue lg:text-[45px] text-[25px] mt-32 lg:ml-12 ml-4">
-          You had no idea which path to take?
-        </h1>
-        <div className="mt-6 lg:mt-12 w-11/12 h-[400px] mx-auto lg:ml-12 rounded-lg overflow-hidden shadow-lg">
-          <div ref={mapContainerRef} className="w-full h-full" />
-        </div>
-      </div>
-
-      <motion.div
-        className="flex items-center justify-center"
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 1 }} // Active l'animation lors du scroll
-      >
-        <motion.img
-          src={BackHome2}
-          alt="Brainstorming_image"
-          className="absolute w-full opacity-75 mt-72 lg:opacity-100 lg:relative lg:mt-24 lg:-ml-20 lg:w-1/2 lg:h-auto"
-          variants={item}
-          whileHover={{ scale: 1.2 }}
-          transition={{ duration: 1 }}
-          whileTap={{
-            scale: 0.9,
-            rotate: -10,
-            borderRadius: "20%",
-          }}
-        />
 
         <motion.div
-          className="flex flex-col items-center"
-          variants={item}
-          whileHover={{ scale: 1.2 }}
-          transition={{ duration: 1 }}
+          className="grid-auto"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
         >
-          <h2 className="text-center text-[75px] mt-24 font-raleway font-semibold text-blue">
-            Our solution
-          </h2>
-
-          <div className="flex items-center justify-center">
-            <p className="mt-8 text-[23px] max-w-[450px] leading-relaxed font-raleway text-gray-600 text-center">
-              Our solution is designed to make your travels simpler and your
-              journeys more enjoyable. Whether you are traveling for work or
-              leisure, we offer a range of services tailored to your needs. With
-              our intuitive platform, you can easily plan, book, and track your
-              trips, whether it's by taxi, public transport, or airplane.
+          {/* Card Taxi */}
+          <motion.div 
+            className="card-modern group"
+            variants={item}
+            whileHover={{ y: -5 }}
+          >
+            <div className="flex justify-center mb-6">
+              <motion.img
+                src={Taxi}
+                alt="Taxi Icon"
+                className="w-20 h-20"
+                whileHover={{ scale: 1.2, rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-primary text-center mb-4">
+              Taxi
+            </h3>
+            <p className="text-text-secondary text-center leading-relaxed">
+              Our taxi service is available 24/7 to meet all your transportation needs. Professional drivers ensure a comfortable and safe trip.
             </p>
-          </div>
+          </motion.div>
+
+          {/* Card Bus */}
+          <motion.div 
+            className="card-modern group"
+            variants={item}
+            whileHover={{ y: -5 }}
+          >
+            <div className="flex justify-center mb-6">
+              <motion.img
+                src={Bus}
+                alt="Bus Icon"
+                className="w-20 h-20"
+                whileHover={{ scale: 1.2, rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-primary text-center mb-4">
+              Public Transport
+            </h3>
+            <p className="text-text-secondary text-center leading-relaxed">
+              Modern, comfortable, and punctual buses and trains. Travel around the city effortlessly and reach your destination on time.
+            </p>
+          </motion.div>
+
+          {/* Card Airplane */}
+          <motion.div 
+            className="card-modern group"
+            variants={item}
+            whileHover={{ y: -5 }}
+          >
+            <div className="flex justify-center mb-6">
+              <motion.img
+                src={Avion}
+                alt="Airplane Icon"
+                className="w-20 h-20"
+                whileHover={{ scale: 1.2, rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-primary text-center mb-4">
+              Airplane
+            </h3>
+            <p className="text-text-secondary text-center leading-relaxed">
+              Hassle-free journeys with regular flights and competitive rates. Enjoy a pleasant flying experience with quality services.
+            </p>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
+
+      {/* Section Pourquoi PMove */}
+      <div className="relative py-20 lg:py-32 space-content bg-gradient-to-r from-bg-secondary to-bg-tertiary">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto"
+        >
+          <h2 className="font-raleway text-4xl lg:text-6xl font-bold text-center gradient-text mb-8">
+            Why Choose PMove?
+          </h2>
+          <p className="text-center text-text-secondary text-lg leading-relaxed">
+            Our solution is designed to make your travels simpler and your journeys more enjoyable. Whether you are traveling for work or leisure, we offer a range of services tailored to your needs. With our intuitive platform, you can easily plan, book, and track your trips across all transportation modes.
+          </p>
+        </motion.div>
+
+        {/* Features Grid */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {[
+            { icon: "🛡️", title: "Safe & Secure", desc: "Your safety is our priority" },
+            { icon: "⚡", title: "Fast Booking", desc: "Reserve in seconds" },
+            { icon: "🌍", title: "Multimodal", desc: "All transport modes in one app" }
+          ].map((feature, idx) => (
+            <motion.div 
+              key={idx}
+              className="card-modern text-center"
+              variants={item}
+            >
+              <div className="text-4xl mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-bold text-primary mb-2">{feature.title}</h3>
+              <p className="text-text-secondary">{feature.desc}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Carte interactive */}
+      <div className="relative py-20 lg:py-32 space-content">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="font-raleway text-4xl lg:text-6xl font-bold text-center gradient-text mb-4">
+            Find Your Route
+          </h2>
+          <p className="text-center text-text-secondary text-lg mb-12">
+            Explore available transportation options in your area
+          </p>
+        </motion.div>
+
+        <motion.div 
+          className="w-full h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-lg border border-border"
+          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <div ref={mapContainerRef} className="w-full h-full" />
+        </motion.div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="relative py-20 lg:py-32 space-content bg-gradient-to-r from-primary/10 via-transparent to-accent/10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center max-w-2xl mx-auto"
+        >
+          <h2 className="font-raleway text-4xl lg:text-5xl font-bold mb-6 gradient-text">
+            Ready to Travel?
+          </h2>
+          <p className="text-text-secondary text-lg mb-8">
+            Join thousands of travelers who trust PMove for their multimodal journeys
+          </p>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link
+              to="/reservation"
+              className="btn-primary inline-block mr-4"
+            >
+              Book Now
+            </Link>
+            <Link
+              to="/help"
+              className="btn-secondary inline-block"
+            >
+              Learn More
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };
 
 const container = {
-  hidden: { opacity: 1, scale: 0 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
-    scale: 1,
     transition: {
-      delayChildren: 0.5,
-      staggerChildren: 0.3,
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
     },
   },
 };
@@ -267,27 +301,10 @@ const item = {
   visible: {
     y: 0,
     opacity: 1,
+    transition: {
+      duration: 0.6,
+    },
   },
-};
-
-const transitionImage = {
-  enter: (direction) => ({
-    x: direction > 0 ? "100%" : "-100%",
-    y: 0,
-    top: "0%",
-  }),
-  center: {
-    x: 0,
-    y: 0,
-    top: "0%",
-
-    transition: { duration: 0.5, ease: "easeInOut" },
-  },
-  exit: (direction) => ({
-    x: direction < 0 ? "100%" : "-100%", // L'image sort vers la gauche ou la droite
-    top: "0%",
-    transition: { duration: 0.5, ease: "easeInOut" },
-  }),
 };
 
 export default Home;
