@@ -25,25 +25,30 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3000/users/userAdd", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        alert("Client ajouté avec succès");
-      } else {
-        alert(`Erreur: ${result.error}`);
-      }
-    } catch (error) {
-      alert("Erreur lors de l'envoi des données");
+  e.preventDefault();
+  console.log("Données envoyées:", formData); // Debug
+  try {
+    const response = await fetch("http://localhost:3000/users/userAdd", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    const result = await response.json();
+    console.log("Réponse reçue:", result); // Debug
+    if (response.ok) {
+      alert("Client ajouté avec succès");
+      window.location.href = "/login"; // Redirection vers la page de connexion
+    } else {
+      alert(`Erreur: ${result.error || result.errormessage}`);
+      console.error("Détails de l'erreur:", result); // Debug
     }
-  };
+  } catch (error) {
+    console.error("Erreur catch:", error); // Debug
+    alert("Erreur lors de l'envoi des données: " + error.message);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-bg via-bg-secondary to-bg-tertiary py-12 px-4">

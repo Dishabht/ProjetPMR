@@ -30,6 +30,9 @@ const AddClient = (connexion, data, callback) => {
     note,
   } = data;
 
+  const cleanNum = num ? parseInt(num.toString().replace(/\s/g, '')) : null;
+  const cleanContactNum = contact_num ? parseInt(contact_num.toString().replace(/\s/g, '')) : null;
+
   const query = `
     INSERT INTO client (name, surname, num, mail, handicap, civilite, birth, password, contact_mail, contact_num, note)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -37,15 +40,15 @@ const AddClient = (connexion, data, callback) => {
   const values = [
     name,
     surname,
-    num,
+    cleanNum,
     mail,
     handicap,
     civilite,
     birth,
     password,
     contact_mail,
-    contact_num,
-    null,
+    cleanContactNum,
+    note || null,
   ];
 
   connexion.query(query, values, callback);
