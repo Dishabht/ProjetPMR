@@ -1,23 +1,18 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import Logo from "../../images/logo/PMoveLogoSANSTITRE.png";
-import Intersect from "../../images/Intersect.svg";
 import { UserContext } from "../../UserContext";
 import { logout } from "../../api/api";
 
 const Navbars = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext); // Utilisation du contexte
+  const { user, setUser } = useContext(UserContext);
 
   const handleLogout = async () => {
     try {
       await logout();
-      setUser(null); // Réinitialisation du contexte utilisateur
-      alert("Déconnexion réussie !");
-      navigate("/login"); // Redirection vers la page de connexion
+      setUser(null);
+      navigate("/login");
     } catch (err) {
       console.error(err);
       alert("Erreur lors de la déconnexion.");
@@ -25,94 +20,72 @@ const Navbars = () => {
   };
 
   return (
-    <div className="relative">
-      <div className="flex">
-        <div className="font-raleway text-sm font-bold color-blues-2 ml-[76%] mt-2">
-          {user ? (
-            <div className="flex items-center">
-              <Link
-                to="/profile"
-                className="mr-4 hover:underline color-blues-2 font-bold"
-              >
-                Bienvenue, {user.name}
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="hover:underline text-red-600 font-bold"
-              >
-                Déconnexion
-              </button>
-            </div>
-          ) : (
-            <>
-              <Link to="/login" className="hover:underline mr-2">
-                Login
-              </Link>
-              <span className="right-0">|</span>
-              <Link to="/signup" className="right-0 hover:underline ml-2">
-                Sign up
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
+    <header className="w-full sticky top-0 z-50 bg-gradient-to-r from-bg-secondary/60 via-bg-tertiary/60 to-bg-secondary/60 backdrop-blur-2xl border-b border-border/40">
+      <nav className="max-w-6xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between gap-6">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+          <img src={Logo} alt="PMove" className="h-10 w-auto" />
+          <span className="text-xl font-bold text-primary hidden sm:inline">
+            PMove
+          </span>
+        </Link>
 
-      {/* Navbar principale */}
-      <div className="mt-2 font-raleway color-blues h-24 w-[78%] p-2 relative flex items-center justify-center ">
-        <div className="absolute -right-12">
-          <img src={Intersect} alt="Intersect" className="mt-22 h-24" />
-        </div>
-
-        <Navbar
-          expand="lg"
-          className="text-white w-11/12 flex items-center justify-between"
-        >
-          <Container fluid className="flex items-center justify-between">
-            <Navbar.Brand href="/#">
-              <img src={Logo} alt="Logo" className="ml-16 w-1/2 mt-2" />
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="navbarScroll" />
-            <Navbar.Collapse
-              id="navbarScroll"
-              className="flex items-center justify-between w-full"
+        {/* Menu central */}
+        <div className="hidden lg:flex items-center gap-1">
+          {[
+            { to: "/", label: "Accueil" },
+            { to: "/itinerary", label: "Trajet" },
+            { to: "/prereservation", label: "Réservation" },
+            { to: "/contact", label: "Contact" },
+            { to: "/help", label: "Aide" },
+          ].map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="px-4 py-2 text-text font-medium text-sm hover:text-primary hover:bg-white/5 rounded-lg transition-all duration-300"
             >
-              <Nav className=" flex items-center lg:space-x-12 xl:space-x-20 3xl:space-x-36 ">
-                <Link
-                  to="/"
-                  className="font-raleway !font-semibold text-white !text-xl hover:text-gray-400 nav-link"
-                >
-                  Home
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        {/* Droite : Auth + Actions */}
+        <div className="flex items-center gap-4 ml-auto">
+          <div className="hidden md:flex items-center gap-3 text-sm">
+            {user ? (
+              <>
+                <Link to="/profile" className="text-text hover:text-primary transition-smooth font-medium">
+                  {user.name}
                 </Link>
-                <Link
-                  to="/itinerary"
-                  className="font-raleway !font-semibold text-white !text-xl hover:text-gray-400 nav-link"
+                <button
+                  onClick={handleLogout}
+                  className="text-text-secondary hover:text-primary transition-smooth"
                 >
-                  Itinerary
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-text hover:text-primary transition-smooth font-medium">
+                  Connexion
                 </Link>
-                <Link
-                  to="/prereservation"
-                  className="font-raleway !font-semibold text-white !text-xl hover:text-gray-400 nav-link"
-                >
-                  Reservation
+                <Link to="/signup" className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-all duration-300">
+                  S'inscrire
                 </Link>
-                <Link
-                  to="/contact"
-                  className="font-raleway !font-semibold text-white !text-xl hover:text-gray-400 nav-link"
-                >
-                  Contact
-                </Link>
-                <Link
-                  to="/help"
-                  className="font-raleway !font-semibold text-white !text-xl hover:text-gray-400 nav-link"
-                >
-                  Help
-                </Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-      </div>
-    </div>
+              </>
+            )}
+          </div>
+
+          {/* Mobile CTA */}
+          <Link
+            to="/prereservation"
+            className="md:hidden px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium text-sm transition-all duration-300"
+          >
+            Réserver
+          </Link>
+        </div>
+      </nav>
+    </header>
   );
 };
 

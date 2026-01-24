@@ -7,33 +7,22 @@
 
 /* ===== VARIABLES CSS MODERNES ===== */
 :root {
-  /* Couleurs primaires - Bleu moderne et accessible */
   --color-primary: #0066ff;
   --color-primary-dark: #0052cc;
   --color-primary-light: #3385ff;
-  
-  /* Couleurs pour l'accessibilité PMR */
   --color-accent: #00d9ff;
   --color-accent-secondary: #ff6b35;
   --color-warning: #ffa500;
   --color-success: #22c55e;
-  
-  /* Palette sombre moderne */
   --color-bg: #0a0e27;
   --color-bg-secondary: #151b3a;
   --color-bg-tertiary: #1f2643;
   --color-card: #1a1f3a;
-  
-  /* Texte et contrastes */
   --color-text: #f5f7fb;
-  --color-text-secondary: #c7d2e8;
+  --color-text-secondary: #d6def4;
   --color-text-muted: #8892b0;
-  
-  /* Bordures et séparations */
   --color-border: #2d3454;
   --color-border-light: #3d4563;
-  
-  /* Shadows modernes */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2);
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.3);
@@ -62,7 +51,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Scrollbar moderne */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -84,44 +72,35 @@ body {
 
 /* ===== COMPOSANTS TAILWIND PERSONNALISÉS ===== */
 @layer components {
-  
-  /* Cartes modernes avec glassmorphism */
   .card-modern {
     @apply bg-card backdrop-blur-xl border border-border rounded-2xl p-6 shadow-md transition-all duration-300;
   }
-  
   .card-modern:hover {
     @apply shadow-lg border-primary;
   }
-  
-  /* Boutons modernes */
+
   .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-primary to-primary-light text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95;
+    @apply px-5 py-3 bg-gradient-to-r from-primary to-primary-light text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95;
   }
-  
   .btn-secondary {
-    @apply px-6 py-3 bg-card border border-border text-text font-semibold rounded-xl transition-all duration-300 hover:border-primary hover:bg-bg-tertiary;
+    @apply px-5 py-3 bg-card border border-border text-text font-semibold rounded-xl transition-all duration-300 hover:border-primary hover:bg-bg-tertiary;
   }
-  
   .btn-outline {
     @apply px-6 py-3 border-2 border-primary text-primary rounded-xl font-semibold transition-all duration-300 hover:bg-primary hover:text-white;
   }
-  
-  /* Entrées formulaires modernes */
+
   .input-modern {
     @apply w-full px-4 py-3 bg-bg-tertiary border border-border rounded-xl text-text placeholder-text-muted focus:outline-none focus:border-primary focus:shadow-glow transition-all duration-300;
   }
-  
-  /* Badge et tags modernes */
+
   .badge-modern {
     @apply inline-flex items-center px-3 py-1 bg-gradient-to-r from-primary to-accent rounded-full text-sm font-semibold text-white;
   }
-  
-  /* Section hero moderne */
+
   .hero-section {
     @apply relative min-h-screen flex items-center justify-center overflow-hidden;
   }
-  
+
   .hero-gradient {
     @apply absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 pointer-events-none;
   }
@@ -129,104 +108,81 @@ body {
 
 /* ===== UTILITAIRES PERSONNALISÉES ===== */
 @layer utilities {
-  
-  /* Couleurs - maintient la compatibilité avec l'ancien code */
   .color-blues {
     @apply bg-gradient-to-r from-primary to-primary-light;
   }
-  
   .color-blues-3 {
     @apply bg-primary;
   }
-  
   .color-blues-2 {
     @apply text-primary;
   }
-  
   .text-blue {
     @apply text-primary;
   }
-  
-  /* Typographie */
+
   .font-raleway {
     font-family: "Raleway", sans-serif;
   }
-  
+
   .text-heading-1 {
     @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-text;
   }
-  
   .text-heading-2 {
     @apply text-3xl md:text-4xl font-bold text-text;
   }
-  
   .text-heading-3 {
     @apply text-2xl md:text-3xl font-semibold text-text;
   }
-  
   .text-subheading {
     @apply text-lg md:text-xl text-text-secondary;
   }
-  
   .text-body {
     @apply text-base md:text-lg text-text;
   }
-  
-  /* Effets visuels modernes */
+
   .gradient-text {
     @apply bg-gradient-to-r from-primary via-accent to-primary-light bg-clip-text text-transparent;
   }
-  
   .glow-effect {
     @apply drop-shadow-[0_0_30px_rgba(0,102,255,0.3)];
   }
-  
   .glow-accent {
     @apply drop-shadow-[0_0_20px_rgba(0,217,255,0.2)];
   }
-  
-  /* Flexbox et alignements utiles */
+
   .flex-center {
     @apply flex items-center justify-center;
   }
-  
   .flex-between {
     @apply flex items-center justify-between;
   }
-  
   .flex-col-center {
     @apply flex flex-col items-center justify-center;
   }
-  
-  /* Transitions fluides */
+
   .transition-smooth {
     @apply transition-all duration-300 ease-in-out;
   }
-  
   .transition-slow {
     @apply transition-all duration-500 ease-in-out;
   }
-  
-  /* Backdropfilter pour glassmorphism */
+
   .glass {
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
   }
-  
-  /* Accessibilité - Focus visible amélioré */
+
   .focus-visible-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
   }
-  
-  /* Grille moderne */
+
   .grid-auto {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
-  
   .grid-auto-2 {
     @apply grid grid-cols-1 md:grid-cols-2 gap-6;
   }
-  
-  /* Espacement adaptatif */
+
   .space-content {
     @apply px-4 md:px-6 lg:px-8 py-6 md:py-8 lg:py-12;
   }
@@ -234,114 +190,43 @@ body {
 
 /* ===== ANIMATIONS PERSONNALISÉES ===== */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
 }
-
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 102, 255, 0.15);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(0, 102, 255, 0.3);
-  }
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 102, 255, 0.15); }
+  50% { box-shadow: 0 0 30px rgba(0, 102, 255, 0.3); }
 }
-
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
-
-.animate-fadeInUp {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.animate-slideInLeft {
-  animation: slideInLeft 0.6s ease-out;
-}
-
-.animate-slideInRight {
-  animation: slideInRight 0.6s ease-out;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
+.animate-fadeInUp { animation: fadeInUp 0.6s ease-out; }
+.animate-slideInLeft { animation: slideInLeft 0.6s ease-out; }
+.animate-slideInRight { animation: slideInRight 0.6s ease-out; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
 
 /* ===== RESPONSIVITÉ ===== */
 @media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-  
-  .text-heading-1 {
-    @apply text-3xl;
-  }
-  
-  .text-heading-2 {
-    @apply text-2xl;
-  }
+  body { font-size: 14px; }
+  .text-heading-1 { @apply text-3xl; }
+  .text-heading-2 { @apply text-2xl; }
 }
 
 /* ===== UTILITAIRES SPÉCIFIQUES PMR ===== */
 @layer utilities {
-  
-  /* Accessibilité améliorée pour PMR */
-  .pmr-accessible {
-    @apply text-lg font-semibold leading-relaxed;
-  }
-  
-  /* Boutons d'accessibilité agrandis */
-  .pmr-btn {
-    @apply px-6 py-4 text-base md:text-lg font-semibold rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
-  }
-  
-  .pmr-btn-primary {
-    @apply pmr-btn bg-gradient-to-r from-primary to-primary-light text-white hover:shadow-lg;
-  }
-  
-  .pmr-btn-secondary {
-    @apply pmr-btn bg-card border border-border text-text hover:border-primary;
-  }
-  
-  /* Icons avec meilleur contraste */
-  .icon-accessible {
-    @apply text-xl md:text-2xl;
-  }
+  .pmr-accessible { @apply text-lg font-semibold leading-relaxed; }
+  .pmr-btn { @apply px-6 py-4 text-base md:text-lg font-semibold rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2; }
+  .pmr-btn-primary { @apply pmr-btn bg-gradient-to-r from-primary to-primary-light text-white hover:shadow-lg; }
+  .pmr-btn-secondary { @apply pmr-btn bg-card border border-border text-text hover:border-primary; }
+  .icon-accessible { @apply text-xl md:text-2xl; }
 }

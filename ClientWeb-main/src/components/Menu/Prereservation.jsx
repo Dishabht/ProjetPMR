@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { checkReservation } from "../../api/api"; // Import de la fonction depuis votre api.js
-import { useNavigate } from "react-router-dom"; // Import pour la navigation
-import Back from "../../images/BackReser.png";
+import { checkReservation } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 export default function Prereservation() {
   const navigate = useNavigate();
@@ -35,7 +34,7 @@ export default function Prereservation() {
 
       if (response.reservation) {
         setMessage({ text: "Réservation trouvée !", type: "success" });
-        setBillet(response.reservation); // Stocke les informations du billet
+        setBillet(response.reservation);
       } else {
         setMessage({
           text: "Aucune réservation correspondante n'a été trouvée.",
@@ -54,67 +53,95 @@ export default function Prereservation() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex items-center justify-between">
-      <div className="w-7/12">
-        <h1 className="text-4xl font-bold text-blue text-center mb-6">
-          Retrouve ton billet !
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-bg via-bg-secondary to-bg-tertiary p-8 flex items-center justify-center">
+      <div className="max-w-2xl w-full">
+        <div className="bg-card border border-border rounded-2xl shadow-xl p-8">
+          <h1 className="text-4xl font-bold text-text text-center mb-8">
+            Retrouve ton billet !
+          </h1>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-6">
-          {transportOptions.map((option) => (
-            <button
-              key={option}
-              className={`px-6 py-3 rounded-lg text-lg font-medium ${
-                selectedTransport === option
-                  ? "color-blues text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-              onClick={() => handleTransportSelect(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder="Numéro de réservation"
-            value={numReservation}
-            onChange={(e) => setNumReservation(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg text-lg"
-          />
-        </div>
-
-        <button
-          onClick={handleCheckReservation}
-          className="w-full color-blues text-white py-3 rounded-lg text-lg font-bold mb-6"
-          disabled={loading}
-        >
-          {loading ? "Vérification en cours..." : "Vérifier la réservation"}
-        </button>
-
-        {billet && (
-          <div className="bg-gradient-to-r from-blue-200 to-blue-400 text-white rounded-lg shadow-md p-6 max-w-lg">
-            <div className="flex justify-between items-center mb-4">
-              <div className="text-lg font-semibold">
-                <p>De {billet.lieu_depart || "Non disponible"}</p>
-                <p>à {billet.lieu_arrivee || "Non disponible"}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-4xl font-bold">
-                  {billet.heure_depart
-                    ? new Date(billet.heure_depart).toLocaleTimeString()
-                    : "Non disponible"}
-                </p>
-                <p className="text-4xl font-bold mt-2">
-                  {billet.heure_arrivee
-                    ? new Date(billet.heure_arrivee).toLocaleTimeString()
-                    : "Non disponible"}
-                </p>
-              </div>
+          {/* Alert Messages */}
+          {message.text && (
+            <div className={`mb-6 p-4 rounded-lg ${
+              message.type === "success" 
+                ? "bg-green-500/10 border border-green-500/50 text-green-500" 
+                : "bg-red-500/10 border border-red-500/50 text-red-500"
+            }`}>
+              <p className="font-medium">{message.text}</p>
             </div>
-            <div className="flex gap-4 mt-6">
+          )}
+
+          {/* Transport Selection */}
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
+            {transportOptions.map((option) => (
+              <button
+                key={option}
+                className={`px-6 py-3 rounded-lg text-lg font-semibold transition-all ${
+                  selectedTransport === option
+                    ? "bg-gradient-to-r from-primary to-accent text-white shadow-lg"
+                    : "bg-bg-secondary border border-border text-text hover:bg-bg-tertiary"
+                }`}
+                onClick={() => handleTransportSelect(option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+
+          {/* Reservation Number Input */}
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Numéro de réservation"
+              value={numReservation}
+              onChange={(e) => setNumReservation(e.target.value)}
+              className="w-full px-4 py-3 bg-bg-secondary border border-border rounded-lg text-lg text-text focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all"
+            />
+          </div>
+
+          {/* Check Button */}
+          <button
+            onClick={handleCheckReservation}
+            className="w-full py-3 bg-gradient-to-r from-primary to-accent text-white rounded-lg text-lg font-bold hover:shadow-xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+            disabled={loading}
+          >
+            {loading ? "Vérification en cours..." : "Vérifier la réservation"}
+          </button>
+
+          {/* Billet Display */}
+          {billet && (
+            <div className="bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30 rounded-xl shadow-lg p-6">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Départ</p>
+                  <p className="text-text text-xl font-bold">
+                    {billet.lieu_depart || "Non disponible"}
+                  </p>
+                  <p className="text-primary text-3xl font-bold mt-2">
+                    {billet.heure_depart
+                      ? new Date(billet.heure_depart).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : "Non disponible"}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-text-secondary text-sm mb-1">Arrivée</p>
+                  <p className="text-text text-xl font-bold">
+                    {billet.lieu_arrivee || "Non disponible"}
+                  </p>
+                  <p className="text-accent text-3xl font-bold mt-2">
+                    {billet.heure_arrivee
+                      ? new Date(billet.heure_arrivee).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : "Non disponible"}
+                  </p>
+                </div>
+              </div>
+
               <button
                 onClick={() => {
                   console.log("Données envoyées à Reservation :", billet);
@@ -122,16 +149,13 @@ export default function Prereservation() {
                     state: { billet },
                   });
                 }}
-                className="w-1/2 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-bold"
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-3 rounded-lg text-lg font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl"
               >
-                Confirmer
+                Confirmer la réservation
               </button>
             </div>
-          </div>
-        )}
-      </div>
-      <div className="w-4/12">
-        <img src={Back} alt="Back" className="w-full h-auto" />
+          )}
+        </div>
       </div>
     </div>
   );

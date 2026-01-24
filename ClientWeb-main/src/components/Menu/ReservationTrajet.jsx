@@ -1,135 +1,136 @@
-import React from 'react'
-import BackgroundReservationTrajet from "../../images/reservationtrajet.jpg";
-import '../../assets/styles/ReservationTrajet.css';
+import React, { useState } from 'react';
+import { FaTrain, FaPlane, FaBus, FaTaxi } from 'react-icons/fa';
 
 const ReservationTrajet = () => {
-    return (
-<div className="relative w-full h-full">
-  <img
-    src={BackgroundReservationTrajet}
-    alt="Background"
-    className="absolute right-20 mt-6 w-1/2 object-cover h-auto"
-  />
-  <div className="absolute left-0 mt-6 ml-8 text-blue text-left flex flex-col items-start">
-    <h1 className="text-[95px] font-bold mb-4">
-      Need assistance ?
-      <br />
-      We're here !
-    </h1>
-  </div>
+  const [transportType, setTransportType] = useState('');
 
-  <div className="absolute top-80 left-8 mt-40 ml-8 text-black text-left flex flex-col items-start">
-    <h2 className="text-[45px] font-bold mb-4">
-     Route delivery
-    </h2>
-  </div>
-
-  <div>
-    <div className="absolute top-[200px] left-0 mt-96 ml-10 w-full justify-center">
-      <form className="bg-white px-8 pt-6 pb-8 mb-4 w-full">
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="transportType">
-            Select the type of transport required:
-          </label>
-          <div className="flex space-x-32">
-            <label className="inline-flex items-center">
-              <input type="radio" name="transportType" value="train" className="form-radio" />
-              <span className="ml-2">Train - RER - Subway</span>
-            </label>
-            <label className="inline-flex items-center">
-              <input type="radio" name="transportType" value="plane" className="form-radio" />
-              <span className="ml-2">Plane</span>
-            </label>
-            <label className="inline-flex items-center">
-              <input type="radio" name="transportType" value="tramway" className="form-radio" />
-              <span className="ml-2">Tramway</span>
-            </label>
-            <label className="inline-flex items-center">
-              <input type="radio" name="transportType" value="bus" className="form-radio" />
-              <span className="ml-2">Bus</span>
-            </label>
-            <label className="inline-flex items-center">
-              <input type="radio" name="transportType" value="taxi" className="form-radio" />
-              <span className="ml-2">Taxi</span>
-            </label>
-          </div>
-        </div>
-
-        <div className="flex w-full">
-          <div className="w-1/2">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="departureStation">
-                Departure station
-              </label>
-              <input
-                type="text"
-                id="departureStation"
-                name="departureStation"
-                className="shadow appearance-none border rounded w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="arrivalStation">
-                Arrival station
-              </label>
-              <input
-                type="text"
-                id="arrivalStation"
-                name="arrivalStation"
-                className="shadow appearance-none border rounded w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-bg via-bg-secondary to-bg-tertiary py-12 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="bg-card border border-border rounded-2xl shadow-xl p-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-5xl font-bold text-text mb-4">
+              Besoin d'assistance ?
+              <br />
+              Nous sommes là !
+            </h1>
+            <h2 className="text-3xl font-semibold text-text-secondary">
+              Réservation de trajet
+            </h2>
           </div>
 
-          <div className="w-1/2 ">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
-                Date
+          <form className="space-y-8">
+            {/* Type de transport */}
+            <div>
+              <label className="block text-lg font-bold text-text mb-4">
+                Sélectionnez le type de transport :
               </label>
-              <input
-                type="date"
-                id="date"
-                name="date"
-                className="shadow appearance-none border rounded w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {[
+                  { value: 'train', label: 'Train - RER - Métro', icon: <FaTrain /> },
+                  { value: 'plane', label: 'Avion', icon: <FaPlane /> },
+                  { value: 'tramway', label: 'Tramway', icon: <FaTrain /> },
+                  { value: 'bus', label: 'Bus', icon: <FaBus /> },
+                  { value: 'taxi', label: 'Taxi', icon: <FaTaxi /> },
+                ].map((transport) => (
+                  <label
+                    key={transport.value}
+                    className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all ${
+                      transportType === transport.value
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border bg-bg-secondary hover:bg-bg-tertiary'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="transportType"
+                      value={transport.value}
+                      checked={transportType === transport.value}
+                      onChange={(e) => setTransportType(e.target.value)}
+                      className="sr-only"
+                    />
+                    <div className={`text-3xl mb-2 ${transportType === transport.value ? 'text-primary' : 'text-text-secondary'}`}>
+                      {transport.icon}
+                    </div>
+                    <span className={`text-sm text-center font-medium ${transportType === transport.value ? 'text-primary' : 'text-text'}`}>
+                      {transport.label}
+                    </span>
+                  </label>
+                ))}
+              </div>
             </div>
 
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="discountCardNumber">
-                Discount Card Number
-              </label>
-              <input
-                type="text"
-                id="discountCardNumber"
-                name="discountCardNumber"
-                className="shadow appearance-none border rounded w-3/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-          </div>
-        </div>
+            {/* Stations et dates */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-text mb-2">
+                    Gare de départ
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-3 bg-bg-secondary border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-text transition-all"
+                    placeholder="Gare de Paris-Nord"
+                  />
+                </div>
 
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Reserve
-          </button>
+                <div>
+                  <label className="block text-sm font-bold text-text mb-2">
+                    Gare d'arrivée
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-3 bg-bg-secondary border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-text transition-all"
+                    placeholder="Gare de Lyon"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-text mb-2">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-3 bg-bg-secondary border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-text transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-text mb-2">
+                    Numéro de carte de réduction
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-3 bg-bg-secondary border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-text transition-all"
+                    placeholder="123456789"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+              <button
+                type="button"
+                className="px-8 py-3 bg-bg-secondary border border-border text-text font-bold rounded-lg hover:bg-bg-tertiary transition-all"
+              >
+                Réserver
+              </button>
+              <button
+                type="submit"
+                className="px-12 py-3 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              >
+                Continuer
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-      <div className="flex justify-center mt-6">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2.5 w-2/5 mb-3 rounded focus:outline-none focus:shadow-outline"
-        >
-        Continue
-        </button>
       </div>
     </div>
-  </div>
-</div>
-    )
-}
+  );
+};
 
 export default ReservationTrajet;
