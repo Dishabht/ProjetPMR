@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Platform } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -16,6 +16,11 @@ import {
   Raleway_800ExtraBold,
   Raleway_900Black,
 } from "@expo-google-fonts/raleway";
+
+const API_BASE = Platform.OS === 'android'
+  ? 'http://10.0.2.2:3000'
+  : 'http://localhost:3000';
+// Si téléphone physique: remplace par ton IPv4, ex: 'http://192.168.1.25:3000'
 
 export default function Login({ navigation, onLoginSuccess }) {
   const [name, setName] = useState(""); // Stocker le nom d'utilisateur
@@ -64,7 +69,7 @@ export default function Login({ navigation, onLoginSuccess }) {
     // Vérifiez les valeurs avant d'envoyer la requête
     console.log("Nom d'utilisateur : ", name);
     console.log("Mot de passe : ", password);
-    console.log("Connecting to: http://172.20.10.11:3000");
+    console.log("Connecting to:", API_BASE);
 
     try {
       if (!name || !password) {
@@ -72,33 +77,28 @@ export default function Login({ navigation, onLoginSuccess }) {
         return;
       }
 
-      const response = await axios.post('http://172.20.10.11:3000/ag/login', { name, password });
+      const response = await axios.post(`${API_BASE}/ag/login`, { name, password });
       console.log("Response from login:", response.data);
 
       if (response.status === 200) {
-        // Récupérer l'ID de l'agent
-        const agentIdResponse = await axios.get(`http://172.20.10.11:3000/ag/agentId/${name}`);
-        console.log("Agent ID response:", agentIdResponse.data)
+        const agentIdResponse = await axios.get(`${API_BASE}/ag/agentId/${name}`);
+        console.log("Agent ID response:", agentIdResponse.data);
 
         if (!agentIdResponse.data || agentIdResponse.data.length === 0) {
           throw new Error("Aucun ID d'agent trouvé dans la réponse de l'API.");
-        }  
+        }
 
-        const agentId = agentIdResponse.data[0].ID_Agent; // Extraire l'ID de l'agent
+        const agentId = agentIdResponse.data[0].ID_Agent;
         if (!agentId) {
           throw new Error("Propriété 'ID_Agent' manquante dans la réponse de l'API.");
         }
-        console.log("Agent ID response:", agentIdResponse.data);
 
-        // Extraire toutes les informations de l'agent
         const { surname, affiliation } = response.data.agent;
 
-        // Toujours enregistrer l'ID de l'agent
         await AsyncStorage.setItem('agentId', JSON.stringify({ agentId }));
-
-        // Enregistrer les infos de l'utilisateur dans AsyncStorage
         await AsyncStorage.setItem('user', JSON.stringify({ name, password, agentId, surname, affiliation }));
-        onLoginSuccess(); // Appeler la fonction de succès
+        
+        onLoginSuccess();
         navigation.replace("Home");
       }
     } catch (error) {

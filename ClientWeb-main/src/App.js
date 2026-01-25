@@ -17,6 +17,15 @@ import Contact from "./components/Menu/Contact";
 import Prereservation from "./components/Menu/Prereservation";
 import Profile from "./components/Menu/Profile";
 import Reservation2 from "./components/Menu/Reservation2";
+import Dashboard from "./components/Admin/Dashboard";
+import ImportPlanning from "./components/Admin/ImportPlanning";
+import MissionMatching from "./components/Admin/MissionMatching";
+import AgentBlocking from "./components/Admin/AgentBlocking";
+import SupervisionRealtime from "./components/Admin/SupervisionRealtime";
+import ZoneManagement from "./components/Admin/ZoneManagement";
+import AgentProfiles from "./components/Admin/AgentProfiles";
+import Coordination from "./components/Admin/Coordination";
+import SecurityGovernance from "./components/Admin/SecurityGovernance";
 
 const App = () => {
   return (
@@ -44,6 +53,15 @@ const App = () => {
             <Route path="/prereservation" element={<Prereservation />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/reservation2" element={<Reservation2 />} />
+            <Route path="/admin" element={<Dashboard />} />     
+            <Route path="/admin/import-planning" element={<ImportPlanning />} />
+            <Route path="/admin/mission-matching" element={<MissionMatching />} />
+            <Route path="/admin/agent-blocking" element={<AgentBlocking />} />
+            <Route path="/admin/supervision" element={<SupervisionRealtime />} />
+            <Route path="/admin/zones" element={<ZoneManagement />} />
+            <Route path="/admin/agents" element={<AgentProfiles />} />
+            <Route path="/admin/coordination" element={<Coordination />} />
+            <Route path="/admin/security" element={<SecurityGovernance />} />
           </Routes>
           <Footer />
         </Router>

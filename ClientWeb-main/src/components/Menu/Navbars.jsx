@@ -38,6 +38,7 @@ const Navbars = () => {
             { to: "/prereservation", label: "Réservation" },
             { to: "/contact", label: "Contact" },
             { to: "/help", label: "Aide" },
+            { to: "/admin", label: "Admin" },
           ].map((item) => (
             <Link
               key={item.to}

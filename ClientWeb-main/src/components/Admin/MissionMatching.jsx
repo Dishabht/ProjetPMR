@@ -57,12 +57,12 @@ const MissionMatching = () => {
                 <div key={idx}>
                   <div className="flex justify-between mb-2">
                     <span className="text-text">{criterion.label}</span>
-                    <span className="text-primary font-bold">{weight}%</span>
+                    <span className="text-primary font-bold">{criterion.weight}%</span>
                   </div>
                   <div className="w-full h-2 bg-border rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-primary to-accent"
-                      style={{ width: `${weight}%` }}
+                      style={{ width: `${criterion.weight}%` }}
                     />
                   </div>
                 </div>
