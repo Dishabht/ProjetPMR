@@ -67,29 +67,43 @@ router.get("/", (req, res) => {
  */
 router.post("/login", async (req, res) => {
     console.log("Login request received:", req.body);
-    const { name, password } = req.body; // On récupère le nom et le mot de passe de l'agent
+    const { name, password } = req.body;
 
     try {
-        // On vérifie si l'agent existe
+        console.log("Attempting to get agent by name:", name);
         const rows = await getAgentByName(req.connexion, name);
+        console.log("Rows returned:", rows);
+        
         if (rows.length === 0) {
             console.log("Agent not found");
-            return res.status(401).json({ message: "Nom ou mot de passe invalide" }); // On renvoie une erreur si l'agent n'existe pas
+            return res.status(401).json({ message: "Nom ou mot de passe invalide" });
         }
 
         const agent = rows[0];
         console.log("Agent found:", agent);
+        console.log("Agent password stored:", agent.password);
+        console.log("Password provided:", password);
 
-        const isPasswordValid = comparePassword(password, agent.password); // On compare le mot de passe fourni avec le mot de passe de l'agent
-        if (!isPasswordValid) { // Si le mot de passe est invalide
+        const isPasswordValid = comparePassword(password, agent.password);
+        console.log("Password valid:", isPasswordValid);
+        
+        if (!isPasswordValid) {
             console.log("Invalid password");
             return res.status(401).json({ message: "Nom ou mot de passe invalide" });
         }
 
-        res.status(200).json({ message: "Login successful" });
+        console.log("Login successful, returning response");
+        res.status(200).json({ 
+            message: "Login successful",
+            agent: {
+                surname: agent.surname || "",
+                affiliation: agent.affiliation || ""
+            }
+        });
     } catch (error) {
         console.error('Error during login:', error);
-        res.status(500).json({ message: "Internal server error" });
+        console.error('Error stack:', error.stack);
+        res.status(500).json({ message: "Internal server error", error: error.message });
     }
 });
 

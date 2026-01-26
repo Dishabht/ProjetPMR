@@ -1,15 +1,18 @@
 const connexion = require("../../config/config");
 
-
 const getAgentByName = async (connexion, name) => {
-    try {
-        // Récupérer les informations d'un agent par son nom
-        const [rows] = await connexion.promise().execute('SELECT * FROM Agent WHERE name = ?', [name]);
-        return rows;
-    } catch (error) {
-        console.error('Error fetching agent by name:', error);
-        throw error;
-    }
+    return new Promise((resolve, reject) => {
+        const query = "SELECT * FROM agent WHERE name = ?";
+        connexion.query(query, [name], (err, results) => {
+            if (err) {
+                console.error('Error fetching agent by name:', err);
+                reject(err);
+            } else {
+                console.log('Agent results:', results);
+                resolve(results);
+            }
+        });
+    });
 };
 
 const comparePassword = (inputPassword, storedPassword) => {
@@ -17,7 +20,7 @@ const comparePassword = (inputPassword, storedPassword) => {
 };
 
 const GetIdAgentByName = (connexion, name, callback) => {
-    const query = "SELECT ID_Agent FROM Agent WHERE name = ?";
+    const query = "SELECT ID_Agent FROM agent WHERE name = ?";
     connexion.query(query, [name], (err, results) => {
         if (err) {
             console.error('Error fetching agent ID by name:', err);

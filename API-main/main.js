@@ -4,24 +4,28 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const mongoose = require("mongoose");
 const cors = require("cors"); // Import du middleware CORS
-require("dotenv").config(); // Charge les variables d'environnement depuis .env;
+require("dotenv").config(); // Charge les variables d'environnement depuis .env
 const { createClient } = require("redis");
+
 const app = express();
 const port = 3000;
 
+// CORS permissif pour le dev
 app.use(
   cors({
-    origin: "http://localhost:3001", // Autorise uniquement votre frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Méthodes HTTP autorisées
-    credentials: true, // Si vous utilisez des cookies ou des headers d'autorisation
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: false,
   })
 );
 
-// Middleware pour parser le corps des requêtes HTTP
+// Parser JSON
 app.use(express.json());
 
+// Logger des requêtes
 app.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  console.log(`REQUEST: ${req.method} ${req.path}`);
+  console.log("Body:", req.body);
   next();
 });
 
@@ -42,37 +46,31 @@ db.connect((err) => {
   }
 });
 
-// Middleware pour ajouter la connexion MySQL à chaque requête
+// Injecter la connexion MySQL dans req
 app.use((req, res, next) => {
-  req.connexion = db; // Ajout de la connexion MySQL dans l'objet `req`
+  req.connexion = db;
   next();
 });
 
-// Connexion à MongoDB RATP
+// Connexions MongoDB
 const mongoRATP = mongoose.createConnection(process.env.MONGO_URI_RATP, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Connexion à MongoDB SNCF
 const mongoSNCF = mongoose.createConnection(process.env.MONGO_URI_SNCF, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Connexion à MongoDB SNCF
-const mongoAirFrance = mongoose.createConnection(
-  process.env.MONGO_URI_AIRFRANCE,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+const mongoAirFrance = mongoose.createConnection(process.env.MONGO_URI_AIRFRANCE, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 mongoRATP.on("connected", () => {
   console.log("Connecté à MongoDB (RATP)");
 });
-
 mongoRATP.on("error", (err) => {
   console.error("Erreur de connexion à MongoDB (RATP) :", err);
 });
@@ -80,7 +78,6 @@ mongoRATP.on("error", (err) => {
 mongoSNCF.on("connected", () => {
   console.log("Connecté à MongoDB (SNCF)");
 });
-
 mongoSNCF.on("error", (err) => {
   console.error("Erreur de connexion à MongoDB (SNCF) :", err);
 });
@@ -88,12 +85,11 @@ mongoSNCF.on("error", (err) => {
 mongoAirFrance.on("connected", () => {
   console.log("Connecté à MongoDB (AirFrance)");
 });
-
 mongoAirFrance.on("error", (err) => {
   console.error("Erreur de connexion à MongoDB (AirFrance) :", err);
 });
 
-// Middleware pour injecter les connexions MongoDB dans chaque requête
+// Injecter les connexions MongoDB dans req
 app.use((req, res, next) => {
   req.mongoRATP = mongoRATP;
   req.mongoSNCF = mongoSNCF;
@@ -101,25 +97,24 @@ app.use((req, res, next) => {
   next();
 });
 
-// Configuration de la connexion à la base de données MySQL
-
-// Configuration Redis
+// Redis (optionnel, ne bloque pas le serveur)
 const redisClient = createClient({
-  url: `redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  url: `redis://:${process.env.REDIS_PASSWORD || ""}@${process.env.REDIS_HOST || "localhost"}:${process.env.REDIS_PORT || 6379}`,
 });
 
-redisClient.connect().catch(console.error);
+redisClient.connect().catch((err) => {
+  console.error("Redis connection failed (server still running):", err);
+});
+
+redisClient.on("ready", () => {
+  console.log("Redis client connected");
+});
 
 redisClient.on("error", (err) => {
   console.error("Redis error:", err);
-
-  redisClient.on("error", (err) => {
-    console.error("Redis error:", err);
-  });
 });
 
-// Configuration de Swagger
-
+// Swagger
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
@@ -133,29 +128,27 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./api/**/*.js"], // Chemin vers vos fichiers d'API
+  apis: ["./api/**/*.js"],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Import des routes
-app.use("/users", require("./api/users/users")); // Routes pour les utilisateurs
+// Routes
+app.use("/users", require("./api/users/users"));
 app.use("/acc", require("./api/acc/accompagnateur"));
 app.use("/ag", require("./api/ag/agent"));
-app.use("/traj", require("./api/traj/trajet")); // Ajoutez cette ligne pour inclure la nouvelle route
+app.use("/traj", require("./api/traj/trajet"));
 app.use("/reservation", require("./api/reservation/reservation"));
+app.use("/chat", require("./api/chat/chatController"));
 
-// Ajoutez cette route pour la racine
+// Racine
 app.get("/", (req, res) => {
   console.log("Poto ca marche mais pas trop");
   res.send("Hello World!");
 });
 
-// Démarrage du serveur après la connexion à Redis
-redisClient.on("ready", () => {
-  console.log("Redis client connected");
-  app.listen(port, "0.0.0.0", () => {
-    console.log(`Server is running on http://0.0.0.0:${port}`);
-  });
+// Démarrage serveur (indépendant de Redis)
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Server is running on http://0.0.0.0:${port}`);
 });

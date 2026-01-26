@@ -17,6 +17,7 @@ import Contact from "./components/Menu/Contact";
 import Prereservation from "./components/Menu/Prereservation";
 import Profile from "./components/Menu/Profile";
 import Reservation2 from "./components/Menu/Reservation2";
+import Wallet from "./components/Menu/Wallet";
 import Dashboard from "./components/Admin/Dashboard";
 import ImportPlanning from "./components/Admin/ImportPlanning";
 import MissionMatching from "./components/Admin/MissionMatching";
@@ -26,6 +27,7 @@ import ZoneManagement from "./components/Admin/ZoneManagement";
 import AgentProfiles from "./components/Admin/AgentProfiles";
 import Coordination from "./components/Admin/Coordination";
 import SecurityGovernance from "./components/Admin/SecurityGovernance";
+import AIAssistant from "./components/AIAssistant";
 
 const App = () => {
   return (
@@ -53,6 +55,7 @@ const App = () => {
             <Route path="/prereservation" element={<Prereservation />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/reservation2" element={<Reservation2 />} />
+            <Route path="/wallet" element={<Wallet />} />
             <Route path="/admin" element={<Dashboard />} />     
             <Route path="/admin/import-planning" element={<ImportPlanning />} />
             <Route path="/admin/mission-matching" element={<MissionMatching />} />
@@ -64,6 +67,7 @@ const App = () => {
             <Route path="/admin/security" element={<SecurityGovernance />} />
           </Routes>
           <Footer />
+          <AIAssistant />
         </Router>
       </div>
     </UserProvider>
