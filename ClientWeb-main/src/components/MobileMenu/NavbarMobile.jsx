@@ -57,6 +57,7 @@ const NavbarMobile = () => {
             "Home",
             "Itinerary",
             "Reservation",
+            "Wallet",
             "Contact",
             "Help",
             "Login",
