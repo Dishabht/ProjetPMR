@@ -91,7 +91,7 @@ export default function Login({ navigation, onLoginSuccess }) {
     <View style={styles.container}>
       {/* Logo au-dessus du formulaire */}
       <Image
-        source={require("../assets/PMoveLogoAvecStyleSansLogo.png")}
+        source={require("../assets/PMoveLogoAvecStyle2.png")}
         style={styles.logo}
       />
 
@@ -142,10 +142,11 @@ const styles = StyleSheet.create({
     alignItems: "center", // Centrer horizontalement
   },
   logo: {
-    width: 260,
-    height: 120,
-    marginBottom: 20,
+    width: 320,
+    height: 160,
+    marginBottom: 16,
     resizeMode: "contain",
+    alignSelf: "center",
   },
   title: {
     fontSize: 27,
@@ -153,6 +154,8 @@ const styles = StyleSheet.create({
     color: "#F97316", // Accent moderne
     marginBottom: 10,
     textAlign: "center",
+    width: "100%",
+    paddingHorizontal: 6,
   },
   subtitle: {
     fontSize: 18,
@@ -160,6 +163,8 @@ const styles = StyleSheet.create({
     color: "#c7d2e8",
     marginBottom: 30,
     textAlign: "center",
+    width: "100%",
+    paddingHorizontal: 6,
   },
   formContainer: {
     width: "100%",
