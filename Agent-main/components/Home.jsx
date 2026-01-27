@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       {/* Logo en haut */}
-      <Animated.View style={{ opacity: fadeAnim, alignSelf: 'center', marginTop: 10 }}>
+      <Animated.View style={{ opacity: fadeAnim, alignSelf: 'center', marginTop: 16 }}>
         <Image
           source={require("../assets/PMoveLogoAvecStyle2.png")}
           style={styles.logo}
@@ -68,16 +68,17 @@ export default function Home() {
       </Animated.View>
 
       {/* Message de bienvenue */}
-      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Profile")} style={styles.welcomeCard}>
         <Animated.Text style={[styles.welcomeText, { opacity: fadeAnim }]}>
           Bonjour, {agentInfo.name} {agentInfo.surname} !
         </Animated.Text>
+        <Text style={styles.welcomeSubtitle}>Prêt pour une nouvelle mission ?</Text>
       </TouchableOpacity>
 
       {/* Animation Lottie au milieu */}
-      <Animated.View style={{ opacity: fadeAnim, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+      <Animated.View style={{ opacity: fadeAnim, justifyContent: 'center', alignItems: 'center', marginTop: 6 }}>
         <LottieView
-          source={require("../assets/home.json")} // Chemin vers votre fichier Lottie
+          source={require("../assets/walking2.json")} // Chemin vers votre fichier Lottie
           autoPlay
           loop
           style={styles.lottieAnimation}
@@ -85,7 +86,7 @@ export default function Home() {
       </Animated.View>
 
       {/* Bouton en bas, juste en dessous de l'animation Lottie */}
-      <Animated.View style={{ opacity: fadeAnim, alignSelf: 'center', marginTop: 10 }}>
+      <Animated.View style={{ opacity: fadeAnim, alignSelf: 'center', marginTop: 6 }}>
         <TouchableOpacity
           style={styles.mainButton}
           onPress={() => navigation.navigate("Research")}
@@ -101,33 +102,48 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     justifyContent: "flex-start", // Aligner le contenu en haut
     alignItems: "center", // Centrer horizontalement
     padding: 16,
     paddingBottom: 100, // Ajouter un padding en bas pour éviter que la NavBar ne cache le contenu
   },
   logo: {
-    width: 200, // Taille d'origine du logo
-    height: 200,
+    width: 170,
+    height: 170,
     resizeMode: "contain",
-    marginBottom: 5, // Espacement réduit après le logo
+    marginBottom: 6,
+  },
+  welcomeCard: {
+    backgroundColor: "#151b3a",
+    borderRadius: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    borderWidth: 1,
+    borderColor: "#2d3454",
+    marginBottom: 8,
   },
   welcomeText: {
     fontSize: 24, // Taille d'origine du texte
     fontWeight: "bold",
-    color: "#EF4D20",
-    marginBottom: 5, // Espacement réduit après le texte
+    color: "#f5f7ff",
+    marginBottom: 4,
     textAlign: "center",
     fontFamily: "Raleway_700Bold",
+  },
+  welcomeSubtitle: {
+    fontSize: 14,
+    color: "#c7d2e8",
+    textAlign: "center",
+    fontFamily: "Raleway_400Regular",
   },
   mainButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#EF4D20",
-    padding: 16, // Padding d'origine
-    borderRadius: 12,
-    width: 300, // Largeur fixe pour le bouton
+    backgroundColor: "#F97316",
+    padding: 16,
+    borderRadius: 14,
+    width: 300,
     justifyContent: "center",
     elevation: 5,
     shadowColor: "#000",
@@ -146,12 +162,12 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 20,
-    color: "#EF4D20",
+    color: "#F97316",
     fontWeight: "bold",
     fontFamily: "Raleway_700Bold",
   },
   lottieAnimation: {
-    width: 350, // Taille légèrement réduite de l'animation
-    height: 350,
+    width: 320,
+    height: 320,
   },
 });

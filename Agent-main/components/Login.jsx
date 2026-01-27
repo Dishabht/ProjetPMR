@@ -91,7 +91,7 @@ export default function Login({ navigation, onLoginSuccess }) {
     <View style={styles.container}>
       {/* Logo au-dessus du formulaire */}
       <Image
-        source={require("../assets/PMoveLogoSANSTITRE.png")}
+        source={require("../assets/PMoveLogoAvecStyleSansLogo.png")}
         style={styles.logo}
       />
 
@@ -136,52 +136,58 @@ export default function Login({ navigation, onLoginSuccess }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF6F1", // Fond de la page
-    padding: 20,
+    backgroundColor: "#0a0e27", // Fond moderne
+    padding: 24,
     justifyContent: "center", // Centrer verticalement
     alignItems: "center", // Centrer horizontalement
   },
   logo: {
-    width: 500, // Taille de l'image
-    height: 300, // Taille de l'image
-    marginBottom: -70, // Marge en bas
+    width: 260,
+    height: 120,
+    marginBottom: 20,
+    resizeMode: "contain",
   },
   title: {
     fontSize: 27,
     fontFamily: "RalewayBold",
-    color: "#EF4D20", // Couleur du titre
+    color: "#F97316", // Accent moderne
     marginBottom: 10,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 18,
     fontFamily: "RalewayRegular",
-    color: "#333",
+    color: "#c7d2e8",
     marginBottom: 30,
     textAlign: "center",
   },
   formContainer: {
     width: "100%",
     paddingHorizontal: 16,
+    backgroundColor: "#151b3a",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#2d3454",
+    paddingVertical: 20,
   },
   input: {
     width: "100%",
     height: 50,
-    borderColor: "#EF4D20", // Bordure des champs
+    borderColor: "#2d3454",
     borderWidth: 1,
-    marginBottom: 20,
+    marginBottom: 16,
     paddingHorizontal: 15,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#0f1430",
     fontSize: 16,
-    color: "#000", // Texte des champs
-    borderRadius: 8,
+    color: "#f5f7ff",
+    borderRadius: 12,
   },
   checkboxSection: {
     flexDirection: "column", // Alignement horizontal
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    marginBottom: 16,
+    paddingHorizontal: 2,
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -200,16 +206,16 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     fontSize: 14,
-    color: "#FF000", // Couleur du texte
+    color: "#FF8A65",
     textDecorationLine: "underline",
     marginTop: 10,
   },
   buttonPrimary: {
-    backgroundColor: "#EF4D20", // Couleur du bouton
-    padding: 12,
-    borderRadius: 8,
+    backgroundColor: "#F97316",
+    padding: 14,
+    borderRadius: 12,
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 8,
   },
   buttonTextPrimary: {
     color: "#FFFFFF", // Couleur du texte du bouton

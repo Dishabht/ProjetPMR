@@ -139,16 +139,21 @@ export default function Research() {
   if (!role) {
     return (
       <View style={styles.roleSelectionContainer}>
-        <Text style={styles.roleSelectionTitle}>Type d'Agent :</Text>
-        <TouchableOpacity style={styles.roleButton} onPress={() => setRole("RATP")}>
-          <Image source={ratpImage} style={styles.roleImage} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.roleButton} onPress={() => setRole("SNCF")}>
-          <Image source={sncfImage} style={styles.roleImage} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.roleButton} onPress={() => setRole("AirFrance")}>
-          <Image source={airFranceImage} style={styles.roleImage} />
-        </TouchableOpacity>
+        <Text style={styles.roleSelectionTitle}>Sélectionnez votre réseau</Text>
+        <View style={styles.roleGrid}>
+          <TouchableOpacity style={styles.roleCard} onPress={() => setRole("RATP")}>
+            <Image source={ratpImage} style={styles.roleImage} />
+            <Text style={styles.roleLabel}>RATP</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.roleCard} onPress={() => setRole("SNCF")}>
+            <Image source={sncfImage} style={styles.roleImage} />
+            <Text style={styles.roleLabel}>SNCF</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.roleCard} onPress={() => setRole("AirFrance")}>
+            <Image source={airFranceImage} style={styles.roleImage} />
+            <Text style={styles.roleLabel}>Air France</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -213,44 +218,53 @@ export default function Research() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     alignItems: "center", // Centrer le contenu horizontalement
   },
   roleSelectionContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
+    paddingHorizontal: 20,
   },
   roleSelectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#EF4D20",
+    color: "#f5f7ff",
     marginBottom: 20,
     fontFamily: "Raleway_700Bold",
   },
-  roleButton: {
-    backgroundColor: "#FFFFFF",
-    padding: 10,
-    borderRadius: 8,
-    marginVertical: 10,
-    width: "45%",
+  roleGrid: {
+    width: "100%",
+    gap: 16,
+  },
+  roleCard: {
+    backgroundColor: "#151b3a",
+    borderRadius: 16,
+    paddingVertical: 18,
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: "#EF4D20",
-    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#2d3454",
   },
   roleImage: {
-    width: 100,
-    height: 100,
+    width: 110,
+    height: 110,
     resizeMode: "contain",
+  },
+  roleLabel: {
+    marginTop: 8,
+    fontSize: 14,
+    color: "#c7d2e8",
+    fontFamily: "Raleway_400Regular",
   },
   searchContainer: {
     width: "80%", // Largeur de la barre de recherche
     padding: 16,
-    backgroundColor: "#FFF6F1",
-    borderBottomWidth: 1,
-    borderBottomColor: "#EF4D20",
+    backgroundColor: "#151b3a",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#2d3454",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
@@ -261,20 +275,20 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 12,
     borderWidth: 1,
-    borderColor: "#EF4D20",
-    borderRadius: 8,
-    backgroundColor: "#FFFFFF",
+    borderColor: "#2d3454",
+    borderRadius: 12,
+    backgroundColor: "#0f1430",
     fontSize: 16,
-    color: "#000",
+    color: "#f5f7ff",
     fontFamily: "Raleway_400Regular",
   },
   resultItem: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#151b3a",
     padding: 16,
     marginVertical: 8,
-    borderRadius: 8,
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#EF4D20",
+    borderColor: "#2d3454",
     elevation: 2,
     width: "90%",
     alignSelf: "center",
@@ -282,13 +296,13 @@ const styles = StyleSheet.create({
   resultTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#EF4D20",
+    color: "#f5f7ff",
     textAlign: "center",
     fontFamily: "Raleway_700Bold",
   },
   resultSubtitle: {
     fontSize: 14,
-    color: "#555",
+    color: "#c7d2e8",
     textAlign: "center",
     fontFamily: "Raleway_400Regular",
   },
@@ -309,31 +323,31 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   acceptButton: {
-    backgroundColor: "green",
+    backgroundColor: "#22c55e",
   },
   rejectButton: {
-    backgroundColor: "red",
+    backgroundColor: "#ef4444",
   },
   modalContent: {
     flex: 1,
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     padding: 16,
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#EF4D20",
+    color: "#f5f7ff",
     marginBottom: 16,
     fontFamily: "Raleway_700Bold",
   },
   detailText: {
     fontSize: 16,
-    color: "#333",
+    color: "#c7d2e8",
     marginBottom: 8,
     fontFamily: "Raleway_400Regular",
   },
   buttonClose: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#F97316",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -347,7 +361,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 20,
-    color: "#EF4D20",
+    color: "#F97316",
     fontWeight: "bold",
     fontFamily: "Raleway_700Bold",
   },

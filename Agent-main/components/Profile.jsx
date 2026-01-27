@@ -10,14 +10,12 @@ import {
   Animated,
 } from "react-native";
 import { Feather as FeatherIcon } from "@expo/vector-icons";
-import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useFonts, Raleway_400Regular, Raleway_700Bold } from "@expo-google-fonts/raleway";
 
 export default function Profile() {
   const [form, setForm] = useState({
-    darkMode: false,
     emailNotifications: true,
     pushNotifications: false,
   });
@@ -83,25 +81,26 @@ export default function Profile() {
     <SafeAreaView
       style={[
         { flex: 1 },
-        form.darkMode ? styles.darkContainer : styles.lightContainer,
+        styles.lightContainer,
       ]}
     >
       <View style={styles.profile}>
         {/* Animation JSON pour l'avatar */}
-        <LottieView
-          source={require("../assets/profile_agent_icon.json")} // Chemin vers l'animation JSON
-          autoPlay
-          loop
-          style={styles.animation}
-        />
-        <View>
-          <Text style={styles.profileName}>
-            {userInfo.name} {userInfo.surname}
-          </Text>
-          <Text style={styles.profileId}>Agent ID: {userInfo.agentId || "Non trouvé"}</Text>
-          <Text style={styles.profileAffiliation || "Non trouvé"}>
-            Affiliation : {userInfo.affiliation || "Non spécifiée"}
-          </Text>
+        <View style={styles.avatarCard}>
+          <View style={styles.avatarCircle}>
+            <Text style={styles.avatarText}>
+              {`${userInfo.name?.[0] || "A"}${userInfo.surname?.[0] || "G"}`}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.profileName}>
+              {userInfo.name} {userInfo.surname}
+            </Text>
+            <Text style={styles.profileId}>Agent ID: {userInfo.agentId || "Non trouvé"}</Text>
+            <Text style={styles.profileAffiliation || "Non trouvé"}>
+              Affiliation : {userInfo.affiliation || "Non spécifiée"}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -111,19 +110,6 @@ export default function Profile() {
               Préférences
             </Text>
 
-          {/* Dark Mode */}
-          <View style={styles.row}>
-            <View style={[styles.rowIcon, { backgroundColor: "#EF4D20" }]}>
-              <FeatherIcon color="#fff" name="moon" size={20} />
-            </View>
-            <Text style={styles.rowLabel}>Mode sombre</Text>
-            <View style={styles.rowSpacer} />
-            <Switch
-              onValueChange={(darkMode) => setForm({ ...form, darkMode })}
-              value={form.darkMode}
-            />
-          </View>
-
           {/* Email Notifications */}
           <View style={styles.row}>
             <View style={[styles.rowIcon, { backgroundColor: "#EF4D20" }]}>
@@ -131,12 +117,16 @@ export default function Profile() {
             </View>
             <Text style={styles.rowLabel}>Notifications par email</Text>
             <View style={styles.rowSpacer} />
-            <Switch
-              onValueChange={(emailNotifications) =>
-                setForm({ ...form, emailNotifications })
-              }
-              value={form.emailNotifications}
-            />
+            <View style={styles.switchWrap}>
+              <Switch
+                onValueChange={(emailNotifications) =>
+                  setForm({ ...form, emailNotifications })
+                }
+                value={form.emailNotifications}
+                trackColor={{ false: "#2d3454", true: "#22c55e" }}
+                thumbColor={form.emailNotifications ? "#FFFFFF" : "#c7d2e8"}
+              />
+            </View>
           </View>
 
           {/* Push Notifications */}
@@ -146,12 +136,16 @@ export default function Profile() {
             </View>
             <Text style={styles.rowLabel}>Notifications push</Text>
             <View style={styles.rowSpacer} />
-            <Switch
-              onValueChange={(pushNotifications) =>
-                setForm({ ...form, pushNotifications })
-              }
-              value={form.pushNotifications}
-            />
+            <View style={styles.switchWrap}>
+              <Switch
+                onValueChange={(pushNotifications) =>
+                  setForm({ ...form, pushNotifications })
+                }
+                value={form.pushNotifications}
+                trackColor={{ false: "#2d3454", true: "#22c55e" }}
+                thumbColor={form.pushNotifications ? "#FFFFFF" : "#c7d2e8"}
+              />
+            </View>
           </View>
           <TouchableOpacity style={styles.row} onPress={handleLogout}>
         <View style={[styles.rowIcon, { backgroundColor: "#EF4D20" }]}>
@@ -173,11 +167,7 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   lightContainer: {
-    backgroundColor: "#FFF6F1",
-    flex: 1,
-  },
-  darkContainer: {
-    backgroundColor: "#333",
+    backgroundColor: "#0a0e27",
     flex: 1,
   },
   profile: {
@@ -186,40 +176,61 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  animation: {
-    width: 150,
-    height: 150,
-    marginTop: 10,
+  avatarCard: {
+    backgroundColor: "#151b3a",
+    borderRadius: 18,
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#2d3454",
+  },
+  avatarCircle: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: "#0f1430",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#2d3454",
+    marginTop: 6,
+  },
+  avatarText: {
+    fontSize: 28,
+    color: "#F97316",
+    fontFamily: "Raleway_700Bold",
   },
   profileName: {
     marginTop: 20,
     fontSize: 19,
     fontWeight: "600",
-    color: "#414d63",
+    color: "#f5f7ff",
     textAlign: "center",
   },
   profileId: {
     marginTop: 5,
     fontSize: 16,
-    color: "#989898",
+    color: "#c7d2e8",
     textAlign: "center",
   },
   profileAffiliation: {
     marginTop: 5,
     fontSize: 16,
-    color: "#505050",
+    color: "#c7d2e8",
     textAlign: "center",
     fontStyle: "italic",
   },
   section: {
     paddingHorizontal: 24,
+    paddingTop: 8,
     flex: 1,
   },
   sectionTitle: {
     paddingVertical: 12,
     fontSize: 12,
     fontWeight: "600",
-    color: "#9e9e9e",
+    color: "#8b95b8",
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
@@ -227,18 +238,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-    height: 50,
-    backgroundColor: "#f2f2f2",
-    borderRadius: 8,
+    height: 56,
+    backgroundColor: "#151b3a",
+    borderRadius: 14,
     marginBottom: 12,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: "#EF4D20",
+    borderColor: "#2d3454",
   },
   rowIcon: {
     width: 32,
     height: 32,
-    borderRadius: 9999,
+    borderRadius: 10,
     marginRight: 12,
     flexDirection: "row",
     alignItems: "center",
@@ -247,10 +258,15 @@ const styles = StyleSheet.create({
   rowLabel: {
     fontSize: 15,
     fontWeight: "600",
-    color: "#4c4c4c",
+    color: "#f5f7ff",
     flex: 1,
   },
   rowSpacer: {
     flex: 1,
+  },
+  switchWrap: {
+    width: 60,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

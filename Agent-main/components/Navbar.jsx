@@ -34,21 +34,11 @@ export default function NavBar() {
   const handleNavigation = (index, route) => {
     setActiveIndex(index);
 
-    // Animation des boutons
-    animationRefs.forEach((ref, i) => {
-      const isActive = i === index;
-
+    // Animation désactivée (garder uniquement le changement de couleur)
+    animationRefs.forEach((ref) => {
       Animated.timing(ref.scaleIcon, {
-        toValue: isActive ? 1.5 : 1,
-        duration: 400,
-        easing: Easing.inOut(Easing.ease),
-        useNativeDriver: true,
-      }).start();
-
-      Animated.timing(ref.translateYIcon, {
-        toValue: isActive ? -5 : 0, // Ajusté pour rester dans les limites
-        duration: 400,
-        easing: Easing.inOut(Easing.ease),
+        toValue: 1,
+        duration: 0,
         useNativeDriver: true,
       }).start();
     });
@@ -83,7 +73,7 @@ export default function NavBar() {
           <Icon
             name="home"
             size={24}
-            color={activeIndex === 0 ? "#FFFFFF" : "#FFD6C1"}
+            color={activeIndex === 0 ? "#F97316" : "#c7d2e8"}
           />
         </Animated.View>
         <Text style={[styles.navText, activeIndex === 0 && styles.activeText]}>
@@ -107,7 +97,7 @@ export default function NavBar() {
           <Icon
             name="user"
             size={24}
-            color={activeIndex === 1 ? "#FFFFFF" : "#FFD6C1"}
+            color={activeIndex === 1 ? "#F97316" : "#c7d2e8"}
           />
         </Animated.View>
         <Text style={[styles.navText, activeIndex === 1 && styles.activeText]}>
@@ -123,11 +113,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: "#EF4D20", // Couleur principale
-    paddingVertical: 15, // Augmentation de la hauteur
-    paddingHorizontal: 15,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    backgroundColor: "#151b3a",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
     elevation: 5,
     position: "absolute",
     bottom: 0,
@@ -140,11 +130,11 @@ const styles = StyleSheet.create({
   navText: {
     fontFamily: "RalewayRegular",
     marginTop: 5,
-    color: "#FFD6C1",
+    color: "#c7d2e8",
     fontSize: 12,
   },
   activeText: {
-    color: "#FFFFFF",
+    color: "#F97316",
     fontWeight: "bold",
   },
 });
