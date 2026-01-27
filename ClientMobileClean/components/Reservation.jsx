@@ -103,7 +103,9 @@ export default function Reservation() {
    */
 
   const handleCheckReservation = async () => {
-    if (!numReservation || !selectedTransport) {
+    const normalizedReservation = numReservation?.trim();
+
+    if (!normalizedReservation || !selectedTransport) {
       Alert.alert(
         "Erreur",
         "Veuillez entrer un numéro de réservation et sélectionner une base."
@@ -113,7 +115,7 @@ export default function Reservation() {
 
     try {
       const response = await checkReservation(
-        parseInt(numReservation, 10),
+        normalizedReservation,
         selectedTransport
       );
       Alert.alert("Succès", "Réservation trouvée !");
@@ -274,17 +276,19 @@ const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1, // Permet de scroller au besoin
     paddingBottom: 160, // Ajoute un espace en bas pour le défilement
+    backgroundColor: "#0a0e27",
   },
   container: {
     flex: 1,
     padding: 20,
     marginTop: 50,
+    backgroundColor: "#0a0e27",
   },
   title: {
     fontSize: 24,
     fontFamily: "RalewayBlack",
     fontWeight: "bold",
-    color: "#5489CE",
+    color: "#f5f7fb",
     marginBottom: 30,
     textAlign: "center",
   },
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
     fontFamily: "RalewayExtraBold",
     fontWeight: "bold",
     fontSize: 18,
-    color: "#436EA5",
+    color: "#c7d2e8",
     marginBottom: 30,
     textAlign: "center",
   },
@@ -302,18 +306,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   transportButton: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#151b3a",
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: "center",
     width: 90,
     height: 60,
     justifyContent: "center",
-    borderColor: "#5489CE",
-    borderWidth: 2,
+    borderColor: "#2d3454",
+    borderWidth: 1,
   },
   selectedButton: {
-    backgroundColor: "#B0C4DE",
+    backgroundColor: "#0066ff",
+    borderColor: "#0066ff",
   },
   transportImage: {
     width: 50,
@@ -328,11 +333,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textShadowColor: "#5489CE",
     borderWidth: 1,
-    borderColor: "#5489CE",
-    borderRadius: 8,
+    borderColor: "#2d3454",
+    borderRadius: 10,
     padding: 10,
     marginBottom: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
+    color: "#f5f7fb",
   },
   rowContainer: {
     flexDirection: "row",
@@ -349,9 +355,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 15,
     borderWidth: 1,
-    borderColor: "#5489CE",
-    borderRadius: 8,
-    backgroundColor: "#fff",
+    borderColor: "#2d3454",
+    borderRadius: 12,
+    backgroundColor: "#151b3a",
     elevation: 2,
   },
   billetRow: {
@@ -366,13 +372,13 @@ const styles = StyleSheet.create({
   billetLabel: {
     fontFamily: "RalewayExtraBold",
     fontSize: 14,
-    color: "#555",
+    color: "#c7d2e8",
     marginBottom: 3,
   },
   billetInfo: {
     fontFamily: "RalewayMedium",
     fontSize: 16,
-    color: "#000",
+    color: "#f5f7fb",
   },
   billetTitle: {
     fontFamily: "RalewayBlack",
@@ -380,11 +386,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     textAlign: "center",
+    color: "#f5f7fb",
   },
   confirmButton: {
-    backgroundColor: "#28a745",
-    paddingVertical: 10,
-    borderRadius: 8,
+    backgroundColor: "#0066ff",
+    paddingVertical: 12,
+    borderRadius: 10,
     marginTop: 15,
     alignItems: "center",
   },
@@ -396,38 +403,40 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   cancelButton: {
-    backgroundColor: "#dc3545",
+    backgroundColor: "#151b3a",
+    borderWidth: 1,
+    borderColor: "#2d3454",
     paddingVertical: 10,
-    borderRadius: 8,
+    borderRadius: 10,
     marginTop: 10,
     alignItems: "center",
   },
   cancelButtonText: {
     fontFamily: "RalewayBlack",
     fontWeight: "bold",
-    color: "#fff",
+    color: "#f5f7fb",
     fontSize: 16,
   },
   divider: {
-    borderBottomWidth: 2,
-    borderBottomColor: "#ccc",
+    borderBottomWidth: 1,
+    borderBottomColor: "#2d3454",
     marginVertical: 10,
   },
   subtitle: {
     fontFamily: "RalewayExtraBold",
     fontSize: 18,
-    color: "#436EA5",
+    color: "#c7d2e8",
     marginBottom: 20,
   },
   linksContainer: {
     marginBottom: 30,
   },
   linkButton: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#151b3a",
     paddingVertical: 10,
-    borderRadius: 6,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#5489CE",
+    borderColor: "#2d3454",
     marginVertical: 10,
     width: 200,
     alignItems: "center",
@@ -436,12 +445,12 @@ const styles = StyleSheet.create({
     fontFamily: "RalewayBlack",
     fontWeight: "bold",
     fontSize: 14,
-    color: "#5489CE",
+    color: "#f5f7fb",
   },
   reserveButton: {
-    backgroundColor: "#5489CE",
+    backgroundColor: "#0066ff",
     paddingVertical: 15,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: "center",
   },
   reserveButtonText: {

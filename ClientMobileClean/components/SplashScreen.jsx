@@ -73,7 +73,7 @@ export default function SplashScreen() {
 
       {/* Logo tournant */}
       <Animated.Image
-        source={require("../assets/PMoveLogoSANSTITRE.png")} // Chemin vers le logo
+        source={require("../assets/PMoveLogoAvecStyle.png")} // Chemin vers le logo
         style={[styles.logo, { transform: [{ rotate: rotateInterpolation }] }]}
         resizeMode="contain"
       />

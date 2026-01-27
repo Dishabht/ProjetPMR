@@ -149,32 +149,33 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingVertical: 10,
+    backgroundColor: "#0a0e27",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
-    color: "#333",
+    color: "#f5f7fb",
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
     marginTop: 20,
-    color: "#555",
+    color: "#c7d2e8",
   },
   text: {
     fontSize: 16,
     lineHeight: 24,
     marginBottom: 10,
-    color: "#444",
+    color: "#f5f7fb",
   },
   listItem: {
     fontSize: 16,
     marginBottom: 5,
     paddingLeft: 20,
     lineHeight: 24,
-    color: "#444",
+    color: "#f5f7fb",
   },
 });

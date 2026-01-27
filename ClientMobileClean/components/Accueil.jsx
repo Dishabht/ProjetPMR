@@ -119,7 +119,7 @@ export default function Accueil() {
       contentContainerStyle={styles.listContent}
       renderItem={({ item }) => <Billet ticket={item} />}
       ListFooterComponent={
-        loading && <ActivityIndicator size="large" color="#5895D6" />
+        loading && <ActivityIndicator size="large" color="#0066ff" />
       }
     />
   );
@@ -130,22 +130,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingTop: 100,
     paddingBottom: 150,
+    backgroundColor: "#0a0e27",
   },
   headerContainer: {
     alignItems: "center",
     marginBottom: 20,
   },
   textBox: {
-    borderColor: "#5895D6",
-    borderWidth: 2,
-    borderRadius: 10,
+    borderColor: "#2d3454",
+    borderWidth: 1,
+    borderRadius: 12,
     paddingVertical: 15,
     paddingHorizontal: 15,
+    backgroundColor: "#151b3a",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 4,
     marginBottom: 20,
   },
   animation: {
@@ -156,14 +158,14 @@ const styles = StyleSheet.create({
     fontFamily: "RalewayBlack",
     fontSize: 24,
     fontWeight: "bold",
-    color: "#5895D6",
+    color: "#f5f7fb",
     textAlign: "center",
   },
   subtitle: {
     fontFamily: "RalewayBold",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: "#c7d2e8",
     marginBottom: 15,
   },
   emptyContainer: {
@@ -174,7 +176,7 @@ const styles = StyleSheet.create({
   noTickets: {
     fontFamily: "RalewayRegular",
     fontSize: 16,
-    color: "#999",
+    color: "#c7d2e8",
     textAlign: "center",
   },
 });

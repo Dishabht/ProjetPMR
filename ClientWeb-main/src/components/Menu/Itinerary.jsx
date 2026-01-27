@@ -345,11 +345,12 @@ export default function Itinerary() {
       <div style={{ 
         width: '350px', 
         padding: '20px', 
-        backgroundColor: 'white', 
+        backgroundColor: '#0a0e27', 
+        color: '#f5f7fb',
         boxShadow: '2px 0 5px rgba(0,0,0,0.1)', 
         overflowY: 'auto'
       }}>
-        <h2>Planificateur de trajet</h2>
+        <h2 style={{ marginBottom: '16px' }}>Planificateur de trajet</h2>
 
         <div style={{ marginBottom: '20px' }}>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -357,8 +358,8 @@ export default function Itinerary() {
               onClick={() => setTransportMode('driving')}
               style={{
                 padding: '8px 16px',
-                backgroundColor: transportMode === 'driving' ? '#2196F3' : '#eee',
-                color: transportMode === 'driving' ? 'white' : '#333',
+                backgroundColor: transportMode === 'driving' ? '#0066ff' : '#151b3a',
+                color: transportMode === 'driving' ? 'white' : '#c7d2e8',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer'
@@ -370,8 +371,8 @@ export default function Itinerary() {
               onClick={() => setTransportMode('public')}
               style={{
                 padding: '8px 16px',
-                backgroundColor: transportMode === 'public' ? '#4CAF50' : '#eee',
-                color: transportMode === 'public' ? 'white' : '#333',
+                backgroundColor: transportMode === 'public' ? '#00d9ff' : '#151b3a',
+                color: transportMode === 'public' ? '#0a0e27' : '#c7d2e8',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer'
@@ -382,9 +383,9 @@ export default function Itinerary() {
           </div>
         </div>
 
-        <div style={{ marginBottom: '20px' }}>
-          <div style={{ marginBottom: '15px' }}>
-            <h4>Départ</h4>
+          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{ marginBottom: '10px' }}>Départ</h4>
             <input
               type="text"
               placeholder="Adresse de départ..."
@@ -400,14 +401,16 @@ export default function Itinerary() {
               style={{
                 width: '100%',
                 padding: '8px',
-                border: '1px solid #ddd',
-                borderRadius: '4px'
+                border: '1px solid #2d3454',
+                borderRadius: '6px',
+                backgroundColor: '#151b3a',
+                color: '#f5f7fb'
               }}
             />
           </div>
 
-          <div>
-            <h4>Arrivée</h4>
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ marginBottom: '10px' }}>Arrivée</h4>
             <input
               type="text"
               placeholder="Adresse d'arrivée..."
@@ -423,8 +426,10 @@ export default function Itinerary() {
               style={{
                 width: '100%',
                 padding: '8px',
-                border: '1px solid #ddd',
-                borderRadius: '4px'
+                border: '1px solid #2d3454',
+                borderRadius: '6px',
+                backgroundColor: '#151b3a',
+                color: '#f5f7fb'
               }}
             />
           </div>
@@ -439,16 +444,16 @@ export default function Itinerary() {
                 style={{
                   padding: '10px',
                   margin: '5px 0',
-                  backgroundColor: '#f8f9fa',
-                  borderRadius: '4px',
+                  backgroundColor: '#151b3a',
+                  borderRadius: '6px',
                   cursor: 'pointer',
-                  border: '1px solid #eee'
+                  border: '1px solid #2d3454'
                 }}
               >
-                <div style={{ fontWeight: '500' }}>
+                <div style={{ fontWeight: '600', color: '#f5f7fb' }}>
                   {result.type === 'geocoded' ? result.name : (result.nom || result.stop_name)}
                 </div>
-                <div style={{ fontSize: '0.8em', color: '#666' }}>
+                <div style={{ fontSize: '0.8em', color: '#c7d2e8' }}>
                   {result.type === 'geocoded' ? 'Adresse' : result.type}
                 </div>
               </div>
@@ -462,10 +467,10 @@ export default function Itinerary() {
           style={{
             width: '100%',
             padding: '12px',
-            backgroundColor: '#2196F3',
+            backgroundColor: '#0066ff',
             color: 'white',
             border: 'none',
-            borderRadius: '4px',
+            borderRadius: '6px',
             cursor: 'pointer',
             marginBottom: '20px'
           }}
@@ -498,9 +503,11 @@ export default function Itinerary() {
                       <span style={{ fontSize: '1.2em' }}>🚶</span>
                     )}
                     <div>
-                      <div>{step.maneuver?.instruction}</div>
+                      <div style={{ color: '#111827', fontWeight: 600 }}>
+                        {step.maneuver?.instruction}
+                      </div>
                       {step.distance > 0 && (
-                        <div style={{ fontSize: '0.9em', color: '#666', marginTop: '4px' }}>
+                        <div style={{ fontSize: '0.9em', color: '#4b5563', marginTop: '4px' }}>
                           Distance : {(step.distance / 1000).toFixed(1)} km • 
                           Durée : {Math.round(step.duration / 60)} min
                         </div>

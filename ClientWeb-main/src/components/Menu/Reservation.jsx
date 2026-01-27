@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { checkReservation } from "../../api/api";
 import { FaWheelchair, FaSuitcase, FaUserFriends, FaInfoCircle } from "react-icons/fa";
 
 export default function Reservation() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const billet = state?.billet;
+  const [currentBillet, setCurrentBillet] = useState(billet || null);
+  const [numReservation, setNumReservation] = useState("");
+  const [selectedBase, setSelectedBase] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const [hasCompanion, setHasCompanion] = useState(false);
   const [name, setName] = useState("");
@@ -22,13 +28,50 @@ export default function Reservation() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (!billet) {
-      setErrorMessage("Aucune réservation trouvée. Veuillez réessayer.");
-    }
+    setCurrentBillet(billet || null);
   }, [billet]);
+
+  useEffect(() => {
+    if (!hasSearched) return;
+
+    if (!currentBillet) {
+      setErrorMessage("Aucune réservation trouvée. Veuillez réessayer.");
+    } else {
+      setErrorMessage("");
+    }
+  }, [currentBillet, hasSearched]);
+
+  const handleSearchBillet = async () => {
+    const normalizedReservation = numReservation.trim();
+
+    if (!normalizedReservation || !selectedBase) {
+      setHasSearched(true);
+      setErrorMessage("Veuillez entrer un numéro de réservation et sélectionner une base.");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setHasSearched(true);
+      const response = await checkReservation(normalizedReservation, selectedBase);
+      setCurrentBillet(response.reservation);
+      setErrorMessage("");
+    } catch (error) {
+      setHasSearched(true);
+      setCurrentBillet(null);
+      setErrorMessage(error.message || "Aucune réservation trouvée.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!currentBillet) {
+      setErrorMessage("Veuillez d'abord retrouver votre billet.");
+      return;
+    }
 
     if (!numBags) {
       setErrorMessage("Veuillez spécifier le nombre de bagages.");
@@ -36,7 +79,7 @@ export default function Reservation() {
     }
 
     const updatedBillet = {
-      ...billet,
+      ...currentBillet,
       name,
       surname,
       phone,
@@ -75,6 +118,103 @@ export default function Reservation() {
           {errorMessage && (
             <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-lg mb-6">
               <p className="font-medium">{errorMessage}</p>
+            </div>
+          )}
+
+          <div className="bg-bg-secondary/50 border border-border rounded-xl p-6 mb-6">
+            <h3 className="text-xl font-bold text-text mb-4">
+              Retrouver mon billet
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-text font-semibold mb-2">
+                  Numéro de réservation
+                </label>
+                <input
+                  type="text"
+                  value={numReservation}
+                  onChange={(e) => setNumReservation(e.target.value)}
+                  className="w-full px-4 py-3 bg-bg border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-text transition-all"
+                  placeholder="RATP-001"
+                />
+              </div>
+              <div>
+                <label className="block text-text font-semibold mb-2">
+                  Base
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {["RATP", "SNCF", "AirFrance"].map((base) => (
+                    <button
+                      key={base}
+                      type="button"
+                      onClick={() => setSelectedBase(base)}
+                      className={`px-3 py-3 rounded-lg text-sm font-semibold transition-all ${
+                        selectedBase === base
+                          ? "bg-gradient-to-r from-primary to-accent text-white"
+                          : "bg-bg border border-border text-text hover:bg-bg-tertiary"
+                      }`}
+                    >
+                      {base}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center pt-4">
+              <button
+                type="button"
+                onClick={handleSearchBillet}
+                disabled={isLoading}
+                className="px-8 py-3 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg hover:shadow-xl transition-all disabled:opacity-60"
+              >
+                {isLoading ? "Recherche..." : "Voir mon billet"}
+              </button>
+            </div>
+          </div>
+
+          {currentBillet && (
+            <div className="bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/30 rounded-xl p-6 mb-6">
+              <h3 className="text-xl font-bold text-text mb-4">
+                Billet retrouvé
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Numéro de réservation</p>
+                  <p className="text-text text-lg font-semibold">
+                    {currentBillet.num_reservation || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Transport</p>
+                  <p className="text-text text-lg font-semibold">
+                    {currentBillet.transport || currentBillet.type_transport || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Départ</p>
+                  <p className="text-text text-lg font-semibold">
+                    {currentBillet.lieu_depart || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Arrivée</p>
+                  <p className="text-text text-lg font-semibold">
+                    {currentBillet.lieu_arrivee || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Heure de départ</p>
+                  <p className="text-text text-lg font-semibold">
+                    {currentBillet.heure_depart || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Heure d'arrivée</p>
+                  <p className="text-text text-lg font-semibold">
+                    {currentBillet.heure_arrivee || "Non disponible"}
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 

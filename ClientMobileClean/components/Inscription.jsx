@@ -12,7 +12,6 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
-  ImageBackground,
   Modal,
 } from "react-native";
 import {
@@ -28,6 +27,7 @@ import {
   Raleway_900Black,
 } from "@expo-google-fonts/raleway";
 import { useNavigation } from "@react-navigation/native";
+import { registerUser } from "../services/api";
 
 /**
  * Composant Inscription.
@@ -44,8 +44,6 @@ import { useNavigation } from "@react-navigation/native";
  *
  * @returns {JSX.Element} Le composant Inscription.
  */
-
-const API_BASE_URL = "http://13.60.153.228:3000";
 
 export default function Inscription({ navigation }) {
   const [formData, setFormData] = useState({
@@ -90,20 +88,47 @@ export default function Inscription({ navigation }) {
   };
 
   const handicapOptions = [
-    { label: "BLND : Malvoyant ou non voyant", value: "1" },
-    { label: "DEAF : Malentendant ou sourd", value: "2" },
+    { label: "BLND : Malvoyant ou non voyant", value: 1 },
+    { label: "DEAF : Malentendant ou sourd", value: 2 },
     {
       label: "DPNA : Déficience Intellectuelle ou comportementale",
-      value: "3",
+      value: 3,
     },
     {
       label: "WCHR : Besoin de fauteuil roulant pour les déplacements",
-      value: "4",
+      value: 4,
     },
-    { label: "WCHS : Besoin d'aide pour tout déplacement", value: "5" },
-    { label: "WCHC : Assistance complète nécessaire", value: "6" },
-    { label: "MAAS : Assistance spécifique", value: "7" },
+    { label: "WCHS : Besoin d'aide pour tout déplacement", value: 5 },
+    { label: "WCHC : Assistance complète nécessaire", value: 6 },
+    { label: "MAAS : Assistance spécifique", value: 7 },
   ];
+
+  const civiliteOptions = [
+    { label: "Mr", value: 1 },
+    { label: "Mme", value: 2 },
+  ];
+
+  const getHandicapLabel = (value) =>
+    handicapOptions.find((option) => option.value === value)?.label ||
+    "Sélectionner un handicap";
+
+  const normalizeBirthDate = (input) => {
+    if (!input) {
+      return "";
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+      return input;
+    }
+
+    const match = input.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (match) {
+      const [, day, month, year] = match;
+      return `${year}-${month}-${day}`;
+    }
+
+    return input;
+  };
 
   /**
    * Gère l'envoi des données du formulaire d'inscription à l'API.
@@ -128,64 +153,51 @@ export default function Inscription({ navigation }) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000); // Timeout après 5 secondes
 
-      const response = await fetch(`${API_BASE_URL}/users/userAdd`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-        signal: controller.signal, // Associez le signal de timeout
-      });
+      const payload = {
+        ...formData,
+        handicap: formData.handicap ? Number(formData.handicap) : null,
+        civilite: formData.civilite ? Number(formData.civilite) : null,
+        birth: normalizeBirthDate(formData.birth),
+      };
 
+      const result = await registerUser(payload);
       clearTimeout(timeout); // Annulez le timeout si la requête réussit
 
-      if (response.ok) {
-        // Remise du `if (response.ok)`
-        const result = await response.json();
-        console.log("Réponse du serveur :", result);
-
-        Alert.alert("Succès", "Utilisateur ajouté avec succès !");
-        navigation.navigate("Inscription2");
-      } else {
-        console.error("Erreur côté serveur :", await response.text());
-        Alert.alert("Erreur", "Une erreur est survenue lors de l'ajout.");
-      }
+      console.log("Réponse du serveur :", result);
+      Alert.alert("Succès", "Utilisateur ajouté avec succès !");
+      navigation.navigate("Inscription2");
     } catch (error) {
       if (error.name === "AbortError") {
         console.error("La requête a expiré !");
         Alert.alert("Erreur", "Le serveur a mis trop de temps à répondre.");
       } else {
         console.error("Erreur lors de la requête :", error);
-        Alert.alert("Erreur", "Impossible de se connecter au serveur.");
+        Alert.alert("Erreur", error.message || "Impossible de se connecter au serveur.");
       }
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <ImageBackground
-        source={require("../assets/Inscription.png")}
-        style={styles.logo}
-      />
 
       <Text style={styles.title}>S'inscrire</Text>
 
       {/* Civilité */}
       <Text style={styles.label}>Civilité</Text>
       <View style={styles.radioGroup}>
-        {["Mr", "Mme"].map((option, index) => (
+        {civiliteOptions.map((option, index) => (
           <TouchableOpacity
             key={index}
             style={styles.radioOption}
-            onPress={() => handleChange("civilite", option)}
+            onPress={() => handleChange("civilite", option.value)}
           >
             <View
               style={[
                 styles.radioCircle,
-                formData.civilite === option && styles.radioSelected,
+                formData.civilite === option.value && styles.radioSelected,
               ]}
             />
-            <Text style={styles.radioText}>{option}</Text>
+            <Text style={styles.radioText}>{option.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -197,6 +209,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Nom"
+            placeholderTextColor="#8892b0"
             value={formData.name}
             onChangeText={(value) => handleChange("name", value)}
           />
@@ -206,6 +219,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Prénom"
+            placeholderTextColor="#8892b0"
             value={formData.surname}
             onChangeText={(value) => handleChange("surname", value)}
           />
@@ -221,7 +235,7 @@ export default function Inscription({ navigation }) {
             onPress={() => setShowDropdown(true)}
           >
             <Text style={styles.dropdownText}>
-              {formData.handicap || "Sélectionner un handicap"}
+              {getHandicapLabel(formData.handicap)}
             </Text>
           </TouchableOpacity>
 
@@ -234,11 +248,11 @@ export default function Inscription({ navigation }) {
                     key={index}
                     style={styles.option}
                     onPress={() => {
-                      handleChange("handicap", option.label);
+                      handleChange("handicap", option.value);
                       setShowDropdown(false);
                     }}
                   >
-                    <Text>{option.label}</Text>
+                    <Text style={styles.optionText}>{option.label}</Text>
                   </TouchableOpacity>
                 ))}
                 <TouchableOpacity
@@ -257,6 +271,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="YYYY-MM-DD"
+            placeholderTextColor="#8892b0"
             value={formData.birth}
             onChangeText={(value) => handleChange("birth", value)}
           />
@@ -270,6 +285,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Email"
+            placeholderTextColor="#8892b0"
             keyboardType="email-address"
             value={formData.mail}
             onChangeText={(value) => handleChange("mail", value)}
@@ -280,6 +296,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Numéro"
+            placeholderTextColor="#8892b0"
             keyboardType="phone-pad"
             value={formData.num}
             onChangeText={(value) => handleChange("num", value)}
@@ -293,6 +310,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Contact Mail"
+            placeholderTextColor="#8892b0"
             value={formData.contact_mail}
             onChangeText={(value) => handleChange("contact_mail", value)}
           />
@@ -302,6 +320,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Contact Num"
+            placeholderTextColor="#8892b0"
             keyboardType="phone-pad"
             value={formData.contact_num}
             onChangeText={(value) => handleChange("contact_num", value)}
@@ -316,6 +335,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Mot de passe"
+            placeholderTextColor="#8892b0"
             secureTextEntry
             value={formData.password}
             onChangeText={(value) => handleChange("password", value)}
@@ -328,6 +348,7 @@ export default function Inscription({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Entrez une note (facultatif)"
+          placeholderTextColor="#8892b0"
           value={formData.note}
           onChangeText={(value) => handleChange("note", value)}
         />
@@ -366,44 +387,38 @@ export default function Inscription({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  logo: {
-    width: 550,
-    height: 550,
-    flex: 4,
-    marginTop: 60,
-    marginLeft: -70,
-    position: "absolute",
-  },
   background: {
     flex: 1,
     resizeMode: "cover",
   },
   container: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     paddingVertical: 120,
+    backgroundColor: "#0a0e27",
   },
   title: {
     fontFamily: "RalewayExtraBold",
     fontWeight: "bold",
-    fontSize: 42,
-    color: "#5895D6",
+    fontSize: 36,
+    color: "#0066ff",
     marginBottom: 20,
     textAlign: "center",
   },
   label: {
     fontFamily: "RalewayExtraBold",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
-    color: "#000",
-    marginBottom: 5,
+    color: "#c7d2e8",
+    marginBottom: 6,
   },
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 15,
+    borderColor: "#2d3454",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 14,
+    color: "#f5f7fb",
   },
   row: {
     flexDirection: "row",
@@ -418,31 +433,37 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   dropdownText: {
-    color: "#555",
-    opacity: 0.3,
+    color: "#8892b0",
   },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(10, 14, 39, 0.7)",
   },
   modalContent: {
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
     width: "80%",
-    borderRadius: 10,
+    borderRadius: 12,
     padding: 20,
+    borderWidth: 1,
+    borderColor: "#2d3454",
   },
   option: {
-    padding: 15,
+    padding: 14,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    borderBottomColor: "#2d3454",
+  },
+  optionText: {
+    color: "#f5f7fb",
+    fontFamily: "RalewayRegular",
   },
   closeButton: {
     marginTop: 10,
     alignItems: "center",
   },
   closeButtonText: {
-    color: "red",
+    color: "#ff6b35",
     fontWeight: "bold",
   },
   radioGroup: {
@@ -459,11 +480,15 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: "#5895D6",
+    borderColor: "#3385ff",
     marginRight: 5,
   },
   radioSelected: {
-    backgroundColor: "#5895D6",
+    backgroundColor: "#0066ff",
+  },
+  radioText: {
+    color: "#f5f7fb",
+    fontFamily: "RalewayRegular",
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -472,15 +497,20 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontFamily: "RalewayBlack",
-    color: "#5895D6",
+    color: "#00d9ff",
     textDecorationLine: "underline",
   },
   submitButton: {
-    backgroundColor: "#5895D6",
-    paddingVertical: 12,
-    borderRadius: 8,
+    backgroundColor: "#0066ff",
+    paddingVertical: 14,
+    borderRadius: 12,
     alignItems: "center",
     marginBottom: 10,
+    shadowColor: "#0066ff",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
   submitButtonText: {
     fontFamily: "RalewayBlack",
@@ -490,18 +520,18 @@ const styles = StyleSheet.create({
   },
   signupLink: {
     flexDirection: "row",
-    marginTop: 20,
-    marginLeft: 96,
+    marginTop: 16,
+    alignSelf: "center",
   },
   signupText: {
     fontFamily: "RalewayBlack",
-    fontSize: 14,
-    color: "#555",
+    fontSize: 13,
+    color: "#c7d2e8",
   },
   signupButtonText: {
     fontFamily: "RalewayBlack",
-    fontSize: 14,
-    color: "#5895D6",
+    fontSize: 13,
+    color: "#00d9ff",
     fontWeight: "bold",
     marginLeft: 4,
   },
@@ -509,16 +539,16 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2d3454",
     borderRadius: 4,
     marginRight: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
   },
   checkedCheckbox: {
-    backgroundColor: "#5895D6",
-    borderColor: "#5895D6",
+    backgroundColor: "#0066ff",
+    borderColor: "#0066ff",
   },
   checkboxCheck: {
     color: "#fff",

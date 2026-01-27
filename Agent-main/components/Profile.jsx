@@ -9,7 +9,7 @@ import {
   Switch,
   Animated,
 } from "react-native";
-import FeatherIcon from "react-native-vector-icons/Feather";
+import { Feather as FeatherIcon } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";

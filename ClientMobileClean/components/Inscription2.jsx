@@ -7,8 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-
-const API_BASE_URL = "http://13.60.153.228:3000";
+import { addAccompagnateur } from "../services/api";
 
 export default function Inscription2({ navigation }) {
   const [showAccompagnateurFields, setShowAccompagnateurFields] =
@@ -26,28 +25,15 @@ export default function Inscription2({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/acc/accAdd`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      await addAccompagnateur(formData);
+      Alert.alert("Succès", "Ajout de l'accompagnateur réussis !", [
+        {
+          text: "OK",
+          onPress: () => navigation.navigate("Login"),
         },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        Alert.alert("Succès", "Ajout de l'accompagnateur réussis !", [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("Login"),
-          },
-        ]);
-      } else {
-        Alert.alert("Erreur", result.error || "Une erreur est survenue.");
-      }
+      ]);
     } catch (error) {
-      Alert.alert("Erreur", "Impossible de se connecter au serveur.");
+      Alert.alert("Erreur", error.message || "Impossible de se connecter au serveur.");
     }
   };
 

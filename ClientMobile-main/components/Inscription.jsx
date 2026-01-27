@@ -197,6 +197,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Nom"
+            placeholderTextColor="#8892b0"
             value={formData.name}
             onChangeText={(value) => handleChange("name", value)}
           />
@@ -206,6 +207,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Prénom"
+            placeholderTextColor="#8892b0"
             value={formData.surname}
             onChangeText={(value) => handleChange("surname", value)}
           />
@@ -238,7 +240,7 @@ export default function Inscription({ navigation }) {
                       setShowDropdown(false);
                     }}
                   >
-                    <Text>{option.label}</Text>
+                    <Text style={styles.optionText}>{option.label}</Text>
                   </TouchableOpacity>
                 ))}
                 <TouchableOpacity
@@ -257,6 +259,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="YYYY-MM-DD"
+            placeholderTextColor="#8892b0"
             value={formData.birth}
             onChangeText={(value) => handleChange("birth", value)}
           />
@@ -270,6 +273,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Email"
+            placeholderTextColor="#8892b0"
             keyboardType="email-address"
             value={formData.mail}
             onChangeText={(value) => handleChange("mail", value)}
@@ -280,6 +284,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Numéro"
+            placeholderTextColor="#8892b0"
             keyboardType="phone-pad"
             value={formData.num}
             onChangeText={(value) => handleChange("num", value)}
@@ -293,6 +298,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Contact Mail"
+            placeholderTextColor="#8892b0"
             value={formData.contact_mail}
             onChangeText={(value) => handleChange("contact_mail", value)}
           />
@@ -302,6 +308,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Contact Num"
+            placeholderTextColor="#8892b0"
             keyboardType="phone-pad"
             value={formData.contact_num}
             onChangeText={(value) => handleChange("contact_num", value)}
@@ -316,6 +323,7 @@ export default function Inscription({ navigation }) {
           <TextInput
             style={styles.input}
             placeholder="Mot de passe"
+            placeholderTextColor="#8892b0"
             secureTextEntry
             value={formData.password}
             onChangeText={(value) => handleChange("password", value)}
@@ -328,6 +336,7 @@ export default function Inscription({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Entrez une note (facultatif)"
+          placeholderTextColor="#8892b0"
           value={formData.note}
           onChangeText={(value) => handleChange("note", value)}
         />
@@ -373,37 +382,40 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginLeft: -70,
     position: "absolute",
+    opacity: 0.2,
   },
   background: {
     flex: 1,
     resizeMode: "cover",
   },
   container: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     paddingVertical: 120,
+    backgroundColor: "#0a0e27",
   },
   title: {
     fontFamily: "RalewayExtraBold",
     fontWeight: "bold",
-    fontSize: 42,
-    color: "#5895D6",
+    fontSize: 36,
+    color: "#0066ff",
     marginBottom: 20,
     textAlign: "center",
   },
   label: {
     fontFamily: "RalewayExtraBold",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
-    color: "#000",
-    marginBottom: 5,
+    color: "#c7d2e8",
+    marginBottom: 6,
   },
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 15,
+    borderColor: "#2d3454",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 14,
+    color: "#f5f7fb",
   },
   row: {
     flexDirection: "row",
@@ -418,31 +430,33 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   dropdownText: {
-    color: "#555",
-    opacity: 0.3,
+    color: "#8892b0",
   },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(10, 14, 39, 0.7)",
   },
   modalContent: {
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
     width: "80%",
-    borderRadius: 10,
+    borderRadius: 12,
     padding: 20,
+    borderWidth: 1,
+    borderColor: "#2d3454",
   },
   option: {
-    padding: 15,
+    padding: 14,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    borderBottomColor: "#2d3454",
   },
   closeButton: {
     marginTop: 10,
     alignItems: "center",
   },
   closeButtonText: {
-    color: "red",
+    color: "#ff6b35",
     fontWeight: "bold",
   },
   radioGroup: {
@@ -459,11 +473,11 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: "#5895D6",
+    borderColor: "#3385ff",
     marginRight: 5,
   },
   radioSelected: {
-    backgroundColor: "#5895D6",
+    backgroundColor: "#0066ff",
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -472,15 +486,20 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontFamily: "RalewayBlack",
-    color: "#5895D6",
+    color: "#00d9ff",
     textDecorationLine: "underline",
   },
   submitButton: {
-    backgroundColor: "#5895D6",
-    paddingVertical: 12,
-    borderRadius: 8,
+    backgroundColor: "#0066ff",
+    paddingVertical: 14,
+    borderRadius: 12,
     alignItems: "center",
     marginBottom: 10,
+    shadowColor: "#0066ff",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
   submitButtonText: {
     fontFamily: "RalewayBlack",
@@ -490,18 +509,18 @@ const styles = StyleSheet.create({
   },
   signupLink: {
     flexDirection: "row",
-    marginTop: 20,
-    marginLeft: 96,
+    marginTop: 16,
+    alignSelf: "center",
   },
   signupText: {
     fontFamily: "RalewayBlack",
-    fontSize: 14,
-    color: "#555",
+    fontSize: 13,
+    color: "#c7d2e8",
   },
   signupButtonText: {
     fontFamily: "RalewayBlack",
-    fontSize: 14,
-    color: "#5895D6",
+    fontSize: 13,
+    color: "#00d9ff",
     fontWeight: "bold",
     marginLeft: 4,
   },
@@ -509,16 +528,16 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2d3454",
     borderRadius: 4,
     marginRight: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
   },
   checkedCheckbox: {
-    backgroundColor: "#5895D6",
-    borderColor: "#5895D6",
+    backgroundColor: "#0066ff",
+    borderColor: "#0066ff",
   },
   checkboxCheck: {
     color: "#fff",

@@ -13,6 +13,7 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { API_BASE } from "../config/apiBase";
 import { useFonts, Raleway_400Regular, Raleway_700Bold } from "@expo-google-fonts/raleway";
 
 // Importez les images
@@ -38,7 +39,7 @@ export default function Research() {
   const handleSearch = async (query) => {
     try {
       const response = await fetch(
-        `http://172.20.10.11:3000/reservation/getByPoint?pmr_point_id=${query}`
+        `${API_BASE}/reservation/getByPoint?pmr_point_id=${encodeURIComponent(query)}&transport=${encodeURIComponent(role || "")}`
       );
       const data = await response.json();
 
@@ -46,6 +47,8 @@ export default function Research() {
 
       if (response.ok) {
         setReservations(data);
+        setModalVisible(false);
+        setSelectedTrajet(null);
       } else {
         Alert.alert("Erreur", data.message || "Aucune réservation trouvée pour ce lieu.");
         setReservations([]);
@@ -68,7 +71,7 @@ export default function Research() {
   const handleAccept = async (reservationId) => {
     try {
       const response = await fetch(
-        `http://172.20.10.11:3000/reservation/getById?id=${reservationId}`
+        `${API_BASE}/reservation/getById?id=${encodeURIComponent(reservationId)}`
       );
 
       if (!response.ok) {
@@ -172,7 +175,13 @@ export default function Research() {
         renderItem={({ item }) => (
           <View style={styles.resultItem}>
             <Text style={styles.resultTitle}>Réservation #{item.id}</Text>
-            <TouchableOpacity style={styles.trajetContainer} onPress={() => setSelectedTrajet(item)}>
+            <TouchableOpacity
+              style={styles.trajetContainer}
+              onPress={() => {
+                setSelectedTrajet(item);
+                setModalVisible(true);
+              }}
+            >
               <Text style={styles.resultSubtitle}>
                 Point de récupération : {item.trajet.point} - Heure : {item.trajet.heure}
               </Text>

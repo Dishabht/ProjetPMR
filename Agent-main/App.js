@@ -57,13 +57,9 @@ export default function App() {
             options={{ headerShown: false }}
           />
           {/* Login */}
-          <Stack.Screen
-            name="Login"
-            component={(props) => (
-              <Login {...props} onLoginSuccess={() => setIsLoggedIn(true)} />
-            )}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Login" options={{ headerShown: false }}>
+            {(props) => <Login {...props} onLoginSuccess={() => setIsLoggedIn(true)} />}
+          </Stack.Screen>
           {/* Home */}
           <Stack.Screen
             name="Home"
@@ -149,9 +145,8 @@ export default function App() {
           />
 
           {/* Profile */}
-          <Stack.Screen
-            name="Profile"
-            component={(props) => (
+          <Stack.Screen name="Profile" options={{ headerShown: false }}>
+            {(props) => (
               <Profile
                 {...props}
                 onLogout={() => {
@@ -160,8 +155,7 @@ export default function App() {
                 }}
               />
             )}
-            options={{ headerShown: false }}
-          />     
+          </Stack.Screen>
         </Stack.Navigator>
         {/* NavBar: affichée uniquement si l'utilisateur est connecté */}
         {shouldDisplayNavBar && <NavBar />}

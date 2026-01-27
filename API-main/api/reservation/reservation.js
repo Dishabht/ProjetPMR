@@ -1,9 +1,222 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const { createClient } = require("redis");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 const { sendConfirmationEmail } = require("./mailler");
 const { redisClient } = require("../../config/config");
+
+const reservationSchema = new mongoose.Schema(
+  {
+    num_reservation: { type: String, required: true },
+    name: String,
+    surname: String,
+    phone: String,
+    handicap_type: String,
+    numBags: Number,
+    lieu_depart: { type: String, required: true },
+    lieu_arrivee: { type: String, required: true },
+    heure_depart: { type: String, required: true },
+    heure_arrivee: String,
+    transport: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+const getReservationModel = (connection) =>
+  connection.models.Reservation ||
+  connection.model("Reservation", reservationSchema);
+
+const getMongoConnections = (req) => {
+  if (!req) return [];
+
+  return [
+    { name: "RATP", connection: req.mongoRATP },
+    { name: "SNCF", connection: req.mongoSNCF },
+    { name: "AirFrance", connection: req.mongoAirFrance },
+  ].filter((entry) => entry.connection && entry.connection.readyState === 1);
+};
+
+const getConnectionsByTransport = (req, transport) => {
+  const connections = getMongoConnections(req);
+  if (!transport) return connections;
+
+  return connections.filter(
+    (entry) => entry.name.toLowerCase() === transport.toLowerCase()
+  );
+};
+
+const mongoSeedData = {
+  RATP: [
+    {
+      num_reservation: "RATP-001",
+      name: "Lea",
+      surname: "Martin",
+      phone: "0611111111",
+      handicap_type: "WCHC",
+      numBags: 2,
+      lieu_depart: "Gare de Lyon",
+      lieu_arrivee: "Châtelet",
+      heure_depart: "14:15",
+      heure_arrivee: "14:45",
+      transport: "RATP",
+    },
+  ],
+  SNCF: [
+    {
+      num_reservation: "SNCF-001",
+      name: "Jean",
+      surname: "Dupont",
+      phone: "0600000000",
+      handicap_type: "WCHR",
+      numBags: 1,
+      lieu_depart: "Marseille",
+      lieu_arrivee: "Gare de Lyon",
+      heure_depart: "10:30",
+      heure_arrivee: "13:40",
+      transport: "SNCF",
+    },
+  ],
+  AirFrance: [
+    {
+      num_reservation: "AF-001",
+      name: "Nina",
+      surname: "Lopez",
+      phone: "0622222222",
+      handicap_type: "WCHS",
+      numBags: 1,
+      lieu_depart: "CDG",
+      lieu_arrivee: "Nice",
+      heure_depart: "18:45",
+      heure_arrivee: "20:05",
+      transport: "AirFrance",
+    },
+  ],
+};
+
+const ensureMongoSeed = async (req) => {
+  const connections = getMongoConnections(req);
+  if (connections.length === 0) return;
+  await Promise.all(
+    connections.map(async ({ name, connection }) => {
+      const model = getReservationModel(connection);
+      const count = await model.countDocuments();
+      if (count > 0) return;
+
+      const seed = mongoSeedData[name] || [];
+      if (seed.length === 0) return;
+
+      await model.insertMany(seed);
+    })
+  );
+};
+
+const escapeRegex = (value) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Fallback mémoire si Redis est indisponible
+const memoryStore = new Map();
+
+const seedMemoryBillets = () => {
+  if (memoryStore.size > 0) return;
+
+  const sampleBillets = [
+    {
+      num_reservation: "001",
+      name: "Jean",
+      surname: "Dupont",
+      phone: "0600000000",
+      handicap_type: "WCHR",
+      numBags: 1,
+      lieu_depart: "Marseille",
+      lieu_arrivee: "Gare de Lyon",
+      heure_depart: "10:30",
+      transport: "SNCF",
+    },
+    {
+      num_reservation: "002",
+      name: "Lea",
+      surname: "Martin",
+      phone: "0611111111",
+      handicap_type: "WCHC",
+      numBags: 2,
+      lieu_depart: "Gare de Lyon",
+      lieu_arrivee: "Marseille",
+      heure_depart: "14:15",
+      transport: "RATP",
+    },
+    {
+      num_reservation: "003",
+      name: "Nina",
+      surname: "Lopez",
+      phone: "0622222222",
+      handicap_type: "WCHS",
+      numBags: 1,
+      lieu_depart: "CDG",
+      lieu_arrivee: "Nice",
+      heure_depart: "18:45",
+      transport: "AirFrance",
+    },
+  ];
+
+  for (const billet of sampleBillets) {
+    const key = `billet:${billet.num_reservation}`;
+    memoryStore.set(key, JSON.stringify(billet));
+  }
+};
+
+seedMemoryBillets();
+
+const seedRedisBillets = async () => {
+  const keys = await getKeys("billet:*");
+  if (keys.length > 0) return;
+
+  for (const billet of memoryStore.values()) {
+    const parsed = JSON.parse(billet);
+    const key = `billet:${parsed.num_reservation}`;
+    await setValue(key, JSON.stringify(parsed));
+  }
+};
+
+const isRedisReady = () => redisClient && redisClient.isOpen;
+
+const getKeys = async (pattern) => {
+  if (isRedisReady()) {
+    return redisClient.keys(pattern);
+  }
+
+  if (pattern === "billet:*") {
+    return Array.from(memoryStore.keys()).filter((key) => key.startsWith("billet:"));
+  }
+
+  return [];
+};
+
+const getValue = async (key) => {
+  if (isRedisReady()) {
+    return redisClient.get(key);
+  }
+
+  return memoryStore.get(key) ?? null;
+};
+
+const setValue = async (key, value) => {
+  if (isRedisReady()) {
+    return redisClient.set(key, value);
+  }
+
+  memoryStore.set(key, value);
+  return "OK";
+};
+
+const deleteValue = async (key) => {
+  if (isRedisReady()) {
+    return redisClient.del(key);
+  }
+
+  memoryStore.delete(key);
+  return 1;
+};
 
 /**
  * @swagger
@@ -67,7 +280,7 @@ router.post("/addToRedis", async (req, res) => {
 
   try {
     const billetKey = `billet:${billet.num_reservation}`;
-    await redisClient.set(billetKey, JSON.stringify(billet));
+    await setValue(billetKey, JSON.stringify(billet));
     console.log("Billet enregistré dans Redis :", billetKey);
 
     // Envoi de l'email
@@ -187,11 +400,18 @@ router.get("/getTickets", async (req, res) => {
 
   try {
     // Rechercher tous les billets
-    const keys = await redisClient.keys("billet:*");
+    let keys = await getKeys("billet:*");
+    if (keys.length === 0) {
+      await seedRedisBillets();
+      keys = await getKeys("billet:*");
+    }
 
     const billets = [];
     for (const key of keys) {
-      const data = await redisClient.get(key);
+      const data = await getValue(key);
+      if (!data) {
+        continue;
+      }
       const billet = JSON.parse(data);
 
       if (
@@ -308,7 +528,7 @@ router.delete("/deleteFromRedis", async (req, res) => {
 
   try {
     const billetKey = `billet:${num_reservation}`;
-    const result = await redisClient.del(billetKey);
+    const result = await deleteValue(billetKey);
 
     console.log("Résultat de suppression Redis :", result);
 
@@ -380,7 +600,7 @@ router.delete("/deleteFromRedis", async (req, res) => {
  *         description: Erreur serveur
  */
 router.get("/getByPoint", async (req, res) => {
-  const { pmr_point_id } = req.query;
+  const { pmr_point_id, transport } = req.query;
 
   if (!pmr_point_id) {
     return res
@@ -391,22 +611,66 @@ router.get("/getByPoint", async (req, res) => {
   try {
     console.log("Paramètre pmr_point_id reçu :", pmr_point_id); // Log du paramètre reçu
 
-    const keys = await redisClient.keys("billet:*");
+    await ensureMongoSeed(req);
+
+    const pointRegex = new RegExp(
+      `^${escapeRegex(pmr_point_id.trim())}$`,
+      "i"
+    );
+    const mongoConnections = getConnectionsByTransport(req, transport);
+
+    if (mongoConnections.length > 0) {
+      const mongoResults = await Promise.all(
+        mongoConnections.map(async ({ connection }) => {
+          const model = getReservationModel(connection);
+          return model.find({ lieu_depart: pointRegex }).lean();
+        })
+      );
+
+      const mongoReservations = mongoResults
+        .flat()
+        .filter(Boolean)
+        .map((billet) => ({
+          id: billet.num_reservation,
+          client_name: billet.name,
+          client_surname: billet.surname,
+          client_phone: billet.phone,
+          handicap_type: billet.handicap_type,
+          baggage_count: billet.numBags,
+          trajet: {
+            point: billet.lieu_depart,
+            heure: billet.heure_depart,
+          },
+          transport: billet.transport || null,
+        }));
+
+      console.log("Réservations Mongo filtrées :", mongoReservations);
+
+      if (mongoReservations.length > 0) {
+        return res.status(200).json(mongoReservations);
+      }
+    }
+
+    const keys = await getKeys("billet:*");
     console.log("Clés Redis trouvées :", keys); // Log des clés Redis
 
     const reservations = [];
 
     for (const key of keys) {
-      const data = await redisClient.get(key);
+      const data = await getValue(key);
       const billet = JSON.parse(data);
 
       console.log("Données Redis pour la clé", key, ":", billet); // Log des données Redis
 
       // Normalisation des données pour la comparaison
-      if (
-        billet.lieu_depart.trim().toLowerCase() ===
-        pmr_point_id.trim().toLowerCase()
-      ) {
+      const matchesPoint =
+        billet.lieu_depart?.trim().toLowerCase() ===
+        pmr_point_id.trim().toLowerCase();
+      const matchesTransport = transport
+        ? billet.transport?.toLowerCase() === transport.trim().toLowerCase()
+        : true;
+
+      if (matchesPoint && matchesTransport) {
         reservations.push({
           id: billet.num_reservation,
           client_name: billet.name,
@@ -418,6 +682,7 @@ router.get("/getByPoint", async (req, res) => {
             point: billet.lieu_depart,
             heure: billet.heure_depart,
           },
+          transport: billet.transport || null,
         });
       }
     }
@@ -448,9 +713,28 @@ router.get("/getById", async (req, res) => {
   }
 
   try {
+    await ensureMongoSeed(req);
+
+    const mongoConnections = getMongoConnections(req);
+    if (mongoConnections.length > 0) {
+      for (const { connection } of mongoConnections) {
+        const model = getReservationModel(connection);
+        const mongoBillet = await model
+          .findOne({ num_reservation: id })
+          .lean();
+
+        if (mongoBillet) {
+          return res.status(200).json({
+            success: true,
+            reservation: mongoBillet,
+          });
+        }
+      }
+    }
+
     // Rechercher le billet correspondant dans Redis
     const billetKey = `billet:${id}`;
-    const data = await redisClient.get(billetKey);
+    const data = await getValue(billetKey);
 
     if (!data) {
       return res.status(404).json({
@@ -473,7 +757,9 @@ router.get("/getById", async (req, res) => {
 // Fermer la connexion Redis proprement si nécessaire (optionnel)
 process.on("SIGINT", async () => {
   console.log("Fermeture de la connexion Redis...");
-  await redisClient.quit();
+  if (redisClient && redisClient.isOpen) {
+    await redisClient.quit();
+  }
   process.exit();
 });
 

@@ -17,7 +17,9 @@ export default function Prereservation() {
   };
 
   const handleCheckReservation = async () => {
-    if (!numReservation || !selectedTransport) {
+    const normalizedReservation = numReservation.trim();
+
+    if (!normalizedReservation || !selectedTransport) {
       setMessage({
         text: "Veuillez entrer un numéro de réservation et sélectionner une base.",
         type: "error",
@@ -27,10 +29,7 @@ export default function Prereservation() {
 
     setLoading(true);
     try {
-      const response = await checkReservation(
-        parseInt(numReservation, 10),
-        selectedTransport
-      );
+      const response = await checkReservation(normalizedReservation, selectedTransport);
 
       if (response.reservation) {
         setMessage({ text: "Réservation trouvée !", type: "success" });
@@ -50,6 +49,19 @@ export default function Prereservation() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const formatTime = (value) => {
+    if (!value) return "Non disponible";
+
+    if (typeof value === "string" && /^\d{1,2}:\d{2}/.test(value)) {
+      return value;
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   return (
@@ -97,6 +109,9 @@ export default function Prereservation() {
               onChange={(e) => setNumReservation(e.target.value)}
               className="w-full px-4 py-3 bg-bg-secondary border border-border rounded-lg text-lg text-text focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all"
             />
+            <p className="text-text-secondary text-sm mt-2">
+              Exemple : RATP-001
+            </p>
           </div>
 
           {/* Check Button */}
@@ -118,12 +133,7 @@ export default function Prereservation() {
                     {billet.lieu_depart || "Non disponible"}
                   </p>
                   <p className="text-primary text-3xl font-bold mt-2">
-                    {billet.heure_depart
-                      ? new Date(billet.heure_depart).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })
-                      : "Non disponible"}
+                    {formatTime(billet.heure_depart)}
                   </p>
                 </div>
                 <div className="text-right">
@@ -132,12 +142,34 @@ export default function Prereservation() {
                     {billet.lieu_arrivee || "Non disponible"}
                   </p>
                   <p className="text-accent text-3xl font-bold mt-2">
-                    {billet.heure_arrivee
-                      ? new Date(billet.heure_arrivee).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })
-                      : "Non disponible"}
+                    {formatTime(billet.heure_arrivee)}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Numéro</p>
+                  <p className="text-text font-semibold">
+                    {billet.num_reservation || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Transport</p>
+                  <p className="text-text font-semibold">
+                    {billet.transport || billet.type_transport || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Nom</p>
+                  <p className="text-text font-semibold">
+                    {billet.name || "Non disponible"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-text-secondary text-sm mb-1">Prénom</p>
+                  <p className="text-text font-semibold">
+                    {billet.surname || "Non disponible"}
                   </p>
                 </div>
               </div>

@@ -75,11 +75,11 @@ export default function PageStart({ navigation }) {
   }, [scaleAnim]);
 
   return (
-    <LinearGradient colors={["#5895d6", "#f0f0f0"]} style={styles.gradient}>
+    <LinearGradient colors={["#0a0e27", "#151b3a"]} style={styles.gradient}>
       <View style={styles.container}>
         {/* Gros logo animé en haut */}
         <Animated.Image
-          source={require("../assets/PMoveLogoSANSTITRE.png")}
+          source={require("../assets/PMoveLogoAvecStyle.png")}
           style={[styles.largeLogo, { transform: [{ scale: scaleAnim }] }]}
         />
 
@@ -96,17 +96,17 @@ export default function PageStart({ navigation }) {
 
         {/* Boutons */}
         <TouchableOpacity
-          style={styles.buttonPrimary}
+          style={styles.buttonSecondary}
           onPress={() => navigation.navigate("Login")}
         >
-          <Text style={styles.buttonTextPrimary}>Se connecter</Text>
+          <Text style={styles.buttonTextSecondary}>Se connecter</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.buttonSecondary}
+          style={styles.buttonPrimary}
           onPress={() => navigation.navigate("Signup")}
         >
-          <Text style={styles.buttonTextSecondary}>S'inscrire</Text>
+          <Text style={styles.buttonTextPrimary}>S'inscrire</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -135,35 +135,41 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "RalewayBold",
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
-    color: "#ffffff",
+    color: "#f5f7fb",
     textAlign: "center",
-    marginRight: 8, // Espacement entre "Bienvenue sur" et "PMove"
+    marginRight: 8,
   },
   title2: {
     fontFamily: "RalewayBold",
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
-    color: "#5895D6",
+    color: "#00d9ff",
     textAlign: "center",
   },
   subtitle: {
     fontFamily: "RalewayExtraBold",
     fontWeight: "bold",
-    fontSize: 16,
-    color: "#ffffff",
+    fontSize: 15,
+    color: "#c7d2e8",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 24,
+    paddingHorizontal: 10,
   },
   buttonPrimary: {
-    backgroundColor: "#5895d6",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    width: "80%",
+    backgroundColor: "#0066ff",
+    paddingVertical: 14,
+    paddingHorizontal: 22,
+    borderRadius: 12,
+    width: "86%",
     alignItems: "center",
-    marginBottom: 10,
+    marginTop: 12,
+    shadowColor: "#0066ff",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
   buttonTextPrimary: {
     fontFamily: "RalewayExtraBold",
@@ -172,17 +178,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonSecondary: {
-    borderColor: "#ffffff",
+    borderColor: "#3385ff",
     borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    width: "80%",
+    borderRadius: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 22,
+    width: "86%",
     alignItems: "center",
   },
   buttonTextSecondary: {
     fontFamily: "RalewayBold",
-    color: "#ffffff",
+    color: "#f5f7fb",
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -190,6 +196,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#5895d6",
+    backgroundColor: "#0a0e27",
   },
 });

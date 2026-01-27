@@ -155,11 +155,13 @@ const styles = StyleSheet.create({
   scrollcontent: {
     flexGrow: 1,
     paddingBottom: 120,
+    backgroundColor: "#0a0e27",
   },
   container: {
     flex: 1,
     padding: 20,
     paddingTop: 70,
+    backgroundColor: "#0a0e27",
   },
   header: {
     marginBottom: 20,
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
     fontFamily: "RalewayBlack",
     fontSize: 24,
     fontWeight: "bold",
-    color: "#5895D6",
+    color: "#f5f7fb",
     textAlign: "center",
   },
   profileSection: {
@@ -185,23 +187,26 @@ const styles = StyleSheet.create({
     fontFamily: "RalewayBold",
     fontSize: 20,
     fontWeight: "bold",
-    color: "#333",
+    color: "#f5f7fb",
   },
   infoSection: {
-    borderRadius: 10,
+    borderRadius: 12,
     padding: 20,
     marginBottom: 20,
+    backgroundColor: "#151b3a",
+    borderWidth: 1,
+    borderColor: "#2d3454",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
     elevation: 3,
   },
   infoTitle: {
     fontFamily: "RalewayBold",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#5895D6",
+    color: "#00d9ff",
     marginBottom: 20,
   },
   infoRow: {
@@ -213,14 +218,14 @@ const styles = StyleSheet.create({
     fontFamily: "RalewayBold",
     fontSize: 14,
     fontWeight: "bold",
-    color: "#555",
+    color: "#c7d2e8",
   },
   infoValue: {
     fontFamily: "RalewayRegular",
     marginLeft: 5,
     fontSize: 14,
-    color: "#333",
-    flex: 2, // Permet à la valeur d'être bien alignée avec le label
+    color: "#f5f7fb",
+    flex: 2,
   },
   qrCodeSection: {
     alignItems: "center",

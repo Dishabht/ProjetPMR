@@ -1,26 +1,37 @@
 exports.checkReservation = async (db, num_reservation) => {
   try {
-    // Convertir num_reservation en entier
-    const reservationNumber = parseInt(num_reservation, 10);
+    const normalized =
+      typeof num_reservation === "string" ? num_reservation.trim() : num_reservation;
 
-    // Vérifie si la conversion est valide
-    if (isNaN(reservationNumber)) {
-      throw new Error("Le numéro de réservation doit être un entier.");
+    const candidates = [];
+
+    if (normalized !== undefined && normalized !== null && normalized !== "") {
+      candidates.push(normalized);
+
+      if (typeof normalized === "string") {
+        const asNumber = Number(normalized);
+        if (!Number.isNaN(asNumber)) {
+          candidates.push(asNumber);
+        }
+      } else if (typeof normalized === "number") {
+        candidates.push(String(normalized));
+      }
     }
 
-    // Recherche dans la collection "Reservation"
+    if (candidates.length === 0) {
+      throw new Error("Le numéro de réservation est requis.");
+    }
+
     const collection = db.collection("Reservation");
 
-    // Log pour déboguer les paramètres de la recherche
     console.log("Recherche MongoDB avec :", {
-      num_reservation: reservationNumber,
+      num_reservation: candidates,
     });
 
     const reservation = await collection.findOne({
-      num_reservation: reservationNumber, // Utilise le numéro converti
+      num_reservation: { $in: candidates },
     });
 
-    // Log le résultat de la recherche
     console.log("Résultat de la recherche :", reservation);
 
     return reservation;

@@ -124,6 +124,7 @@ export default function Connexion({ navigation, onLoginSuccess }) {
         <TextInput
           style={styles.input}
           placeholder="Email"
+          placeholderTextColor="#8892b0"
           keyboardType="email-address"
           value={mail}
           onChangeText={setEmail}
@@ -133,6 +134,7 @@ export default function Connexion({ navigation, onLoginSuccess }) {
         <TextInput
           style={styles.input}
           placeholder="Mot de passe"
+          placeholderTextColor="#8892b0"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
@@ -210,19 +212,19 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   container: {
-    marginTop: 140,
-    backgroundColor: "#fff",
+    marginTop: 120,
+    backgroundColor: "#0a0e27",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 24,
+    paddingBottom: 30,
   },
   title: {
     fontFamily: "RalewayExtraBold",
     fontWeight: "bold",
-    fontSize: 42,
-    fontWeight: "bold",
-    color: "#5895D6",
-    marginBottom: 50,
+    fontSize: 40,
+    color: "#0066ff",
+    marginBottom: 40,
   },
   form: {
     width: "100%",
@@ -231,31 +233,37 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: "RalewayExtraBold",
     fontWeight: "black",
-    fontSize: 16,
-    color: "#000",
+    fontSize: 14,
+    color: "#c7d2e8",
     marginBottom: 8,
   },
   input: {
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#151b3a",
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2d3454",
     marginBottom: 16,
+    color: "#f5f7fb",
   },
   forgotPassword: {
     fontFamily: "RalewayBlack",
-    fontSize: 14,
-    color: "#e53  ",
+    fontSize: 13,
+    color: "#ff6b35",
     textAlign: "right",
     marginBottom: 20,
   },
   buttonPrimary: {
-    backgroundColor: "#5895D6",
-    paddingVertical: 12,
-    borderRadius: 8,
+    backgroundColor: "#0066ff",
+    paddingVertical: 14,
+    borderRadius: 12,
     alignItems: "center",
+    shadowColor: "#0066ff",
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
   buttonPrimaryText: {
     color: "#fff",
@@ -264,10 +272,10 @@ const styles = StyleSheet.create({
   },
   socialText: {
     fontFamily: "RalewayExtraBold",
-    fontSize: 16,
-    color: "#555",
-    marginBottom: 20,
-    marginTop: 50,
+    fontSize: 14,
+    color: "#c7d2e8",
+    marginBottom: 16,
+    marginTop: 36,
   },
   socialButtons: {
     width: "100%",
@@ -276,17 +284,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
-    borderColor: "#ccc",
+    backgroundColor: "#1a1f3a",
+    borderColor: "#2d3454",
     borderWidth: 1,
     paddingVertical: 12,
-    borderRadius: 8,
-    marginBottom: 16,
+    borderRadius: 12,
+    marginBottom: 12,
   },
   socialButtonText: {
     fontFamily: "RalewayBlack",
-    fontSize: 16,
+    fontSize: 14,
     marginLeft: 10,
+    color: "#f5f7fb",
   },
   icon: {
     marginRight: 8,
@@ -297,13 +306,13 @@ const styles = StyleSheet.create({
   },
   signupText: {
     fontFamily: "RalewayBlack",
-    fontSize: 14,
-    color: "#555",
+    fontSize: 13,
+    color: "#c7d2e8",
   },
   signupButtonText: {
     fontFamily: "RalewayBlack",
-    fontSize: 14,
-    color: "#5895D6",
+    fontSize: 13,
+    color: "#00d9ff",
     fontWeight: "bold",
     marginLeft: 4,
   },

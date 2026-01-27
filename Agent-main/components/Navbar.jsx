@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Animated, Easing } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { FontAwesome as Icon } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import {

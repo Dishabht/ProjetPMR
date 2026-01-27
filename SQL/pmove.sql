@@ -90,6 +90,38 @@ CREATE TABLE IF NOT EXISTS `client` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
+-- Données de test pour connexion client
+-- civilite: 1=Mr, 2=Mme (adapter si besoin)
+-- handicap: 5=WCHS
+-- identifiants: mail=client.test@pmove.fr / mdp=client123
+-- --------------------------------------------------------
+INSERT INTO `client` (
+  `name`,
+  `surname`,
+  `num`,
+  `mail`,
+  `handicap`,
+  `civilite`,
+  `birth`,
+  `password`,
+  `contact_mail`,
+  `contact_num`,
+  `note`
+) VALUES (
+  'Client',
+  'Test',
+  751033970,
+  'client.test@pmove.fr',
+  5,
+  2,
+  '2005-12-10',
+  'client123',
+  'client.test@pmove.fr',
+  612545539,
+  'Compte de test'
+);
+
+-- --------------------------------------------------------
 
 --
 -- Structure de la table `handicap`

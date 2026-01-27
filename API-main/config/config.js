@@ -12,16 +12,29 @@ const mysqlConnexion = mysql.createPool({
   queueLimit: 0,
 });
 
-// Configuration Redis
-const redisClient = createClient({
-  url: `redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-});
+// Configuration Redis (optionnelle)
+let redisClient = null;
+const redisDisabled = process.env.REDIS_DISABLED === "1";
+const hasRedisConfig = !!process.env.REDIS_HOST;
 
-redisClient.connect().catch(console.error);
+if (!redisDisabled && hasRedisConfig) {
+  const redisHost = process.env.REDIS_HOST;
+  const redisPort = process.env.REDIS_PORT || 6379;
+  const redisPassword = process.env.REDIS_PASSWORD;
+  const redisUrl = redisPassword
+    ? `redis://:${redisPassword}@${redisHost}:${redisPort}`
+    : `redis://${redisHost}:${redisPort}`;
 
-redisClient.on("error", (err) => {
-  console.error("Redis error:", err);
-});
+  redisClient = createClient({
+    url: redisUrl,
+  });
+
+  redisClient.connect().catch(console.error);
+
+  redisClient.on("error", (err) => {
+    console.error("Redis error:", err);
+  });
+}
 
 module.exports = {
   mysqlConnexion,

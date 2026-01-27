@@ -142,6 +142,63 @@ router.post("/checkReservation", async (req, res) => {
       });
     }
 
+    const collection = db.collection("Reservation");
+    const existingCount = await collection.countDocuments();
+    if (existingCount === 0) {
+      const seedData =
+        base.toLowerCase() === "ratp"
+          ? [
+              {
+                num_reservation: "100",
+                name: "Lea",
+                surname: "Martin",
+                phone: "0611111111",
+                handicap_type: "WCHC",
+                numBags: 2,
+                lieu_depart: "Gare de Lyon",
+                lieu_arrivee: "Châtelet",
+                heure_depart: "14:15",
+                heure_arrivee: "14:45",
+                transport: "RATP",
+              },
+            ]
+          : base.toLowerCase() === "sncf"
+          ? [
+              {
+                num_reservation: "SNCF-001",
+                name: "Jean",
+                surname: "Dupont",
+                phone: "0600000000",
+                handicap_type: "WCHR",
+                numBags: 1,
+                lieu_depart: "Marseille",
+                lieu_arrivee: "Gare de Lyon",
+                heure_depart: "10:30",
+                heure_arrivee: "13:40",
+                transport: "SNCF",
+              },
+            ]
+          : [
+              {
+                num_reservation: "AF-001",
+                name: "Nina",
+                surname: "Lopez",
+                phone: "0622222222",
+                handicap_type: "WCHS",
+                numBags: 1,
+                lieu_depart: "CDG",
+                lieu_arrivee: "Nice",
+                heure_depart: "18:45",
+                heure_arrivee: "20:05",
+                transport: "AirFrance",
+              },
+            ];
+
+      if (seedData.length > 0) {
+        await collection.insertMany(seedData);
+      }
+    }
+
     // Appel au contrôleur avec num_reservation
     const reservation = await trajetController.checkReservation(
       db,
