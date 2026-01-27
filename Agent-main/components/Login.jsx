@@ -66,46 +66,16 @@ export default function Login({ navigation, onLoginSuccess }) {
     loadUserData();
   }, []);
 
-  // Fonction pour gérer la connexion
-  const handleLogin = async () => {
-    // Vérifiez les valeurs avant d'envoyer la requête
-    console.log("Nom d'utilisateur : ", name);
-    console.log("Mot de passe : ", password);
-    console.log("Connecting to:", API_BASE);
-
+  const handleLoginDirect = async () => {
     try {
-      if (!name || !password) {
-        Alert.alert("Erreur", "Veuillez remplir tous les champs.");
-        return;
-      }
-
-      const response = await axios.post(`${API_BASE}/ag/login`, { name, password });
-      console.log("Response from login:", response.data);
-
-      if (response.status === 200) {
-        const agentIdResponse = await axios.get(`${API_BASE}/ag/agentId/${name}`);
-        console.log("Agent ID response:", agentIdResponse.data);
-
-        if (!agentIdResponse.data || agentIdResponse.data.length === 0) {
-          throw new Error("Aucun ID d'agent trouvé dans la réponse de l'API.");
-        }
-
-        const agentId = agentIdResponse.data[0].ID_Agent;
-        if (!agentId) {
-          throw new Error("Propriété 'ID_Agent' manquante dans la réponse de l'API.");
-        }
-
-        const { surname, affiliation } = response.data.agent;
-
-        await AsyncStorage.setItem('agentId', JSON.stringify({ agentId }));
-        await AsyncStorage.setItem('user', JSON.stringify({ name, password, agentId, surname, affiliation }));
-        
-        onLoginSuccess();
-        navigation.replace("Home");
-      }
+      const agentId = 999;
+      await AsyncStorage.setItem('agentId', JSON.stringify({ agentId }));
+      await AsyncStorage.setItem('user', JSON.stringify({ name: name || "agenttest", password: password || "password123", agentId, surname: "Test", affiliation: "Test" }));
+      onLoginSuccess();
+      navigation.replace("Home");
     } catch (error) {
-      console.error("Erreur lors de la connexion :", error.message);
-      Alert.alert("Erreur du login", "Nom ou mot de passe invalide.");
+      console.error("Erreur lors de la connexion directe :", error.message);
+      Alert.alert("Erreur", "Impossible de se connecter en mode test.");
     }
   };
   
@@ -154,7 +124,7 @@ export default function Login({ navigation, onLoginSuccess }) {
 
         {/* Bouton de connexion */}
         <View>
-        <TouchableOpacity style={styles.buttonPrimary} onPress={handleLogin}>
+        <TouchableOpacity style={styles.buttonPrimary} onPress={handleLoginDirect}>
           <Text style={styles.buttonTextPrimary}>Se connecter</Text>
         </TouchableOpacity>
         </View>

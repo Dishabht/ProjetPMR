@@ -12,8 +12,7 @@ import ReservationTrajet from "./components/Menu/ReservationTrajet";
 import MobileNavbars from "./components/MobileMenu/NavbarMobile";
 import Accompagnateur from "./components/Menu/Accompagnateur";
 import Logout from "./components/Menu/Logout";
-import Help from "./components/Menu/Help";
-import Contact from "./components/Menu/Contact";
+import Support from "./components/Menu/Support";
 import Prereservation from "./components/Menu/Prereservation";
 import Profile from "./components/Menu/Profile";
 import Reservation2 from "./components/Menu/Reservation2";
@@ -50,8 +49,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/reservation" element={<Reservation />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/support" element={<Support />} />
             <Route path="/prereservation" element={<Prereservation />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/reservation2" element={<Reservation2 />} />

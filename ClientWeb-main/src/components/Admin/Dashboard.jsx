@@ -6,28 +6,24 @@ const Dashboard = () => {
     {
       title: "Import Plannings",
       description: "Importer horaires SNCF, aéroports, compagnies de bus",
-      icon: "📥",
       link: "/admin/import-planning",
       color: "from-blue-500 to-cyan-500"
     },
     {
       title: "Attribution Missions",
       description: "Algorithme intelligent de matching agent-mission",
-      icon: "🎯",
       link: "/admin/mission-matching",
       color: "from-purple-500 to-pink-500"
     },
     {
       title: "Blocage Agent",
       description: "Bloquer agents entre zones, escalade superviseur",
-      icon: "🔒",
       link: "/admin/agent-blocking",
       color: "from-orange-500 to-red-500"
     },
     {
       title: "Supervision Temps Réel",
       description: "Dashboard avec états missions, localisation, alarmes",
-      icon: "📊",
       link: "/admin/supervision",
       color: "from-green-500 to-emerald-500"
     }
@@ -61,7 +57,6 @@ const Dashboard = () => {
 
               {/* Content */}
               <div className="relative z-10">
-                <div className="text-5xl mb-4">{section.icon}</div>
                 <h3 className="text-2xl font-bold text-text mb-2">
                   {section.title}
                 </h3>

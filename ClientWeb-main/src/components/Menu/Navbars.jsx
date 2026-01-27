@@ -37,9 +37,8 @@ const Navbars = () => {
             { to: "/itinerary", label: "Trajet" },
             { to: "/prereservation", label: "Réservation" },
             { to: "/wallet", label: "Wallet" },
-            { to: "/contact", label: "Contact" },
-            { to: "/help", label: "Aide" },
-            { to: "/admin", label: "Admin" },
+            { to: "/support", label: "Support" },
+            { to: "/admin", label: "Gestion PMR" },
           ].map((item) => (
             <Link
               key={item.to}

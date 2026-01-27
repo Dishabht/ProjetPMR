@@ -24,6 +24,90 @@ const AIAssistant = () => {
     scrollToBottom();
   }, [messages]);
 
+  // Base de connaissances pour les réponses du chatbot
+  const knowledgeBase = {
+    reservation: [
+      "réservation",
+      "réserver",
+      "booking",
+      "trajet",
+      "voyage",
+      "transport",
+    ],
+    paiement: ["paiement", "wallet", "portefeuille", "payer", "argent", "fonds"],
+    assistance: [
+      "aide",
+      "help",
+      "problème",
+      "souci",
+      "contact",
+      "support",
+      "probleme",
+    ],
+    profil: ["profil", "profile", "compte", "account", "modifications", "infos"],
+    compte: ["connexion", "login", "inscription", "signup", "créer compte", "creer compte"],
+  };
+
+  const responses = {
+    reservation: [
+      "Pour réserver un trajet, cliquez sur 'Réservation' dans le menu. Vous pourrez ensuite sélectionner votre itinéraire, la date et l'heure qui vous convient. Un assistant peut vous accompagner si vous le souhaitez.",
+      "Vous pouvez consulter vos trajets réservés en accédant à la section 'Réservation'. Pour modifier ou annuler une réservation, contactez notre support.",
+      "Les tarifs varient selon la distance et le type d'assistance demandée. Consultez le détail de votre réservation pour voir le prix exactement calculé.",
+    ],
+    paiement: [
+      "Notre Wallet permet de gérer facilement vos paiements. Accédez à 'Wallet' pour ajouter des fonds, consulter votre solde et historique. Vous pouvez payer par carte bancaire ou PayPal.",
+      "Le Wallet est sécurisé et crypté. Vos données bancaires ne sont jamais stockées directement, toutes les transactions passent par des passerelles certifiées.",
+      "Vous pouvez recharger votre Wallet à tout moment en cliquant sur 'Ajouter des fonds'. Le crédit peut ensuite être utilisé pour vos réservations.",
+    ],
+    assistance: [
+      "Pour toute question ou problème, cliquez sur 'Contact' pour nous envoyer un message. Notre équipe répondra dans les 24h.",
+      "Consultez notre section 'Aide' pour trouver des réponses aux questions fréquentes. Vous pouvez aussi utiliser ce chatbot!",
+      "Vous avez un problème? N'hésitez pas à nous contacter via la page 'Contact' ou consultez notre FAQ dans 'Aide'.",
+    ],
+    profil: [
+      "Accédez à votre profil en cliquant sur votre nom en haut à droite. Vous pouvez y modifier vos informations personnelles et préférences.",
+      "Sur la page de profil, vous pouvez mettre à jour votre photo, vos coordonnées, et vos préférences de voyage.",
+      "Votre profil contient aussi l'historique de vos trajets et vos avis.",
+    ],
+    compte: [
+      "Pour créer un compte, cliquez sur 'S'inscrire'. Vous devrez fournir un email et créer un mot de passe. Vérifiez ensuite votre email.",
+      "Pour vous connecter, allez à 'Connexion' et entrez vos identifiants. Vous resterez connecté automatiquement.",
+      "Si vous oubliez votre mot de passe, utilisez l'option 'Mot de passe oublié?' sur la page de connexion.",
+    ],
+  };
+
+  const getCategory = (text) => {
+    const lowerText = text.toLowerCase();
+    for (const [category, keywords] of Object.entries(knowledgeBase)) {
+      if (keywords.some((keyword) => lowerText.includes(keyword))) {
+        return category;
+      }
+    }
+    return null;
+  };
+
+  const getResponse = (text) => {
+    const category = getCategory(text);
+
+    if (category && responses[category]) {
+      const categoryResponses = responses[category];
+      return categoryResponses[
+        Math.floor(Math.random() * categoryResponses.length)
+      ];
+    }
+
+    // Réponses générales pour les questions non catégorisées
+    const generalResponses = [
+      "C'est une bonne question! Je peux vous aider avec les réservations, le paiement via le Wallet, votre profil, ou l'assistance. Qu'est-ce qui vous intéresse?",
+      "Je suis ici pour vous aider! Posez-moi une question sur les trajets, les paiements, votre compte, ou contactez notre équipe via 'Contact'.",
+      "Vous pouvez m'interroger sur comment réserver un trajet, utiliser le Wallet, gérer votre profil, ou obtenir de l'aide.",
+    ];
+
+    return generalResponses[
+      Math.floor(Math.random() * generalResponses.length)
+    ];
+  };
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
@@ -41,58 +125,30 @@ const AIAssistant = () => {
     setInputValue("");
     setLoading(true);
 
-    try {
-      // Appel à l'API backend pour le chatbot IA
-      const response = await fetch("http://localhost:3000/chat/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: inputValue,
-          conversationHistory: messages,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.response) {
-        const botResponse = {
-          id: messages.length + 2,
-          text: data.response,
-          sender: "bot",
-          timestamp: new Date(),
-        };
-
-        setMessages((prev) => [...prev, botResponse]);
-      } else {
-        throw new Error("Pas de réponse du serveur");
-      }
-    } catch (error) {
-      console.error("Erreur:", error);
-
-      const errorMessage = {
+    // Simuler un délai de traitement
+    setTimeout(() => {
+      const botResponse = {
         id: messages.length + 2,
-        text: "Désolé, je rencontre une difficulté. Veuillez réessayer.",
+        text: getResponse(inputValue),
         sender: "bot",
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
+      setMessages((prev) => [...prev, botResponse]);
       setLoading(false);
-    }
+    }, 500);
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40">
+    <>
+      {/* Fenêtre du chat */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="bg-white rounded-2xl shadow-2xl mb-4 w-96 max-h-[600px] flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-6 z-[9999] bg-white rounded-2xl shadow-2xl w-96 max-h-[600px] flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex items-center justify-between">
@@ -207,12 +263,12 @@ const AIAssistant = () => {
         )}
       </AnimatePresence>
 
-      {/* Bouton flottant */}
+      {/* Bouton flottant - position fixe séparée */}
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-gradient-to-br from-blue-600 to-blue-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all"
+        className="fixed bottom-6 right-6 z-[9999] bg-gradient-to-br from-blue-600 to-blue-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all"
       >
         {isOpen ? (
           <FaTimes className="text-xl" />
@@ -220,7 +276,7 @@ const AIAssistant = () => {
           <FaRobot className="text-xl" />
         )}
       </motion.button>
-    </div>
+    </>
   );
 };
 

@@ -58,20 +58,23 @@ const NavbarMobile = () => {
             "Itinerary",
             "Reservation",
             "Wallet",
-            "Contact",
-            "Help",
+            "Support",
+            "Gestion PMR",
             "Login",
             "Sign up",
-          ].map((item) => (
-            <Link
-              key={item}
-              to={`/${item.toLowerCase()}`}
-              onClick={toggleSidebar}
-              className="font-raleway !font-semibold text-white !text-xl hover:text-gray-400 nav-link"
-            >
-              {item}
-            </Link>
-          ))}
+          ].map((item) => {
+            const route = item === "Gestion PMR" ? "/admin" : item === "Support" ? "/support" : `/${item.toLowerCase()}`;
+            return (
+              <Link
+                key={item}
+                to={route}
+                onClick={toggleSidebar}
+                className="font-raleway !font-semibold text-white !text-xl hover:text-gray-400 nav-link"
+              >
+                {item}
+              </Link>
+            );
+          })}
         </nav>
       </div>
 
