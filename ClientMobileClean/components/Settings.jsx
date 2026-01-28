@@ -14,7 +14,6 @@ import {
   ScrollView,
 } from "react-native";
 import { UserContext } from "../UserContext";
-import { ThemeContext } from "../ThemeContext";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {
@@ -29,7 +28,6 @@ import {
   Raleway_800ExtraBold,
   Raleway_900Black,
 } from "@expo-google-fonts/raleway";
-import LottieView from "lottie-react-native";
 
 /**
  * Composant principal Settings.
@@ -61,7 +59,6 @@ import LottieView from "lottie-react-native";
 
 export default function Settings({ onLogout }) {
   const { setUser } = useContext(UserContext);
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
   const navigation = useNavigation();
 
   const [selectedLanguage, setSelectedLanguage] = useState("Français");
@@ -92,45 +89,13 @@ export default function Settings({ onLogout }) {
 
   return (
     <ScrollView contentContainerStyle={styles.scroll}>
-      <View style={[styles.container, isDarkMode && styles.containerDark]}>
+      <View style={styles.container}>
         {/* Titre */}
-        <Text style={[styles.title, isDarkMode && styles.titleDark]}>
-          Paramètres
-        </Text>
-        <LottieView
-          source={require("../assets/settings.json")}
-          autoPlay
-          loop
-          style={{ width: 200, height: 200, alignSelf: "center" }}
-        />
-
-        {/* Mode sombre */}
-        <View
-          style={[
-            styles.optionContainer,
-            isDarkMode && styles.optionContainerDark,
-          ]}
-        >
-          <Icon name="moon-o" size={24} color={isDarkMode ? "#fff" : "#333"} />
-          <Text
-            style={[styles.optionText, isDarkMode && styles.optionTextDark]}
-          >
-            Mode sombre
-          </Text>
-          <Switch
-            value={isDarkMode}
-            onValueChange={toggleTheme}
-            thumbColor={isDarkMode ? primaryColor : "#ccc"}
-            trackColor={{ false: "#ccc", true: primaryColor }}
-          />
-        </View>
+        <Text style={styles.title}>Paramètres</Text>
 
         {/* Langue */}
         <TouchableOpacity
-          style={[
-            styles.optionContainer,
-            isDarkMode && styles.optionContainerDark,
-          ]}
+          style={styles.optionContainer}
           onPress={() =>
             Alert.alert(
               "Changer de langue",
@@ -153,25 +118,16 @@ export default function Settings({ onLogout }) {
             )
           }
         >
-          <Icon name="globe" size={24} color={isDarkMode ? "#fff" : "#333"} />
-          <Text
-            style={[styles.optionText, isDarkMode && styles.optionTextDark]}
-          >
+          <Icon name="globe" size={24} color="#f5f7fb" />
+          <Text style={styles.optionText}>
             Langue ({selectedLanguage})
           </Text>
         </TouchableOpacity>
 
         {/* Notifications */}
-        <View
-          style={[
-            styles.optionContainer,
-            isDarkMode && styles.optionContainerDark,
-          ]}
-        >
-          <Icon name="bell" size={24} color={isDarkMode ? "#fff" : "#333"} />
-          <Text
-            style={[styles.optionText, isDarkMode && styles.optionTextDark]}
-          >
+        <View style={styles.optionContainer}>
+          <Icon name="bell" size={24} color="#f5f7fb" />
+          <Text style={styles.optionText}>
             Notifications
           </Text>
           <Switch
@@ -184,46 +140,29 @@ export default function Settings({ onLogout }) {
 
         {/* Modifier le mot de passe */}
         <TouchableOpacity
-          style={[
-            styles.optionContainer,
-            isDarkMode && styles.optionContainerDark,
-          ]}
+          style={styles.optionContainer}
           onPress={() => Alert.alert("Modifier votre mot de passe")}
         >
-          <Icon name="lock" size={24} color={isDarkMode ? "#fff" : "#333"} />
-          <Text
-            style={[styles.optionText, isDarkMode && styles.optionTextDark]}
-          >
+          <Icon name="lock" size={24} color="#f5f7fb" />
+          <Text style={styles.optionText}>
             Modifier le mot de passe
           </Text>
         </TouchableOpacity>
 
         {/* Modifier le profil */}
         <TouchableOpacity
-          style={[
-            styles.optionContainer,
-            isDarkMode && styles.optionContainerDark,
-          ]}
+          style={styles.optionContainer}
           onPress={() => navigation.navigate("EditProfile")}
         >
-          <Icon
-            name="user-circle"
-            size={24}
-            color={isDarkMode ? "#fff" : "#333"}
-          />
-          <Text
-            style={[styles.optionText, isDarkMode && styles.optionTextDark]}
-          >
+          <Icon name="user-circle" size={24} color="#f5f7fb" />
+          <Text style={styles.optionText}>
             Modifier le profil
           </Text>
         </TouchableOpacity>
 
         {/* À propos */}
         <TouchableOpacity
-          style={[
-            styles.optionContainer,
-            isDarkMode && styles.optionContainerDark,
-          ]}
+          style={styles.optionContainer}
           onPress={() =>
             Alert.alert(
               "À propos",
@@ -231,43 +170,25 @@ export default function Settings({ onLogout }) {
             )
           }
         >
-          <Icon
-            name="info-circle"
-            size={24}
-            color={isDarkMode ? "#fff" : "#333"}
-          />
-          <Text
-            style={[styles.optionText, isDarkMode && styles.optionTextDark]}
-          >
+          <Icon name="info-circle" size={24} color="#f5f7fb" />
+          <Text style={styles.optionText}>
             À propos de l'application
           </Text>
         </TouchableOpacity>
 
         {/* Support */}
         <TouchableOpacity
-          style={[
-            styles.optionContainer,
-            isDarkMode && styles.optionContainerDark,
-          ]}
+          style={styles.optionContainer}
           onPress={() => Alert.alert("Contactez-nous à support@pmove.com")}
         >
-          <Icon
-            name="envelope"
-            size={24}
-            color={isDarkMode ? "#fff" : "#333"}
-          />
-          <Text
-            style={[styles.optionText, isDarkMode && styles.optionTextDark]}
-          >
+          <Icon name="envelope" size={24} color="#f5f7fb" />
+          <Text style={styles.optionText}>
             Support
           </Text>
         </TouchableOpacity>
 
         {/* Déconnexion */}
-        <TouchableOpacity
-          style={[styles.logoutButton, isDarkMode && styles.logoutButtonDark]}
-          onPress={handleLogout}
-        >
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Icon
             name="sign-out"
             size={24}
@@ -293,9 +214,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#0a0e27",
   },
-  containerDark: {
-    backgroundColor: "#0a0e27",
-  },
   title: {
     fontFamily: "RalewayExtraBold",
     color: "#f5f7fb",
@@ -303,9 +221,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 30,
-  },
-  titleDark: {
-    color: "#f5f7fb",
   },
   optionContainer: {
     flexDirection: "row",
@@ -323,16 +238,10 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
-  optionContainerDark: {
-    backgroundColor: "#151b3a",
-  },
   optionText: {
     fontFamily: "RalewayExtraBold",
     flex: 1,
     fontSize: 16,
-    color: "#f5f7fb",
-  },
-  optionTextDark: {
     color: "#f5f7fb",
   },
   logoutButton: {
@@ -350,9 +259,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 3,
-  },
-  logoutButtonDark: {
-    backgroundColor: "#151b3a",
   },
   logoutButtonText: {
     flex: 1,

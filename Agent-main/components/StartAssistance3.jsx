@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -39,25 +39,13 @@ export default function StartAssistance3({ navigation }) {
     return (
         <View style={styles.container}>
           <Text style={styles.title}>Vérification d'identité</Text>
-          
-          <Image 
-            source={require('../assets/idcard.png')} 
-            style={styles.idIllustration}
-            resizeMode="contain"
-          />
-
           <Text style={styles.subtitle}>
-            Avant de commencer l'accompagnement, veuillez :
+            Avant de commencer l'accompagnement :
           </Text>
 
-          <View style={styles.stepsContainer}>
-            <Text style={styles.stepText}>1. Scanner la carte d'identité du PMR</Text>
-            <Text style={styles.stepText}>2. Prendre une photo du PMR</Text>
-            <Text style={styles.stepText}>3. Vérifier la concordance des informations</Text>
-          </View>
 
           <Text style={styles.note}>
-            Ces informations sont nécessaires pour valider le début de la prise en charge et seront cryptées pour la protection des données.
+
           </Text>
 
           <TouchableOpacity
@@ -75,52 +63,50 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#FFF6F1", // Fond légèrement orangé
+      backgroundColor: "#0a0e27",
       padding: 24,
     },
     title: {
       fontSize: 26,
       fontFamily: "RalewayExtraBold",
-      color: "#EF4D20", // Orange vif pour le titre
+      color: "#F97316",
       marginBottom: 24,
       textAlign: "center",
-    },
-    idIllustration: {
-      width: 200,
-      height: 130,
-      marginBottom: 30,
     },
     subtitle: {
       fontSize: 18,
       fontFamily: "RalewayBold",
-      color: "#555", // Texte gris foncé pour le sous-titre
+      color: "#c7d2e8",
       marginBottom: 20,
       textAlign: "center",
     },
     stepsContainer: {
       marginBottom: 30,
       width: '100%',
+      gap: 12,
+    },
+    stepCard: {
+      paddingVertical: 8,
     },
     stepText: {
       fontSize: 16,
       fontFamily: "RalewayRegular",
-      color: "#555", // Texte gris foncé pour les étapes
-      marginBottom: 12,
-      textAlign: "center",
+      color: "#c7d2e8",
+      flex: 1,
     },
     note: {
       fontSize: 14,
       fontFamily: "RalewayRegular",
-      color: "#777", // Texte gris pour la note
+      color: "#94a3b8",
       textAlign: "center",
       marginBottom: 40,
       lineHeight: 20,
     },
     button: {
-      backgroundColor: "#EF4D20", // Bouton orange vif
+      backgroundColor: "#F97316",
       paddingVertical: 16,
       paddingHorizontal: 40,
-      borderRadius: 8,
+      borderRadius: 12,
       elevation: 2,
     },
     buttonText: {

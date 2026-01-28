@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import LottieView from "lottie-react-native";
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
 
 /**
  * Composant TransitionPage.
@@ -24,12 +23,7 @@ import LottieView from "lottie-react-native";
 export default function TransitionPage() {
   return (
     <View style={styles.container}>
-      <LottieView
-        source={require("../assets/transition3.json")} // Remplace par ton animation
-        autoPlay
-        loop
-        style={styles.animation}
-      />
+      <ActivityIndicator size="large" color="#0066ff" />
       <Text style={styles.text}>Chargement de votre réservation...</Text>
     </View>
   );
@@ -40,17 +34,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f3f4f6",
-  },
-  animation: {
-    width: 400,
-    height: 400,
-    resizeMode: "contain",
+    backgroundColor: "#0a0e27",
   },
   text: {
     marginTop: 20,
     fontSize: 18,
     fontWeight: "bold",
-    color: "#5895D6",
+    color: "#c7d2e8",
   },
 });

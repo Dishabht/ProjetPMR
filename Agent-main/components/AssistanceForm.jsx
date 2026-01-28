@@ -93,9 +93,9 @@ const AssistanceForm = () => {
           <MaterialIcons
             name={isLuggageDeposited ? "check-box" : "check-box-outline-blank"}
             size={24}
-            color={isLuggageDeposited ? "#EF4D20" : "#4A5568"}
+            color={isLuggageDeposited ? "#F97316" : "#94a3b8"}
           />
-          <Text style={styles.label}>Les bagages ont été déposés aux emplacements prévus.</Text>
+          <Text style={styles.checkboxLabel}>Les bagages ont été déposés aux emplacements prévus.</Text>
         </TouchableOpacity>
         {errors.isLuggageDeposited && (
           <Animated.Text style={[styles.errorText, { opacity: errorAnim }]}>
@@ -111,9 +111,9 @@ const AssistanceForm = () => {
           <MaterialIcons
             name={isPmrSeated ? "check-box" : "check-box-outline-blank"}
             size={24}
-            color={isPmrSeated ? "#EF4D20" : "#4A5568"}
+            color={isPmrSeated ? "#F97316" : "#94a3b8"}
           />
-          <Text style={styles.label}>Le PMR a été accompagné jusqu'à sa place.</Text>
+          <Text style={styles.checkboxLabel}>Le PMR a été accompagné jusqu'à sa place.</Text>
         </TouchableOpacity>
         {errors.isPmrSeated && (
           <Animated.Text style={[styles.errorText, { opacity: errorAnim }]}>
@@ -164,7 +164,7 @@ const AssistanceForm = () => {
                 style={[styles.checkbox, isStaffInformed && styles.checked]}
                 onPress={() => setIsStaffInformed(!isStaffInformed)}
               />
-              <Text style={styles.label}>Le personnel a été informé des besoins spécifiques.</Text>
+              <Text style={styles.checkboxLabel}>Le personnel a été informé des besoins spécifiques.</Text>
             </View>
             {errors.isStaffInformed && <Text style={styles.errorText}>{errors.isStaffInformed}</Text>}
           </>
@@ -224,14 +224,14 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     padding: 24,
     paddingTop: 60, // Pour éviter que le formulaire soit caché par la navbar
   },
   title: {
     fontSize: 26,
     fontFamily: "RalewayExtraBold",
-    color: "#EF4D20",
+    color: "#f5f7fb",
     marginBottom: 16,
     textAlign: "center",
   },
@@ -242,37 +242,53 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontFamily: "RalewayBold",
-    color: "#EF4D20",
+    color: "#f5f7fb",
     marginBottom: 12,
   },
   label: {
     fontSize: 16,
     fontFamily: "RalewayRegular",
-    color: "#4A5568",
+    color: "#c7d2e8",
     marginBottom: 8,
+  },
+  checkboxLabel: {
+    fontSize: 16,
+    fontFamily: "RalewayRegular",
+    color: "#c7d2e8",
+    marginLeft: 12,
+    flex: 1,
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 12,
+    backgroundColor: "#151b3a",
+    borderWidth: 1,
+    borderColor: "#2d3454",
+    padding: 12,
+    borderRadius: 12,
   },
   checkbox: {
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: "#EF4D20",
+    borderColor: "#2d3454",
     borderRadius: 4,
     marginRight: 10,
+    backgroundColor: "#0f1535",
   },
   checked: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#F97316",
+    borderColor: "#F97316",
   },
   yesNoContainer: {
     flexDirection: "row",
     marginBottom: 12,
   },
   yesNoButton: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#151b3a",
+    borderWidth: 1,
+    borderColor: "#2d3454",
     padding: 10,
     borderRadius: 8,
     marginHorizontal: 5,
@@ -281,36 +297,37 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   selectedButton: {
-    backgroundColor: "#FFA07A",
+    backgroundColor: "#F97316",
+    borderColor: "#F97316",
   },
   yesNoText: {
-    color: "#FFFFFF",
+    color: "#f5f7fb",
     fontFamily: "RalewayBold",
     fontSize: 16,
   },
   input: {
     width: "100%",
     borderWidth: 1,
-    borderColor: "#EF4D20",
+    borderColor: "#2d3454",
     borderRadius: 8,
     padding: 10,
     marginBottom: 12,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#0f1535",
     fontFamily: "RalewayRegular",
     fontSize: 16,
-    color: "#4A5568",
+    color: "#f5f7fb",
   },
   errorInput: {
-    borderColor: "red",
+    borderColor: "#f87171",
   },
   errorText: {
-    color: "red",
+    color: "#f87171",
     fontSize: 14,
     fontFamily: "RalewayRegular",
     marginBottom: 8,
   },
   submitButton: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#F97316",
     padding: 15,
     borderRadius: 8,
     width: "100%",

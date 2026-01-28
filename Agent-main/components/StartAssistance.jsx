@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     padding: 24,
   },
   animation: {
@@ -81,23 +81,23 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontFamily: "RalewayExtraBold",
-    color: "#EF4D20",
+    color: "#F97316",
     marginBottom: 16,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 18,
     fontFamily: "RalewayRegular",
-    color: "#4A5568",
+    color: "#c7d2e8",
     textAlign: "center",
     marginBottom: 40,
     lineHeight: 24,
   },
   button: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#F97316",
     paddingVertical: 16,
     paddingHorizontal: 40,
-    borderRadius: 8,
+    borderRadius: 12,
     elevation: 2,
   },
   buttonText: {

@@ -90,6 +90,7 @@ export default function Accueil() {
 
   return (
     <FlatList
+      style={styles.list}
       data={tickets}
       keyExtractor={(item) => item.num_reservation.toString()}
       ListHeaderComponent={
@@ -126,6 +127,10 @@ export default function Accueil() {
 }
 
 const styles = StyleSheet.create({
+  list: {
+    flex: 1,
+    backgroundColor: "#0a0e27",
+  },
   listContent: {
     paddingHorizontal: 10,
     paddingTop: 100,

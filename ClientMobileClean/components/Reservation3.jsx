@@ -16,6 +16,7 @@ import {
 import { UserContext } from "../UserContext";
 import QRCode from "react-native-qrcode-svg";
 import TransitionPage from "./TransitionPage";
+import { addBilletToRedis } from "../services/api";
 
 /**
  * Composant principal Reservation3.
@@ -130,43 +131,26 @@ const Reservation3 = ({ route, navigation }) => {
 
   const handleConfirm = async () => {
     try {
-      const dataToSend = {
-        billet: {
+      const response = await addBilletToRedis(
+        {
           ...billet,
           bagages: billet.bagages || [],
         },
-        email: user.mail,
-      };
-
-      console.log("Données envoyées à Redis :", dataToSend);
-
-      const response = await fetch(
-        "http://13.60.153.228:3000/reservation/addToRedis",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(dataToSend),
-        }
+        user?.mail
       );
 
-      /**
-       * Gestion des erreurs de données manquantes.
-       * Si aucune donnée de billet n'est fournie via la navigation, un message d'erreur est affiché
-       * et l'utilisateur peut revenir en arrière pour corriger le problème.
-       */
-
-      const result = await response.json();
-      if (response.ok) {
+      if (response?.success) {
         Alert.alert("Succès", "Données envoyées à Redis et email envoyé !");
         navigation.navigate("Confirmation");
       } else {
-        Alert.alert("Erreur", result.message || "Une erreur est survenue.");
+        Alert.alert("Erreur", response?.message || "Une erreur est survenue.");
       }
     } catch (error) {
       console.error("Erreur lors de l'envoi des données :", error);
       Alert.alert(
         "Erreur",
-        "Impossible d'envoyer les données ou l'email. Veuillez réessayer."
+        error?.message ||
+          "Impossible d'envoyer les données ou l'email. Veuillez réessayer."
       );
     }
   };
@@ -404,7 +388,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   errorText: {
-    color: "#ff6b35",
+    color: "#0066ff",
     fontFamily: "RalewayBold",
     fontSize: 18,
     textAlign: "center",

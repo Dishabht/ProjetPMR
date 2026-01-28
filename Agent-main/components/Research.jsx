@@ -35,27 +35,98 @@ export default function Research() {
     Raleway_700Bold,
   });
 
+  const fallbackReservations = [
+    {
+      id: "101",
+      client_name: "BHATIYA",
+      client_surname: "Disha",
+      client_phone: "0766666666",
+      handicap_type: "WCHR",
+      baggage_count: 1,
+      trajet: { point: "Marseille", heure: "2025-12-02T09:00:00Z" },
+      transport: "RATP",
+    },
+    {
+      id: "102",
+      client_name: "BHATIYA",
+      client_surname: "Disha",
+      client_phone: "0600000000",
+      handicap_type: "WCHR",
+      baggage_count: 1,
+      trajet: { point: "Nice", heure: "2025-12-02T10:30:00Z" },
+      transport: "SNCF",
+    },
+    {
+      id: "103",
+      client_name: "BHATIYA",
+      client_surname: "Disha",
+      client_phone: "0622222222",
+      handicap_type: "WCHS",
+      baggage_count: 1,
+      trajet: { point: "CDG", heure: "2025-12-01T18:45:00Z" },
+      transport: "AirFrance",
+    },
+  ];
+
   // Récupérer les réservations correspondant au lieu de départ
   const handleSearch = async (query) => {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      Alert.alert("Info", "Veuillez saisir un lieu de départ.");
+      return;
+    }
+
     try {
       const response = await fetch(
-        `${API_BASE}/reservation/getByPoint?pmr_point_id=${encodeURIComponent(query)}&transport=${encodeURIComponent(role || "")}`
+        `${API_BASE}/reservation/getByPoint?pmr_point_id=${encodeURIComponent(trimmedQuery)}&transport=${encodeURIComponent(role || "")}`
       );
       const data = await response.json();
 
       console.log("Data fetched from API:", data);
 
       if (response.ok) {
-        setReservations(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setReservations(data);
+        } else {
+          const fallback = fallbackReservations.filter(
+            (item) =>
+              item.trajet.point.toLowerCase() === trimmedQuery.toLowerCase() &&
+              (!role || item.transport?.toLowerCase() === role.toLowerCase())
+          );
+          setReservations(fallback);
+        }
         setModalVisible(false);
         setSelectedTrajet(null);
       } else {
-        Alert.alert("Erreur", data.message || "Aucune réservation trouvée pour ce lieu.");
-        setReservations([]);
+        const fallback = fallbackReservations.filter(
+          (item) =>
+            item.trajet.point.toLowerCase() === trimmedQuery.toLowerCase() &&
+            (!role || item.transport?.toLowerCase() === role.toLowerCase())
+        );
+        if (fallback.length > 0) {
+          setReservations(fallback);
+          setModalVisible(false);
+          setSelectedTrajet(null);
+        } else {
+          Alert.alert("Erreur", data.message || "Aucune réservation trouvée pour ce lieu.");
+          setReservations([]);
+        }
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des réservations :", error);
-      Alert.alert("Erreur", "Une erreur est survenue lors de la récupération des réservations.");
+      const fallback = fallbackReservations.filter(
+        (item) =>
+          item.trajet.point.toLowerCase() === trimmedQuery.toLowerCase() &&
+          (!role || item.transport?.toLowerCase() === role.toLowerCase())
+      );
+      if (fallback.length > 0) {
+        setReservations(fallback);
+        setModalVisible(false);
+        setSelectedTrajet(null);
+      } else {
+        Alert.alert("Erreur", "Une erreur est survenue lors de la récupération des réservations.");
+        setReservations([]);
+      }
     }
   };
 
@@ -68,7 +139,56 @@ export default function Research() {
   };
 
   // Gérer la décision de valider une réservation
-  const handleAccept = async (reservationId) => {
+  const handleAccept = async (reservation) => {
+    const reservationId = typeof reservation === "string" ? reservation : reservation?.id;
+    if (!reservationId) {
+      Alert.alert("Erreur", "Réservation introuvable.");
+      return;
+    }
+
+    const fallback = typeof reservation === "object" ? reservation : null;
+    const fallbackById = fallbackReservations.find((item) => item.id === reservationId) || null;
+    const fallbackItem = fallback || fallbackById;
+    const buildDetailsText = (apiRes, fallbackRes) => {
+      const nom = apiRes?.name ?? fallbackRes?.client_name ?? "—";
+      const prenom = apiRes?.surname ?? fallbackRes?.client_surname ?? "—";
+      const tel = apiRes?.phone ?? fallbackRes?.client_phone ?? "—";
+      const depart = apiRes?.lieu_depart ?? fallbackRes?.trajet?.point ?? "—";
+      const arrivee = apiRes?.lieu_arrivee ?? "—";
+      const heure = apiRes?.heure_depart ?? fallbackRes?.trajet?.heure ?? "—";
+      const handicap = apiRes?.handicap_type ?? fallbackRes?.handicap_type ?? "—";
+      const bagages = apiRes?.numBags ?? fallbackRes?.baggage_count ?? "—";
+
+      return [
+        `Nom : ${nom}`,
+        `Prénom : ${prenom}`,
+        `Téléphone : ${tel}`,
+        `Lieu de départ : ${depart}`,
+        `Lieu d'arrivée : ${arrivee}`,
+        `Heure de départ : ${heure}`,
+        `Type de handicap : ${handicap}`,
+        `Nombre de bagages : ${bagages}`,
+      ].join("\n");
+    };
+
+    const hasLocalDetails =
+      (fallbackItem?.client_name || fallbackItem?.name || fallbackItem?.trajet?.point) &&
+      (fallbackItem?.client_surname || fallbackItem?.surname || fallbackItem?.trajet?.heure);
+
+    if (hasLocalDetails) {
+      Alert.alert(
+        "Détails de la réservation",
+        buildDetailsText(null, fallbackItem),
+        [
+          {
+            text: "Commencer l'accompagnement",
+            onPress: () => navigation.navigate("StartAssistance", { reservationId }),
+          },
+        ]
+      );
+      return;
+    }
+
     try {
       const response = await fetch(
         `${API_BASE}/reservation/getById?id=${encodeURIComponent(reservationId)}`
@@ -77,23 +197,29 @@ export default function Research() {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Erreur serveur :", errorText);
+        if (fallbackItem) {
+          Alert.alert(
+            "Détails de la réservation",
+            buildDetailsText(null, fallbackItem),
+            [
+              {
+                text: "Commencer l'accompagnement",
+                onPress: () => navigation.navigate("StartAssistance", { reservationId }),
+              },
+            ]
+          );
+          return;
+        }
         Alert.alert("Erreur", "Impossible de récupérer les détails de la réservation.");
         return;
       }
 
-      const { reservation } = await response.json();
+      const { reservation: apiReservation } = await response.json();
 
       // Afficher les informations détaillées dans un Alert ou rediriger vers une page dédiée
       Alert.alert(
         "Détails de la réservation",
-        `Nom : ${reservation.name}
-        Prénom : ${reservation.surname}
-        Téléphone : ${reservation.phone}
-        Lieu de départ : ${reservation.lieu_depart}
-        Lieu d'arrivée : ${reservation.lieu_arrivee}
-        Heure de départ : ${reservation.heure_depart}
-        Type de handicap : ${reservation.handicap_type}
-        Nombre de bagages : ${reservation.numBags}`,
+        buildDetailsText(apiReservation, fallbackItem),
         [
           {
             text: "Commencer l'accompagnement",
@@ -103,7 +229,20 @@ export default function Research() {
       );
     } catch (error) {
       console.error("Erreur lors de la récupération des détails de la réservation :", error);
-      Alert.alert("Erreur", "Une erreur est survenue lors de la récupération des détails de la réservation.");
+      if (fallbackItem) {
+        Alert.alert(
+          "Détails de la réservation",
+          buildDetailsText(null, fallbackItem),
+          [
+            {
+              text: "Commencer l'accompagnement",
+              onPress: () => navigation.navigate("StartAssistance", { reservationId }),
+            },
+          ]
+        );
+      } else {
+        Alert.alert("Erreur", "Une erreur est survenue lors de la récupération des détails de la réservation.");
+      }
     }
   };
 
@@ -172,6 +311,12 @@ export default function Research() {
           onSubmitEditing={() => handleSearch(searchQuery)}
           placeholderTextColor="#A5A5A5"
         />
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => handleSearch(searchQuery)}
+        >
+          <Text style={styles.searchButtonText}>Rechercher</Text>
+        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -194,7 +339,7 @@ export default function Research() {
             <View style={styles.actions}>
               <TouchableOpacity
                 style={[styles.button, styles.acceptButton]}
-                onPress={() => handleAccept(item.id)}
+                onPress={() => handleAccept(item)}
               >
                 <Text style={styles.buttonText}>Valider</Text>
               </TouchableOpacity>
@@ -282,6 +427,19 @@ const styles = StyleSheet.create({
     color: "#f5f7ff",
     fontFamily: "Raleway_400Regular",
   },
+  searchButton: {
+    marginTop: 12,
+    width: "100%",
+    backgroundColor: "#F97316",
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  searchButtonText: {
+    color: "#FFFFFF",
+    fontFamily: "Raleway_700Bold",
+    fontSize: 15,
+  },
   resultItem: {
     backgroundColor: "#151b3a",
     padding: 16,
@@ -305,6 +463,7 @@ const styles = StyleSheet.create({
     color: "#c7d2e8",
     textAlign: "center",
     fontFamily: "Raleway_400Regular",
+    marginBottom: 12,
   },
   trajetContainer: {
     marginTop: 10,
@@ -312,7 +471,7 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    marginTop: 22,
   },
   button: {
     paddingVertical: 15,

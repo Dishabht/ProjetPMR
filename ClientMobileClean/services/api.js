@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://lists-applicant-workers-parks.trycloudflare.com";
+export const API_BASE_URL = "https://around-author-drag-writers.trycloudflare.com";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -100,21 +100,19 @@ export const uploadImageToRedis = async (id, imageBase64) => {
   }
 };
 
-export const addBilletToRedis = async (billet) => {
+export const addBilletToRedis = async (billet, email) => {
   try {
-    billet.bagages = billet.bagages.map((bagage) => ({
-      weight: bagage.weight,
-      description: bagage.description,
-    }));
+    const normalizedBillet = {
+      ...billet,
+      bagages: (billet.bagages || []).map((bagage) => ({
+        weight: bagage.weight,
+        description: bagage.description,
+      })),
+    };
 
-    // Encodage UTF-8 des données
-    const encodedBillet = Buffer.from(
-      JSON.stringify(billet),
-      "utf-8"
-    ).toString();
-
-      const response = await api.post(`/reservation/addToRedis`, {
-      billet: encodedBillet, // Envoie le billet encodé en UTF-8
+    const response = await api.post(`/reservation/addToRedis`, {
+      billet: normalizedBillet,
+      email,
     });
     console.log("Réponse de l'API :", response.data);
     return response.data;

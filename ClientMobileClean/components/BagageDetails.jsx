@@ -207,6 +207,7 @@ const BagageDetails = ({ route }) => {
       <TextInput
         style={styles.input}
         placeholder="Poids du bagage"
+        placeholderTextColor="#6b7280"
         keyboardType="numeric"
         value={bagageDetails.weight}
         onChangeText={(text) =>
@@ -218,6 +219,7 @@ const BagageDetails = ({ route }) => {
       <TextInput
         style={styles.input}
         placeholder="Description du bagage"
+        placeholderTextColor="#6b7280"
         value={bagageDetails.description}
         onChangeText={(text) =>
           setBagageDetails({ ...bagageDetails, description: text })
@@ -275,6 +277,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 80,
     paddingBottom: 150,
+    backgroundColor: "#0a0e27",
   },
   animation: {
     width: 168,
@@ -282,7 +285,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "RalewayBlack",
-    color: "#5489CE",
+    color: "#f5f7fb",
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 20,
@@ -293,24 +296,29 @@ const styles = StyleSheet.create({
     fontFamily: "RalewayBlack",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#436EA5",
+    color: "#c7d2e8",
     marginBottom: 10,
   },
   input: {
     marginBottom: 10,
     fontFamily: "RalewayMedium",
     borderWidth: 1,
-    borderColor: "#5489CE",
+    borderColor: "#2d3454",
     borderRadius: 8,
     padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: "#0f1535",
+    color: "#f5f7fb",
   },
   rulesContainer: {
     fontFamily: "RalewayBlack",
     marginTop: 20,
     marginBottom: 20,
-    padding: 10,
+    padding: 12,
     overflow: "hidden",
+    backgroundColor: "#151b3a",
+    borderWidth: 1,
+    borderColor: "#2d3454",
+    borderRadius: 12,
   },
   transport: {
     fontFamily: "RalewayBlack",
@@ -327,19 +335,19 @@ const styles = StyleSheet.create({
   },
   rulesTitle: {
     fontFamily: "RalewayExtraBold",
-    color: "#5489CE",
+    color: "#f5f7fb",
     fontSize: 20,
     marginBottom: 10,
   },
   rulesText: {
     fontFamily: "RalewayRegular",
-    color: "#5489CE",
+    color: "#c7d2e8",
     fontSize: 16,
     lineHeight: 20,
   },
 
   addButton: {
-    backgroundColor: "#5489CE",
+    backgroundColor: "#0066ff",
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: "center",
@@ -353,7 +361,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   continueButton: {
-    backgroundColor: "#28a745",
+    backgroundColor: "#22c55e",
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: "center",
@@ -369,9 +377,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 15,
     borderWidth: 1,
-    borderColor: "#5989CE",
+    borderColor: "#2d3454",
     borderRadius: 10,
-    backgroundColor: "#B0C4DE",
+    backgroundColor: "#151b3a",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -381,10 +389,8 @@ const styles = StyleSheet.create({
   bagageTitle: {
     fontFamily: "RalewayBlack",
     fontSize: 20,
-    color: "#5489CE",
+    color: "#f5f7fb",
     marginBottom: 10,
-
-    textDecorationLine: "underline",
   },
   bagageDetails: {
     flexDirection: "row",
@@ -397,23 +403,26 @@ const styles = StyleSheet.create({
   bagageLabel: {
     fontFamily: "RalewayBlack",
     fontSize: 16,
-
+    color: "#c7d2e8",
     marginBottom: 4,
   },
   bagageValue: {
     fontFamily: "RalewayRegular",
     fontSize: 16,
-
+    color: "#f5f7fb",
     marginBottom: 10,
   },
   qrCodeContainer: {
     marginLeft: 10,
     borderWidth: 1,
-    borderColor: "#5489CE",
+    borderColor: "#e5e7eb",
+    backgroundColor: "#fff",
+    padding: 6,
+    borderRadius: 8,
   },
   deleteButton: {
     marginTop: 15,
-    backgroundColor: "#dc3545",
+    backgroundColor: "#ef4444",
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: "center",

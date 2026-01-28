@@ -49,7 +49,7 @@ const getConnectionsByTransport = (req, transport) => {
 const mongoSeedData = {
   RATP: [
     {
-      num_reservation: "RATP-001",
+      num_reservation: "001",
       name: "Lea",
       surname: "Martin",
       phone: "0611111111",
@@ -61,10 +61,23 @@ const mongoSeedData = {
       heure_arrivee: "14:45",
       transport: "RATP",
     },
+    {
+      num_reservation: "101",
+      name: "Sarah",
+      surname: "Bernard",
+      phone: "0677777777",
+      handicap_type: "WCHR",
+      numBags: 1,
+      lieu_depart: "Marseille",
+      lieu_arrivee: "Gare de Lyon",
+      heure_depart: "09:00",
+      heure_arrivee: "12:15",
+      transport: "RATP",
+    },
   ],
   SNCF: [
     {
-      num_reservation: "SNCF-001",
+      num_reservation: "122",
       name: "Jean",
       surname: "Dupont",
       phone: "0600000000",
@@ -79,7 +92,7 @@ const mongoSeedData = {
   ],
   AirFrance: [
     {
-      num_reservation: "AF-001",
+      num_reservation: "22",
       name: "Nina",
       surname: "Lopez",
       phone: "0622222222",
@@ -100,13 +113,19 @@ const ensureMongoSeed = async (req) => {
   await Promise.all(
     connections.map(async ({ name, connection }) => {
       const model = getReservationModel(connection);
-      const count = await model.countDocuments();
-      if (count > 0) return;
-
       const seed = mongoSeedData[name] || [];
       if (seed.length === 0) return;
 
-      await model.insertMany(seed);
+      await Promise.all(
+        seed.map(async (billet) => {
+          const exists = await model
+            .findOne({ num_reservation: billet.num_reservation })
+            .lean();
+          if (!exists) {
+            await model.create(billet);
+          }
+        })
+      );
     })
   );
 };
@@ -118,8 +137,6 @@ const escapeRegex = (value) =>
 const memoryStore = new Map();
 
 const seedMemoryBillets = () => {
-  if (memoryStore.size > 0) return;
-
   const sampleBillets = [
     {
       num_reservation: "001",
@@ -146,6 +163,18 @@ const seedMemoryBillets = () => {
       transport: "RATP",
     },
     {
+      num_reservation: "101",
+      name: "Sarah",
+      surname: "Bernard",
+      phone: "0677777777",
+      handicap_type: "WCHR",
+      numBags: 1,
+      lieu_depart: "Marseille",
+      lieu_arrivee: "Gare de Lyon",
+      heure_depart: "09:00",
+      transport: "RATP",
+    },
+    {
       num_reservation: "003",
       name: "Nina",
       surname: "Lopez",
@@ -168,13 +197,13 @@ const seedMemoryBillets = () => {
 seedMemoryBillets();
 
 const seedRedisBillets = async () => {
-  const keys = await getKeys("billet:*");
-  if (keys.length > 0) return;
-
   for (const billet of memoryStore.values()) {
     const parsed = JSON.parse(billet);
     const key = `billet:${parsed.num_reservation}`;
-    await setValue(key, JSON.stringify(parsed));
+    const existing = await getValue(key);
+    if (!existing) {
+      await setValue(key, JSON.stringify(parsed));
+    }
   }
 };
 
@@ -612,6 +641,7 @@ router.get("/getByPoint", async (req, res) => {
     console.log("Paramètre pmr_point_id reçu :", pmr_point_id); // Log du paramètre reçu
 
     await ensureMongoSeed(req);
+    await seedRedisBillets();
 
     const pointRegex = new RegExp(
       `^${escapeRegex(pmr_point_id.trim())}$`,

@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   forgotPassword: {
     fontFamily: "RalewayBlack",
     fontSize: 13,
-    color: "#ff6b35",
+    color: "#0066ff",
     textAlign: "right",
     marginBottom: 20,
   },

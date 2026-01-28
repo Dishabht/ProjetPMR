@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   closeButtonText: {
-    color: "#ff6b35",
+    color: "#0066ff",
     fontWeight: "bold",
   },
   radioGroup: {

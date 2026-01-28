@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  Dimensions,
   Animated,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -43,10 +42,6 @@ import {
 const NavBar = () => {
   const navigation = useNavigation();
   const [activeIndex, setActiveIndex] = useState(0); // Commence par Home
-  const screenWidth = Dimensions.get("window").width;
-
-  // Animation pour déplacer le rond
-  const position = useRef(new Animated.Value(activeIndex)).current;
 
   // Création dynamique des animations pour chaque bouton
   const animationRefs = Array(4)
@@ -67,55 +62,37 @@ const NavBar = () => {
   const handleNavigation = (index, route) => {
     setActiveIndex(index);
 
-    // Animation du déplacement du rond
-    Animated.timing(position, {
-      toValue: index,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-
     // Animation des boutons
     animationRefs.forEach((ref, i) => {
       const isActive = i === index;
 
       // Icône
       Animated.timing(ref.scaleIcon, {
-        toValue: isActive ? 1.5 : 1,
-        duration: 300,
+        toValue: 1,
+        duration: 0,
         useNativeDriver: false,
       }).start();
       Animated.timing(ref.translateYIcon, {
-        toValue: isActive ? -10 : 0,
-        duration: 300,
+        toValue: 0,
+        duration: 0,
         useNativeDriver: false,
       }).start();
 
       // Texte
       Animated.timing(ref.scaleText, {
-        toValue: isActive ? 1.2 : 1,
-        duration: 300,
+        toValue: 1,
+        duration: 0,
         useNativeDriver: false,
       }).start();
       Animated.timing(ref.translateYText, {
-        toValue: isActive ? -5 : 0,
-        duration: 300,
+        toValue: 0,
+        duration: 0,
         useNativeDriver: false,
       }).start();
     });
 
     navigation.navigate(route);
   };
-
-  // Calcul précis de la position des icônes
-  const translateX = position.interpolate({
-    inputRange: [0, 1, 2, 3],
-    outputRange: [
-      screenWidth * 0.06, // Position Home
-      screenWidth * 0.278, // Position Réserver
-      screenWidth * 0.5, // Position Profile
-      screenWidth * 0.72, // Position Settings
-    ],
-  });
 
   useFonts({
     RalewayRegular: Raleway_400Regular,
@@ -127,11 +104,6 @@ const NavBar = () => {
   return (
     <View style={styles.navbarContainer}>
       <View style={styles.navbar}>
-        {/* Rond central animé */}
-        <Animated.View
-          style={[styles.centralIndicator, { transform: [{ translateX }] }]}
-        />
-
         {[
           { name: "home", label: "Accueil", route: "Accueil" },
           { name: "plus-circle", label: "Réserver", route: "Reservation" },
@@ -154,7 +126,7 @@ const NavBar = () => {
               <Icon
                 name={item.name}
                 size={24}
-                color={activeIndex === index ? "#fff" : "#ccc"}
+                color={activeIndex === index ? "#0066ff" : "#c7d2e8"}
               />
             </Animated.View>
             <Animated.Text
@@ -181,40 +153,37 @@ const NavBar = () => {
 const styles = StyleSheet.create({
   navbarContainer: {
     position: "absolute",
-    bottom: 20,
+    bottom: 8,
+    left: 0,
+    right: 0,
     width: "100%",
     alignItems: "center",
   },
   navbar: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
-    backgroundColor: "#5489CE",
-    paddingHorizontal: 15,
+    backgroundColor: "#151b3a",
+    paddingHorizontal: 0,
     height: 70,
-    borderRadius: 25,
-    width: "95%",
-  },
-  centralIndicator: {
-    position: "absolute",
-    bottom: 16,
-    width: 75,
-    height: 75,
-    borderRadius: 60,
-    backgroundColor: "#5489CE",
+    borderRadius: 0,
+    width: "100%",
+    borderTopWidth: 1,
+    borderTopColor: "#2d3454",
   },
   navButton: {
     alignItems: "center",
+    justifyContent: "center",
     flex: 1,
   },
   navText: {
     fontFamily: "RalewayBlack",
     marginTop: 10,
-    color: "#ccc",
+    color: "#c7d2e8",
     fontSize: 12,
   },
   activeText: {
-    color: "#fff",
+    color: "#0066ff",
     fontWeight: "bold",
   },
 });

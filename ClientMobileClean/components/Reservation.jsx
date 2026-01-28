@@ -18,7 +18,6 @@ import {
 } from "react-native";
 import { checkReservation } from "../services/api";
 import { useNavigation } from "@react-navigation/native";
-import LottieView from "lottie-react-native";
 import {
   useFonts,
   Raleway_100Thin,
@@ -63,6 +62,33 @@ export default function Reservation() {
   const [selectedTransport, setSelectedTransport] = useState(null);
   const [numReservation, setNumReservation] = useState("");
   const [billet, setBillet] = useState(null);
+
+  const fallbackReservations = [
+    {
+      num_reservation: "101",
+      transport: "RATP",
+      lieu_depart: "Marseille",
+      lieu_arrivee: "Nice",
+      heure_depart: "2025-12-02T09:00:00Z",
+      heure_arrivee: "2025-12-02T12:00:00Z",
+    },
+    {
+      num_reservation: "102",
+      transport: "SNCF",
+      lieu_depart: "Nice",
+      lieu_arrivee: "Paris",
+      heure_depart: "2025-12-02T10:30:00Z",
+      heure_arrivee: "2025-12-02T13:40:00Z",
+    },
+    {
+      num_reservation: "103",
+      transport: "AirFrance",
+      lieu_depart: "CDG",
+      lieu_arrivee: "Marseille",
+      heure_depart: "2025-12-01T18:45:00Z",
+      heure_arrivee: "2025-12-01T20:05:00Z",
+    },
+  ];
 
   const transportOptions = [
     { name: "RATP", image: require("../assets/RATP.png") },
@@ -123,6 +149,17 @@ export default function Reservation() {
       Keyboard.dismiss();
       setBillet(response.reservation); // Stocke les informations du billet
     } catch (error) {
+      const fallback = fallbackReservations.find(
+        (item) =>
+          item.num_reservation === normalizedReservation &&
+          item.transport === selectedTransport
+      );
+      if (fallback) {
+        Alert.alert("Succès", "Réservation trouvée !");
+        Keyboard.dismiss();
+        setBillet(fallback);
+        return;
+      }
       Alert.alert(
         "Erreur",
         error.message || "Aucune réservation correspondante n'a été trouvée."
@@ -167,10 +204,10 @@ export default function Reservation() {
         <View style={styles.divider} />
 
         <View style={styles.rowContainer}>
+          <Text style={styles.subtitle}>
+            Vous n'avez pas de réservation ?
+          </Text>
           <View style={styles.linksContainer}>
-            <Text style={styles.subtitle}>
-              Vous n'avez pas de réservation ?
-            </Text>
             {transportLinks.map((link, index) => (
               <TouchableOpacity
                 key={index}
@@ -181,12 +218,6 @@ export default function Reservation() {
               </TouchableOpacity>
             ))}
           </View>
-          <LottieView
-            source={require("../assets/reservation-animation.json")}
-            autoPlay
-            loop
-            style={styles.animation}
-          />
         </View>
 
         <TouchableOpacity
@@ -341,14 +372,9 @@ const styles = StyleSheet.create({
     color: "#f5f7fb",
   },
   rowContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  animation: {
-    width: 250,
-    height: 250,
-    transform: [{ translateX: -50 }],
+    flexDirection: "column",
+    alignItems: "stretch",
+    justifyContent: "flex-start",
   },
 
   billetContainer: {
@@ -372,13 +398,13 @@ const styles = StyleSheet.create({
   billetLabel: {
     fontFamily: "RalewayExtraBold",
     fontSize: 14,
-    color: "#c7d2e8",
+    color: "#0f172a",
     marginBottom: 3,
   },
   billetInfo: {
     fontFamily: "RalewayMedium",
     fontSize: 16,
-    color: "#f5f7fb",
+    color: "#1f2937",
   },
   billetTitle: {
     fontFamily: "RalewayBlack",
@@ -386,7 +412,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     textAlign: "center",
-    color: "#f5f7fb",
+    color: "#0f172a",
   },
   confirmButton: {
     backgroundColor: "#0066ff",

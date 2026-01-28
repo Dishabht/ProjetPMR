@@ -31,6 +31,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font"]
+    "plugins": ["expo-font"],
+    "extra": {
+      "apiBase": "https://around-author-drag-writers.trycloudflare.com"
+    }
   }
 }

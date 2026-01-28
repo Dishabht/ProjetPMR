@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import LottieView from "lottie-react-native";
 
 import {
   useFonts,
@@ -76,7 +75,7 @@ export default function StartAssistance2({ navigation, route }) {
         Demandez maintenant au PMR de vous montrer son ou ses bagages ainsi que son ou leurs QR codes dédiés.
       </Text>
 
-      {/* Bouton animé avec animation Lottie */}
+        {/* Bouton animé */}
       <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
         <TouchableOpacity
           style={styles.button}
@@ -85,14 +84,7 @@ export default function StartAssistance2({ navigation, route }) {
             navigation.navigate("ScannerQRCodeBagage");
           }}
         >
-          {/* Animation Lottie intégrée dans le bouton */}
-          <LottieView
-            source={require("../assets/luggage.json")} // Remplacez par votre animation
-            autoPlay
-            loop
-            style={styles.buttonAnimation}
-          />
-          <Text style={styles.buttonText}>Vérification</Text>
+            <Text style={styles.buttonText}>Vérification</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -105,38 +97,33 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     padding: 24,
   },
   title: {
     fontSize: 26,
     fontFamily: "RalewayExtraBold",
-    color: "#EF4D20", // Couleur orange pour le titre
+    color: "#F97316", // Couleur orange pour le titre
     marginBottom: 16,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 18,
     fontFamily: "RalewayRegular",
-    color: "#4A5568", // Couleur gris foncé pour le sous-titre
+    color: "#c7d2e8", // Couleur gris clair pour le sous-titre
     textAlign: "center",
     marginBottom: 40,
     lineHeight: 24,
   },
   button: {
-    backgroundColor: "#EF4D20", // Couleur orange pour le bouton
+    backgroundColor: "#F97316", // Couleur orange pour le bouton
     paddingVertical: 16,
     paddingHorizontal: 40,
-    borderRadius: 8,
+    borderRadius: 12,
     elevation: 2,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-  },
-  buttonAnimation: {
-    width: 40, // Taille réduite pour s'intégrer dans le bouton
-    height: 40,
-    marginRight: 10, // Espace entre l'animation et le texte
   },
   buttonText: {
     color: "#FFFFFF",

@@ -1,10 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Dimensions } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import LottieView from "lottie-react-native";
-
-// Obtenir les dimensions de l'écran
-const { width } = Dimensions.get("window");
 
 const TripInProgress = ({ navigation }) => {
   // Simuler un délai avant la redirection vers le formulaire d'assistance
@@ -29,13 +25,10 @@ const TripInProgress = ({ navigation }) => {
         <Text style={styles.loadingText}>En route...</Text>
       </View>
 
-      {/* Animation Lottie */}
-      <LottieView
-        source={require("../assets/wheelchair.json")} // Remplacez par votre fichier JSON Lottie
-        autoPlay
-        loop
-        style={styles.animation}
-      />
+      <View style={styles.statusCard}>
+        <Text style={styles.statusText}>Progression en cours</Text>
+        <Text style={styles.statusHint}>Restez disponible pour le PMR.</Text>
+      </View>
     </View>
   );
 };
@@ -45,20 +38,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     padding: 24,
   },
   title: {
     fontSize: 26,
     fontFamily: "RalewayExtraBold",
-    color: "#EF4D20",
+    color: "#F97316",
     marginBottom: 16,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 18,
     fontFamily: "RalewayRegular",
-    color: "#4A5568",
+    color: "#c7d2e8",
     textAlign: "center",
     marginBottom: 40,
   },
@@ -69,12 +62,29 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 16,
     fontFamily: "RalewayRegular",
-    color: "#EF4D20",
+    color: "#F97316",
     marginTop: 10,
   },
-  animation: {
-    width: width, // Largeur de l'écran
-    height: width, // Même hauteur pour un carré
+  statusCard: {
+    width: "100%",
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: "#151b3a",
+    borderWidth: 1,
+    borderColor: "#2d3454",
+    alignItems: "center",
+  },
+  statusText: {
+    fontSize: 16,
+    fontFamily: "RalewayExtraBold",
+    color: "#f5f7fb",
+    marginBottom: 6,
+  },
+  statusHint: {
+    fontSize: 14,
+    fontFamily: "RalewayRegular",
+    color: "#c7d2e8",
+    textAlign: "center",
   },
 });
 

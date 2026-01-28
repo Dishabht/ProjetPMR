@@ -1,17 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const StartAssistance4 = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Démarrons pour de bon le trajet !</Text>
-
-      <Image
-        source={require("../assets/start-journey.png")} // Remplacez par votre image
-        style={styles.illustration}
-        resizeMode="contain"
-      />
 
       <Text style={styles.subtitle}>
         Vous êtes prêt à accompagner le PMR vers son point de destination.
@@ -35,41 +29,37 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     padding: 24,
   },
   title: {
     fontSize: 26,
     fontFamily: "RalewayExtraBold",
-    color: "#EF4D20",
+    color: "#F97316",
     marginBottom: 24,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 18,
     fontFamily: "RalewayRegular",
-    color: "#4A5568",
+    color: "#c7d2e8",
     textAlign: "center",
     marginBottom: 16,
   },
   note: {
     fontSize: 14,
     fontFamily: "RalewayRegular",
-    color: "#718096",
+    color: "#94a3b8",
     textAlign: "center",
     marginBottom: 40,
     lineHeight: 20,
   },
-  illustration: {
-    width: 200,
-    height: 200,
-    marginBottom: 30,
-  },
+  
   button: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#F97316",
     paddingVertical: 16,
     paddingHorizontal: 40,
-    borderRadius: 8,
+    borderRadius: 12,
     elevation: 2,
   },
   buttonText: {

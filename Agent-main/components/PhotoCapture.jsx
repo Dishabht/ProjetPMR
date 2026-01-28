@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, ActivityIndicator, SafeAreaView, StatusBar } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts, Raleway_400Regular, Raleway_700Bold } from '@expo-google-fonts/raleway';
@@ -84,8 +84,10 @@ const PhotoCapture = () => {
   const goToNext = () => navigation.navigate('StartAssistance4');
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Vérification d'identité</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar barStyle="light-content" backgroundColor="#0a0e27" />
+      <View style={styles.container}>
+        <Text style={styles.title}>Vérification d'identité</Text>
 
       <View style={styles.selectorContainer}>
         <TouchableOpacity 
@@ -193,23 +195,27 @@ const PhotoCapture = () => {
           )}
         </View>
       )}
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#0a0e27',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#FFF6F1',
+    backgroundColor: '#0a0e27',
     padding: 20,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginTop : 40,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#EF4D20',
+    color: '#F97316',
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 20,
@@ -223,14 +229,17 @@ const styles = StyleSheet.create({
   typeButton: {
     padding: 12,
     marginHorizontal: 10,
-    borderRadius: 8,
-    backgroundColor: '#F8D5CC',
+    borderRadius: 10,
+    backgroundColor: '#151b3a',
+    borderWidth: 1,
+    borderColor: '#2d3454',
   },
   activeType: {
-    backgroundColor: '#EF4D20',
+    backgroundColor: '#F97316',
+    borderColor: '#F97316',
   },
   typeButtonText: {
-    color: '#333',
+    color: '#c7d2e8',
     fontWeight: '500',
     fontFamily: 'Raleway_400Regular',
   },
@@ -246,9 +255,9 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     borderWidth: 2,
-    borderColor: '#EF4D20',
+    borderColor: '#2d3454',
     borderRadius: 4,
-    backgroundColor: '#fff',
+    backgroundColor: '#0f1535',
     overflow: 'hidden',
     position: 'relative',
     marginVertical: 10,
@@ -262,17 +271,17 @@ const styles = StyleSheet.create({
   helperText: {
     position: 'absolute',
     bottom: 10,
-    color: '#EF4D20',
+    color: '#c7d2e8',
     fontSize: 14,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(15, 21, 53, 0.9)',
     padding: 8,
-    borderRadius: 4,
+    borderRadius: 6,
     textAlign: 'center',
     width: '80%',
     fontFamily: 'Raleway_400Regular',
   },
   captureButton: {
-    backgroundColor: '#EF4D20',
+    backgroundColor: '#F97316',
     padding: 18,
     borderRadius: 12,
     width: '80%',
@@ -295,34 +304,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#2d3454',
     borderRadius: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#151b3a',
     width: '90%',
+    marginRight: 12,
   },
   checkedContainer: {
-    borderColor: '#EF4D20',
+    borderColor: '#F97316',
   },
   checkbox: {
     width: 24,
     height: 24,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: '#E0E0E0',
+    borderColor: '#2d3454',
     marginRight: 15,
   },
   checked: {
-    backgroundColor: '#EF4D20',
-    borderColor: '#EF4D20',
+    backgroundColor: '#F97316',
+    borderColor: '#F97316',
   },
   checkboxText: {
     fontSize: 16,
-    color: '#555',
+    color: '#c7d2e8',
     flex: 1,
     fontFamily: 'Raleway_400Regular',
   },
   nextButton: {
-    backgroundColor: '#EF4D20',
+    backgroundColor: '#F97316',
     padding: 15,
     borderRadius: 8,
     width: '90%',
@@ -356,7 +366,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#22c55e',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
@@ -368,12 +378,12 @@ const styles = StyleSheet.create({
   },
   validationText: {
     fontSize: 18,
-    color: '#4CAF50',
+    color: '#22c55e',
     fontWeight: 'bold',
     fontFamily: 'Raleway_700Bold',
   },
   warningText: {
-    color: '#EF4D20',
+    color: '#F97316',
     fontSize: 16,
     textAlign: 'center',
     marginTop: 10,
@@ -390,9 +400,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     transform: [{ translateY: -50 }],
-    color: '#EF4D20',
+    color: '#F97316',
     fontSize: 12,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'rgba(15, 21, 53, 0.9)',
     padding: 10,
     borderRadius: 4,
     textAlign: 'center',
@@ -402,7 +412,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 20,
-    color: '#EF4D20',
+    color: '#F97316',
     fontWeight: 'bold',
     fontFamily: 'Raleway_700Bold',
   },

@@ -158,7 +158,7 @@ const ScannerQRCodeBagage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#0a0e27",
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
@@ -168,13 +168,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#EF4D20",
+    color: "#F97316",
     marginBottom: 20,
     textAlign: "center",
   },
   camera: {
-    width: "80%", // Réduire la largeur de la caméra
-    aspectRatio: 1, // Garder un ratio carré
+    width: "85%",
+    height: 320,
+    borderRadius: 16,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "#2d3454",
+    backgroundColor: "#0f1535",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -191,22 +196,22 @@ const styles = StyleSheet.create({
     width: 250, // Augmenter la largeur du carré
     height: 250, // Augmenter la hauteur du carré
     borderWidth: 4,
-    borderColor: "#EF4D20",
+    borderColor: "#F97316",
     borderRadius: 10,
   },
   resultText: {
     fontSize: 14, // Réduire la taille du texte
-    color: "#333",
+    color: "#c7d2e8",
     textAlign: "center",
     marginVertical: 20,
   },
   boldLargeText: {
     fontSize: 18, // Taille du texte plus grande
     fontWeight: "bold", // Texte en gras
-    color: "#333", // Couleur du texte
+    color: "#f5f7fb", // Couleur du texte
   },
   scanAgainButton: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#F97316",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -219,7 +224,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   permissionButton: {
-    backgroundColor: "#EF4D20",
+    backgroundColor: "#F97316",
     padding: 12,
     borderRadius: 8,
   },
@@ -236,15 +241,17 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "90%",
-    backgroundColor: "#FFF6F1",
+    backgroundColor: "#151b3a",
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#2d3454",
     padding: 20,
     alignItems: "center",
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#EF4D20",
+    color: "#F97316",
     marginBottom: 20,
   },
   modalContent: {
@@ -253,7 +260,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16, // Réduire la taille du texte
-    color: "#333",
+    color: "#c7d2e8",
     marginBottom: 10,
     textAlign: "center",
   },
