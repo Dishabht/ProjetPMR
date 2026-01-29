@@ -1,0 +1,14 @@
+[
+    {
+      "id": 1,
+      "name": "Aéroport CDG",
+      "type": "airport",
+      "coordinates": [2.5477, 49.0097]
+    },
+    {
+      "id": 2,
+      "name": "Aéroport Nice Côte d'Azur",
+      "type": "airport",
+      "coordinates": [7.2661, 43.6584]
+    }
+  ]

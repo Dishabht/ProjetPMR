@@ -49,60 +49,47 @@ const getConnectionsByTransport = (req, transport) => {
 const mongoSeedData = {
   RATP: [
     {
-      num_reservation: "001",
-      name: "Lea",
-      surname: "Martin",
-      phone: "0611111111",
-      handicap_type: "WCHC",
-      numBags: 2,
-      lieu_depart: "Gare de Lyon",
-      lieu_arrivee: "Châtelet",
-      heure_depart: "14:15",
-      heure_arrivee: "14:45",
-      transport: "RATP",
-    },
-    {
       num_reservation: "101",
-      name: "Sarah",
-      surname: "Bernard",
-      phone: "0677777777",
+      name: "Client",
+      surname: "Test",
+      phone: "0751033970",
       handicap_type: "WCHR",
       numBags: 1,
       lieu_depart: "Marseille",
-      lieu_arrivee: "Gare de Lyon",
-      heure_depart: "09:00",
-      heure_arrivee: "12:15",
+      lieu_arrivee: "Nice",
+      heure_depart: "2025-12-02T07:30:00Z",
+      heure_arrivee: "2025-12-02T10:30:00Z",
       transport: "RATP",
     },
   ],
   SNCF: [
     {
-      num_reservation: "122",
-      name: "Jean",
-      surname: "Dupont",
-      phone: "0600000000",
+      num_reservation: "102",
+      name: "Client",
+      surname: "Test",
+      phone: "0751033970",
       handicap_type: "WCHR",
       numBags: 1,
-      lieu_depart: "Marseille",
-      lieu_arrivee: "Gare de Lyon",
-      heure_depart: "10:30",
-      heure_arrivee: "13:40",
+      lieu_depart: "Nice",
+      lieu_arrivee: "Paris",
+      heure_depart: "2025-12-02T12:00:00Z",
+      heure_arrivee: "2025-12-02T17:40:00Z",
       transport: "SNCF",
     },
   ],
   AirFrance: [
     {
-      num_reservation: "22",
-      name: "Nina",
-      surname: "Lopez",
-      phone: "0622222222",
-      handicap_type: "WCHS",
+      num_reservation: "103",
+      name: "Client",
+      surname: "Test",
+      phone: "0751033970",
+      handicap_type: "WCHR",
       numBags: 1,
-      lieu_depart: "CDG",
-      lieu_arrivee: "Nice",
-      heure_depart: "18:45",
-      heure_arrivee: "20:05",
-      transport: "AirFrance",
+      lieu_depart: "Paris (CDG)",
+      lieu_arrivee: "Marseille",
+      heure_depart: "2025-12-02T20:00:00Z",
+      heure_arrivee: "2025-12-02T21:25:00Z",
+      transport: "Air France",
     },
   ],
 };
@@ -118,12 +105,11 @@ const ensureMongoSeed = async (req) => {
 
       await Promise.all(
         seed.map(async (billet) => {
-          const exists = await model
-            .findOne({ num_reservation: billet.num_reservation })
-            .lean();
-          if (!exists) {
-            await model.create(billet);
-          }
+          await model.updateOne(
+            { num_reservation: billet.num_reservation },
+            { $set: billet },
+            { upsert: true }
+          );
         })
       );
     })
@@ -139,52 +125,43 @@ const memoryStore = new Map();
 const seedMemoryBillets = () => {
   const sampleBillets = [
     {
-      num_reservation: "001",
-      name: "Jean",
-      surname: "Dupont",
-      phone: "0600000000",
+      num_reservation: "101",
+      name: "Client",
+      surname: "Test",
+      phone: "0751033970",
       handicap_type: "WCHR",
       numBags: 1,
       lieu_depart: "Marseille",
-      lieu_arrivee: "Gare de Lyon",
-      heure_depart: "10:30",
+      lieu_arrivee: "Nice",
+      heure_depart: "2025-12-02T07:30:00Z",
+      heure_arrivee: "2025-12-02T10:30:00Z",
+      transport: "RATP",
+    },
+    {
+      num_reservation: "102",
+      name: "Client",
+      surname: "Test",
+      phone: "0751033970",
+      handicap_type: "WCHR",
+      numBags: 1,
+      lieu_depart: "Nice",
+      lieu_arrivee: "Paris",
+      heure_depart: "2025-12-02T14:00:00Z",
+      heure_arrivee: "2025-12-02T17:40:00Z",
       transport: "SNCF",
     },
     {
-      num_reservation: "002",
-      name: "Lea",
-      surname: "Martin",
-      phone: "0611111111",
-      handicap_type: "WCHC",
-      numBags: 2,
-      lieu_depart: "Gare de Lyon",
-      lieu_arrivee: "Marseille",
-      heure_depart: "14:15",
-      transport: "RATP",
-    },
-    {
-      num_reservation: "101",
-      name: "Sarah",
-      surname: "Bernard",
-      phone: "0677777777",
+      num_reservation: "103",
+      name: "Client",
+      surname: "Test",
+      phone: "0751033970",
       handicap_type: "WCHR",
       numBags: 1,
-      lieu_depart: "Marseille",
-      lieu_arrivee: "Gare de Lyon",
-      heure_depart: "09:00",
-      transport: "RATP",
-    },
-    {
-      num_reservation: "003",
-      name: "Nina",
-      surname: "Lopez",
-      phone: "0622222222",
-      handicap_type: "WCHS",
-      numBags: 1,
-      lieu_depart: "CDG",
-      lieu_arrivee: "Nice",
-      heure_depart: "18:45",
-      transport: "AirFrance",
+      lieu_depart: "Paris (CDG)",
+      lieu_arrivee: "Marseille",
+      heure_depart: "2025-12-02T20:00:00Z",
+      heure_arrivee: "2025-12-02T21:25:00Z",
+      transport: "Air France",
     },
   ];
 
@@ -200,10 +177,7 @@ const seedRedisBillets = async () => {
   for (const billet of memoryStore.values()) {
     const parsed = JSON.parse(billet);
     const key = `billet:${parsed.num_reservation}`;
-    const existing = await getValue(key);
-    if (!existing) {
-      await setValue(key, JSON.stringify(parsed));
-    }
+    await setValue(key, JSON.stringify(parsed));
   }
 };
 

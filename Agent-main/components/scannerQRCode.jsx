@@ -12,7 +12,8 @@ import {
   StatusBar,
 } from "react-native";
 import { Camera, CameraView } from "expo-camera";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { API_BASE } from "../config/apiBase";
 
 export default function ScannerQRCode() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -20,6 +21,8 @@ export default function ScannerQRCode() {
   const [qrData, setQrData] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
+  const route = useRoute();
+  const reservationIdFromRoute = route?.params?.reservationId || null;
   const [text, setText] = useState("Aucun QR Code scanné pour l'instant.");
 
   // Demande de permission pour la caméra
@@ -34,29 +37,41 @@ export default function ScannerQRCode() {
     askForCameraPermission();
   }, []);
 
+  const parseQueryParams = (rawQuery) => {
+    if (!rawQuery || !rawQuery.includes("=")) return null;
+    const query = rawQuery.includes("?") ? rawQuery.split("?")[1] : rawQuery;
+    const cleanQuery = query.split("#")[0];
+    const params = new URLSearchParams(cleanQuery);
+    return {
+      nom: params.get("nom") ?? params.get("name") ?? null,
+      prenom: params.get("prenom") ?? params.get("surname") ?? null,
+      reservation: params.get("reservation") ?? params.get("num_reservation") ?? null,
+      depart: params.get("depart") ?? params.get("lieu_depart") ?? null,
+      arrivee: params.get("arrivee") ?? params.get("lieu_arrivee") ?? null,
+      bagages: params.get("bagages") ?? params.get("numBags") ?? null,
+      fauteuilRoulant: params.get("fauteuilRoulant") ?? params.get("handicap") ?? null,
+      mail: params.get("mail") ?? null,
+      num: params.get("num") ?? params.get("phone") ?? null,
+      handicap: params.get("handicap") ?? null,
+      birth: params.get("birth") ?? null,
+      contactMail: params.get("contact_mail") ?? null,
+      contactNum: params.get("contactnum") ?? params.get("contact_num") ?? null,
+    };
+  };
+
   const parseQrPayload = (raw) => {
     if (!raw) return null;
 
+    const directParams = parseQueryParams(raw);
+    if (directParams) {
+      return directParams;
+    }
+
     // 1) URL with query params
     try {
-      const url = new URL(raw);
+      const url = new URL(raw.startsWith("http") ? raw : `https://${raw}`);
       if (url.search) {
-        const params = new URLSearchParams(url.search);
-        return {
-          nom: params.get("nom") ?? params.get("name") ?? null,
-          prenom: params.get("prenom") ?? params.get("surname") ?? null,
-          reservation: params.get("reservation") ?? params.get("num_reservation") ?? null,
-          depart: params.get("depart") ?? params.get("lieu_depart") ?? null,
-          arrivee: params.get("arrivee") ?? params.get("lieu_arrivee") ?? null,
-          bagages: params.get("bagages") ?? params.get("numBags") ?? null,
-          fauteuilRoulant: params.get("fauteuilRoulant") ?? params.get("handicap") ?? null,
-          mail: params.get("mail") ?? null,
-          num: params.get("num") ?? params.get("phone") ?? null,
-          handicap: params.get("handicap") ?? null,
-          birth: params.get("birth") ?? null,
-          contactMail: params.get("contact_mail") ?? null,
-          contactNum: params.get("contactnum") ?? params.get("contact_num") ?? null,
-        };
+        return parseQueryParams(url.search);
       }
     } catch (error) {
       // Not a URL, continue
@@ -119,6 +134,12 @@ export default function ScannerQRCode() {
 
   const buildInfoLines = (info) => {
     if (!info) return [];
+    const normalizeYesNo = (value) => {
+      if (value === null || value === undefined || value === "") return "Non";
+      const raw = String(value).trim().toLowerCase();
+      if (["non", "no", "false", "0", "none", "aucun"].includes(raw)) return "Non";
+      return "Oui";
+    };
     const lines = [
       { label: "Nom", value: info.nom },
       { label: "Prénom", value: info.prenom },
@@ -126,7 +147,7 @@ export default function ScannerQRCode() {
       { label: "Départ", value: info.depart },
       { label: "Arrivée", value: info.arrivee },
       { label: "Bagages", value: info.bagages },
-      { label: "Fauteuil roulant", value: info.fauteuilRoulant },
+      { label: "Fauteuil roulant", value: normalizeYesNo(info.fauteuilRoulant) },
     ];
     return lines.map((item) => ({
       label: item.label,
@@ -134,7 +155,22 @@ export default function ScannerQRCode() {
     }));
   };
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const fetchReservationDetails = async (reservationId) => {
+    if (!reservationId) return null;
+    try {
+      const response = await fetch(
+        `${API_BASE}/reservation/getById?id=${encodeURIComponent(reservationId)}`
+      );
+      if (!response.ok) return null;
+      const payload = await response.json();
+      return payload?.reservation || null;
+    } catch (error) {
+      console.error("Erreur lors de la récupération de la réservation :", error);
+      return null;
+    }
+  };
+
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     console.log("Type:", type);
     console.log("Data:", data);
@@ -143,10 +179,21 @@ export default function ScannerQRCode() {
       const qrInfo = parseQrPayload(data);
       if (!qrInfo) throw new Error("Le QR Code n'a pas de données lisibles.");
 
-      setQrData(qrInfo);
+      const resolvedReservationId = qrInfo.reservation || reservationIdFromRoute;
+      const reservationDetails = await fetchReservationDetails(resolvedReservationId);
+      const mergedInfo = {
+        ...qrInfo,
+        reservation: qrInfo.reservation ?? resolvedReservationId,
+        depart: reservationDetails?.lieu_depart ?? qrInfo.depart,
+        arrivee: reservationDetails?.lieu_arrivee ?? qrInfo.arrivee,
+        bagages: reservationDetails?.numBags ?? qrInfo.bagages,
+        fauteuilRoulant: reservationDetails?.handicap_type ?? qrInfo.fauteuilRoulant,
+      };
+
+      setQrData(mergedInfo);
       setModalVisible(true);
 
-      const lines = buildInfoLines(qrInfo)
+      const lines = buildInfoLines(mergedInfo)
         .map((item) => `${item.label} : ${item.value}`)
         .join("\n");
       setText(`Informations du QR Code précédemment scanné :\n\n${lines}`);
@@ -197,6 +244,7 @@ export default function ScannerQRCode() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="light-content" backgroundColor="#0a0e27" />
+      <View style={styles.statusBarFill} />
       <View style={styles.container}>
         <Text style={styles.title}>Scanner le QR Code du PMR</Text>
         <CameraView
@@ -265,6 +313,10 @@ export default function ScannerQRCode() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: "#0a0e27",
+  },
+  statusBarFill: {
+    height: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     backgroundColor: "#0a0e27",
   },
   container: {

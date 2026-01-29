@@ -1,0 +1,21 @@
+/* ReservationTrajet.css */
+input[type="radio"].form-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid #000;
+  border-radius: 0.25rem;
+  position: relative;
+}
+
+input[type="radio"].form-radio:checked::before {
+  content: "✕";
+  font-size: 1.25rem;
+  color: #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

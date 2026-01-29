@@ -1,9 +1,0 @@
-<map id="components/Confidentialite.jsx" name="components/Confidentialite.jsx">
-<area shape="rect" id="Node000001" title=" " alt="" coords="11,5,211,32"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,62,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,34,60,71,56,67,96,31"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="86,80,136,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="114,33,114,64,108,64,108,33"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="160,80,249,107"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="129,30,178,68,175,73,125,35"/>
-</map>

@@ -33,7 +33,7 @@
     },
     "plugins": ["expo-font"],
     "extra": {
-      "apiBase": "https://around-author-drag-writers.trycloudflare.com"
+      "apiBase": "https://gzip-notifications-ads-cas.trycloudflare.com"
     }
   }
 }
