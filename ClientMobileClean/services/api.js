@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://around-author-drag-writers.trycloudflare.com";
+export const API_BASE_URL = "https://gzip-notifications-ads-cas.trycloudflare.com";
 
 const api = axios.create({
   baseURL: API_BASE_URL,

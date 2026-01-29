@@ -24,6 +24,7 @@ import BilletDetails from "./components/BilletDetails.jsx";
 import { ThemeProvider, ThemeContext } from "./ThemeContext";
 import EditProfile from "./components/EditProfile.jsx";
 import Confidentialite from "./components/Confidentialite.jsx";
+import Wallet from "./components/Wallet.jsx";
 
 const Stack = createStackNavigator();
 
@@ -179,6 +180,11 @@ export default function App() {
                 <Stack.Screen
                   name="EditProfile"
                   component={EditProfile}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Wallet"
+                  component={Wallet}
                   options={{ headerShown: false }}
                 />
               </Stack.Navigator>

@@ -129,7 +129,7 @@ const Billet = ({ ticket }) => {
             <Text style={styles.date}>{arriveeDateTime.date}</Text>
           </View>
 
-          <Text style={styles.transportType}>
+          <Text style={styles.transportType} numberOfLines={1}>
             {ticket.transport || "Transport non spécifié"}
           </Text>
         </View>
@@ -197,6 +197,8 @@ const styles = StyleSheet.create({
   timeContainer: {
     alignItems: "center",
     flex: 1,
+    minWidth: 72,
+    paddingHorizontal: 4,
   },
   timeLabel: {
     fontFamily: "RalewayBold",
@@ -213,17 +215,17 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: "RalewayBold",
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "bold",
     color: "#c7d2e8",
-    marginTop: 5,
+    marginTop: 2,
   },
   transportType: {
     fontFamily: "RalewayBlack",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#00d9ff",
-    flex: 1,
+    flexShrink: 0,
     textAlign: "right",
   },
   ticketBody: {

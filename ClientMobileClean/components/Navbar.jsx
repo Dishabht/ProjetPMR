@@ -43,8 +43,16 @@ const NavBar = () => {
   const navigation = useNavigation();
   const [activeIndex, setActiveIndex] = useState(0); // Commence par Home
 
+  const navItems = [
+    { name: "home", label: "Accueil", route: "Accueil" },
+    { name: "plus-circle", label: "Réserver", route: "Reservation" },
+    { name: "credit-card", label: "Wallet", route: "Wallet", isWallet: true },
+    { name: "user-circle", label: "Profile", route: "Profile" },
+    { name: "cogs", label: "Paramètres", route: "Settings" },
+  ];
+
   // Création dynamique des animations pour chaque bouton
-  const animationRefs = Array(4)
+  const animationRefs = Array(navItems.length)
     .fill(null)
     .map(() => ({
       scaleIcon: useRef(new Animated.Value(1)).current,
@@ -52,13 +60,6 @@ const NavBar = () => {
       scaleText: useRef(new Animated.Value(1)).current,
       translateYText: useRef(new Animated.Value(0)).current,
     }));
-
-  /**
-   * Gère la navigation entre les écrans et l'animation des boutons.
-   *
-   * @param {number} index - L'index de l'élément sélectionné.
-   * @param {string} route - Le nom de la route à naviguer.
-   */
   const handleNavigation = (index, route) => {
     setActiveIndex(index);
 
@@ -104,15 +105,10 @@ const NavBar = () => {
   return (
     <View style={styles.navbarContainer}>
       <View style={styles.navbar}>
-        {[
-          { name: "home", label: "Accueil", route: "Accueil" },
-          { name: "plus-circle", label: "Réserver", route: "Reservation" },
-          { name: "user-circle", label: "Profile", route: "Profile" },
-          { name: "cogs", label: "Paramètres", route: "Settings" },
-        ].map((item, index) => (
+        {navItems.map((item, index) => (
           <TouchableOpacity
-            key={index}
-            style={styles.navButton}
+            key={item.route}
+            style={[styles.navButton, item.isWallet && styles.walletButton]}
             onPress={() => handleNavigation(index, item.route)}
           >
             <Animated.View
@@ -133,6 +129,7 @@ const NavBar = () => {
               style={[
                 styles.navText,
                 activeIndex === index && styles.activeText,
+                item.isWallet && styles.walletText,
                 {
                   transform: [
                     { scale: animationRefs[index].scaleText },
@@ -176,11 +173,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
   },
+  walletButton: {
+    marginTop: 0,
+  },
   navText: {
     fontFamily: "RalewayBlack",
     marginTop: 10,
     color: "#c7d2e8",
     fontSize: 12,
+  },
+  walletText: {
+    marginTop: 8,
   },
   activeText: {
     color: "#0066ff",
